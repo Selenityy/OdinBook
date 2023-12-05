@@ -12,6 +12,7 @@ const userRouter = require("./routes/user");
 
 const dev_db_url =
   "mongodb+srv://username:password@cluster0.mw4rw38.mongodb.net/blog-api?retryWrites=true&w=majority";
+mongoose.set("strictQuery", false);
 const mongoDb = process.env.MONGODB_URI_ODINBOOK || dev_db_url;
 mongoose.connect(mongoDb);
 const db = mongoose.connection;
