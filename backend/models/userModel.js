@@ -20,7 +20,7 @@ const UserSchema = new Schema({
   password: { type: String, required: true },
   firstName: { type: String, required: true },
   lastName: { type: String, required: true },
-  about: { type: String },
+  about: { type: String, maxLength: 100 },
   profilePic: {
     type: String,
     default: "./public/images/profile-pics/panda-avatar.png",
