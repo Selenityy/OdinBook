@@ -3,10 +3,15 @@ require("dotenv").config();
 const express = require("express");
 const createError = require("http-errors");
 const path = require("path");
+const session = require("express-session");
+const passport = require("passport");
+const LocalStrategy = require("passport-local").Strategy;
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+const mongoose = require("mongoose");
 const logger = require("morgan");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
-const mongoose = require("mongoose");
 
 const userRouter = require("./routes/user");
 
