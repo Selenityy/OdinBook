@@ -30,4 +30,12 @@ const UserSchema = new Schema({
   posts: [{ type: Schema.Types.ObjectId, ref: "Post" }],
 });
 
+UserSchema.virtual("name").get(function () {
+  let fullname = "";
+  if (this.firstName && this.lastName) {
+    fullname = `${this.firstName} ${this.lastName}`;
+  }
+  return fullname;
+});
+
 module.exports = mongoose.model("User", UserSchema);
