@@ -3,7 +3,13 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const UserSchema = new Schema({
-  username: { type: String, required: true, maxLength: 30 },
+  username: {
+    type: String,
+    required: true,
+    minLength: 2,
+    maxLength: 30,
+    unique: true,
+  },
   email: {
     type: String,
     required: true,
@@ -18,12 +24,13 @@ const UserSchema = new Schema({
     },
   },
   password: { type: String, required: true },
-  firstName: { type: String, required: true },
-  lastName: { type: String, required: true },
-  about: { type: String, maxLength: 100 },
+  firstName: { type: String, minLength: 2, maxLength: 50, required: true },
+  lastName: { type: String, minLength: 2, maxLength: 50, required: true },
+  about: { type: String, minLength: 3, maxLength: 100, required: false },
   profilePic: {
     type: String,
     default: "./public/images/profile-pics/panda-avatar.png",
+    required: true,
   },
   friends: [{ type: Schema.Types.ObjectId, ref: "Friends" }],
   friendRequests: [{ type: Schema.Types.ObjectId, ref: "FriendRequests" }],
