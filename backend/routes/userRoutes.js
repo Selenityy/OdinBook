@@ -12,13 +12,14 @@ router.get("/user", (req, res, next) => {
 
 // user get username
 // user update username
-// user get about 
+// user get about
 // user update about
 // user delete about
 // user get profile picture
 // user update profile picture
 // user delete account
 
+// (below could be used in postRoutes instead of here)
 // user get feed
 // user create a post
 // user like a post
