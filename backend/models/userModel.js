@@ -26,6 +26,7 @@ const UserSchema = new Schema({
   password: { type: String, required: true },
   firstName: { type: String, minLength: 2, maxLength: 50, required: true },
   lastName: { type: String, minLength: 2, maxLength: 50, required: true },
+  testUser: { type: Boolean, default: false },
   about: { type: String, minLength: 3, maxLength: 100, required: false },
   profilePic: {
     type: String,
