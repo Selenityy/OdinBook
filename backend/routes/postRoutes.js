@@ -17,7 +17,10 @@ const router = express.Router();
 
 // create a comment
 // update a comment (optional)
-// delete a comment
 // like a comment
+// delete a comment
+// delete all comments on a post
+// delete all likes on a post
+// delete all likes on a comment
 
 module.exports = router;
