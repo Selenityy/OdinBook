@@ -24,14 +24,14 @@ const PostSchema = new Schema({
 PostSchema.virtual("comments", {
   ref: "Comment",
   localField: "_id",
-  foreignField: "postId",
+  foreignField: "post",
 });
 
 // get comment count from a specific post
 PostSchema.virtual("commentCount", {
   ref: "Comment",
   localField: "_id",
-  foreignField: "postId",
+  foreignField: "post",
   count: true,
 });
 
