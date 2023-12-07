@@ -13,7 +13,7 @@ const logger = require("morgan");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
 
-const userRouter = require("./routes/user");
+const userRouter = require("./routes/userRoutes");
 
 const dev_db_url = "";
 mongoose.set("strictQuery", false);
