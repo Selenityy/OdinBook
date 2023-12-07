@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
+// if images are needed elsewhere, this schema can be made into it's own model
 const ImageSchema = new Schema({
   imageUrl: { type: String },
 });
