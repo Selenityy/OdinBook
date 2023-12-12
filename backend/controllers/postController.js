@@ -64,7 +64,7 @@ exports.createPost = [
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
-    
+
     if (userId !== authenticatedUserId.toString()) {
       return res.status(403).json({ message: "Unauthorized to create a post" });
     }
@@ -87,3 +87,30 @@ exports.createPost = [
     }
   }),
 ];
+
+// Update post
+exports.updateSpecificPost = asyncHandler(async (req, res, next) => {
+  const postId = req.params.postId;
+  const userId = req.params.userId;
+  const authenticatedUserId = req.user._id;
+
+  if (userId !== authenticatedUserId.toString()) {
+    return res.status(403).json({ message: "Unauthorized to update a post" });
+  }
+
+  try {
+    const updatedPost = await Post.findByIdAndUpdate(
+      postId,
+      { body: req.body.body },
+      { new: true }
+    );
+
+    if (!updatedPost) {
+      return res.status(404).json({ message: "Post not found" });
+    }
+
+    res.json(updatedPost);
+  } catch (err) {
+    next(err);
+  }
+});
