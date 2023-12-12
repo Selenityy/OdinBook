@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const userController = require("../controllers/userController");
 
 router.get("/user", (req, res, next) => {
   res.send("this is a homepage");
@@ -7,8 +8,15 @@ router.get("/user", (req, res, next) => {
 
 /// User
 // user sign up
+router.post("/user/signup", userController.signup);
 // user log in
+router.post(
+  "/user/login",
+  passport.authenticate("local", { session: false }),
+  userController.login
+);
 // user log out
+router.post("/user/logout", userController.logout);
 
 // user get username
 // user update username
