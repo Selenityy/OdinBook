@@ -13,6 +13,7 @@ router.put("/:userId/:postId/update", postController.updateSpecificPost);
 
 // DELETE: Deletion
 // delete a post
+router.delete("/:userId/:postId/delete", postController.deleteSpecificPost);
 
 // like a post
 
