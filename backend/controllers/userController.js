@@ -3,6 +3,8 @@ const { hashPassword } = require("../helpers/bcrypt");
 const User = require("../models/userModel");
 const passport = require("passport");
 const jwt = require("jsonwebtoken");
+const Post = require("../models/postModel");
+const Comment = require("../models/commentModel");
 
 // Sign up
 exports.signup = asyncHandler(async (req, res, next) => {
@@ -69,4 +71,107 @@ exports.login = asyncHandler(async (req, res, next) => {
 exports.logout = asyncHandler(async (req, res, next) => {
   // this will be handled on client side for a sessionless state
   res.json({ message: "Logged out" });
+});
+
+// Update username
+exports.updateUserUsername = asyncHandler(async (req, res, next) => {
+  const userId = req.params.userId;
+  const { username } = req.body;
+  try {
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      { username },
+      { new: true, runValidators: true }
+    );
+
+    if (!updatedUser) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.status(200).json({
+      message: "Username updated successfully",
+      username: updatedUser.username,
+    });
+  } catch (err) {
+    next(err);
+  }
+});
+
+// Update about section
+exports.updateUserAbout = asyncHandler(async (req, res, next) => {
+  const userId = req.params.userId;
+  const { about } = req.body;
+
+  try {
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      { about },
+      { new: true, runValidators: true }
+    );
+
+    if (!updatedUser) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.status(200).json({
+      message: "About section updated successfully",
+      about: updatedUser.about,
+    });
+  } catch (err) {
+    next(err);
+  }
+});
+
+// Update profile picture
+exports.updateUserProfilePic = asyncHandler(async (req, res, next) => {
+  const userId = req.params.userId;
+  const { profilePic } = req.body;
+
+  try {
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      { profilePic },
+      { new: true, runValidators: true }
+    );
+
+    if (!updatedUser) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.status(200).json({
+      message: "Profile picture updated successfully",
+      profilePic: updatedUser.profilePic,
+    });
+  } catch (err) {
+    next(err);
+  }
+});
+
+// Delete Account
+exports.deleteUserAccount = asyncHandler(async (req, res, next) => {
+  const userId = req.params.userId;
+  const authenticatedUserId = req.user._id;
+
+  // Check if auth user is the same as the user being deleted
+  if (userId !== authenticatedUserId.toString()) {
+    return res.status(403).json({ message: "Unauthorized to delete account" });
+  }
+
+  try {
+    // delete user's posts
+    await Post.deleteMany({ user: userId });
+
+    // delete user's comments
+    await Comment.deleteMany({ user: userId });
+
+    // delete user's account
+    const deletedUser = await User.findByIdAndDelete(userId);
+
+    if (!deletedUser) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    res.status(200).json({ message: "User account deleted successfully" });
+  } catch (err) {
+    next(err);
+  }
 });
