@@ -8,25 +8,24 @@ router.get("/user", (req, res, next) => {
 });
 
 /// User
-// user sign up
+// GET?
+
+// POST: Authentications
 router.post("/user/signup", userController.signup);
-// user log in
 router.post(
   "/user/login",
   passport.authenticate("local", { session: false }),
   userController.login
 );
-// user log out
 router.post("/user/logout", userController.logout);
 
-// user get username
-// user update username
-// user get about
-// user update about
-// user delete about
-// user get profile picture
-// user update profile picture
-// user delete account
+// PUT: Updates
+router.put("/:userId/update/username", userController.updateUserUsername);
+router.put("/:userId/update/about", userController.updateUserAbout);
+router.put("/:userId/update/profilePic", userController.updateUserProfilePic);
+
+// DELETE: Deletions
+router.delete("/:userId/delete/account", userController.deleteUserAccount);
 
 // (below could be used in postRoutes instead of here)
 // user get feed
