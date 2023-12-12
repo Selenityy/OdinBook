@@ -4,9 +4,9 @@ const postController = require("../controllers/postController");
 
 // GET: User feeds
 router.get("/:userId/userFeed", postController.userFeed);
-// get all likes on a post
 
 // create a post
+router.post("/:userId/createPost", postController.createPost);
 // update a post (optional)
 // delete a post
 // like a post
