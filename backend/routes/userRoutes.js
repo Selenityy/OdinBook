@@ -8,7 +8,8 @@ router.get("/user", (req, res, next) => {
 });
 
 /// User
-// GET?
+// GET: User information
+router.get("/user/:userId", userController.getUserInfo);
 
 // POST: Authentications
 router.post("/user/signup", userController.signup);
@@ -27,13 +28,6 @@ router.put("/:userId/update/profilePic", userController.updateUserProfilePic);
 // DELETE: Deletions
 router.delete("/:userId/delete/account", userController.deleteUserAccount);
 
-// (below could be used in postRoutes instead of here)
-// user get feed
-// user create a post
-// user like a post
-// user create a comment
-// user like a comment
-
 /// Friends
 // user get friends list
 // user get friend request list
@@ -42,5 +36,12 @@ router.delete("/:userId/delete/account", userController.deleteUserAccount);
 // user reject friend request
 // user unfriend
 // user delete their own friend request
+
+// (below could be used in postRoutes instead of here)
+// user get feed
+// user create a post
+// user like a post
+// user create a comment
+// user like a comment
 
 module.exports = router;
