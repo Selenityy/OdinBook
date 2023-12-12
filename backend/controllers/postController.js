@@ -8,42 +8,38 @@ const { body, validationResult } = require("express-validator");
 exports.userFeed = asyncHandler(async (req, res, next) => {
   const userId = req.params.userId;
 
-  try {
-    // fetch user and friend's list
-    const user = await User.findById(userId).populate("friends");
-    if (!user) {
-      return res.status(404).json({ message: "User not found" });
-    }
-    // create an array of friend Ids and own
-    const friendIds = user.friends.map((friend) => friend._id);
-    friendIds.push(user._id);
+  // fetch user and friend's list
+  const user = await User.findById(userId).populate("friends");
+  if (!user) {
+    return res.status(404).json({ message: "User not found" });
+  }
+  // create an array of friend Ids and own
+  const friendIds = user.friends.map((friend) => friend._id);
+  friendIds.push(user._id);
 
-    const posts = await Post.find({
-      user: { $in: friendIds },
+  const posts = await Post.find({
+    user: { $in: friendIds },
+  })
+    .sort({ timestamp: -1 })
+    .populate({
+      path: "user",
+      select: "username profilePic",
     })
-      .sort({ timestamp: -1 })
-      .populate({
+    // .populate({
+    //    path: "likeCount",
+    //  })
+    // should be able to access through post.likeCount
+    .populate({
+      path: "comments",
+      // select: "body likeCount",
+      // should be able to access through comment.likeCount
+      populate: {
         path: "user",
         select: "username profilePic",
-      })
-      // .populate({
-      //    path: "likeCount",
-      //  })
-      // should be able to access through post.likeCount
-      .populate({
-        path: "comments",
-        // select: "body likeCount",
-        // should be able to access through comment.likeCount
-        populate: {
-          path: "user",
-          select: "username profilePic",
-        },
-      });
+      },
+    });
 
-    res.json(posts);
-  } catch (err) {
-    next(err);
-  }
+  res.json(posts);
 });
 
 // Create post
@@ -69,22 +65,18 @@ exports.createPost = [
       return res.status(403).json({ message: "Unauthorized to create a post" });
     }
 
-    try {
-      const post = new Post({
-        body: req.body.body,
-        user: authenticatedUserId,
-      });
-      const savedPost = await post.save();
-      await User.findOneAndUpdate(
-        { _id: authenticatedUserId },
-        { $push: { posts: savedPost._id } }
-      );
-      res
-        .status(200)
-        .json({ post: savedPost, message: "Post created successfully" });
-    } catch (err) {
-      next(err);
-    }
+    const post = new Post({
+      body: req.body.body,
+      user: authenticatedUserId,
+    });
+    const savedPost = await post.save();
+    await User.findOneAndUpdate(
+      { _id: authenticatedUserId },
+      { $push: { posts: savedPost._id } }
+    );
+    res
+      .status(200)
+      .json({ post: savedPost, message: "Post created successfully" });
   }),
 ];
 
@@ -98,19 +90,18 @@ exports.updateSpecificPost = asyncHandler(async (req, res, next) => {
     return res.status(403).json({ message: "Unauthorized to update a post" });
   }
 
-  try {
-    const updatedPost = await Post.findByIdAndUpdate(
-      postId,
-      { body: req.body.body },
-      { new: true }
-    );
+  const updatedPost = await Post.findByIdAndUpdate(
+    postId,
+    { body: req.body.body },
+    { new: true }
+  );
 
-    if (!updatedPost) {
-      return res.status(404).json({ message: "Post not found" });
-    }
-
-    res.json(updatedPost);
-  } catch (err) {
-    next(err);
+  if (!updatedPost) {
+    return res.status(404).json({ message: "Post not found" });
   }
+
+  res.json(updatedPost);
 });
+
+// Delete a post
+exports.deleteSpecificPost = asyncHandler(async (res, req, next) => {});
