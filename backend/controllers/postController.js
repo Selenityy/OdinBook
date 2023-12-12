@@ -104,4 +104,27 @@ exports.updateSpecificPost = asyncHandler(async (req, res, next) => {
 });
 
 // Delete a post
-exports.deleteSpecificPost = asyncHandler(async (res, req, next) => {});
+exports.deleteSpecificPost = asyncHandler(async (req, res, next) => {
+  const postId = req.params.postId;
+  const userId = req.params.userId;
+  const authenticatedUserId = req.user._id;
+
+  if (userId !== authenticatedUserId.toString()) {
+    return res.status(403).json({ message: "Unauthorized to delete a post" });
+  }
+
+  const deletedPost = await Post.findByIdAndDelete(postId);
+
+  if (!deletedPost) {
+    return res.status(404).json({ message: "Post not found" });
+  }
+  // deleted associated comments
+  await Comment.deleteMany({ post: postId });
+
+  // remove post id from the user's post array
+  await User.findByIdAndUpdate(authenticatedUserId, {
+    $pull: { posts: postId },
+  });
+
+  res.json({ message: "Post deleted successfully" });
+});
