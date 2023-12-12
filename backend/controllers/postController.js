@@ -103,6 +103,32 @@ exports.updateSpecificPost = asyncHandler(async (req, res, next) => {
   res.json(updatedPost);
 });
 
+// Like a post
+exports.likeAPost = asyncHandler(async (req, res, next) => {
+  const postId = req.params.postId;
+  const userId = req.params.userId;
+  const authenticatedUserId = req.user._id;
+
+  if (userId !== authenticatedUserId.toString()) {
+    return res.status(403).json({ message: "Unauthorized to like a post" });
+  }
+
+  const post = await Post.findById(postId);
+  if (!post) {
+    return res.status(404).json({ message: "Post not found" });
+  }
+
+  if (post.likes.includes(userId)) {
+    post.likes.pull(userId);
+    await post.save();
+    res.status(200).json({ message: "Post unliked successfully" });
+  } else {
+    post.likes.push(userId);
+    await post.save();
+    res.status(200).json({ message: "Post liked successfully" });
+  }
+});
+
 // Delete a post
 exports.deleteSpecificPost = asyncHandler(async (req, res, next) => {
   const postId = req.params.postId;
