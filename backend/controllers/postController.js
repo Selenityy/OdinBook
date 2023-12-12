@@ -2,6 +2,7 @@ const asyncHandler = require("express-async-handler");
 const Post = require("../models/postModel");
 const Comment = require("../models/commentModel");
 const User = require("../models/userModel");
+const { body, validationResult } = require("express-validator");
 
 // Display all posts, user feed of their posts and friend posts
 exports.userFeed = asyncHandler(async (req, res, next) => {
@@ -46,27 +47,43 @@ exports.userFeed = asyncHandler(async (req, res, next) => {
 });
 
 // Create post
-exports.createPost = asyncHandler(async (req, res, next) => {
-  const userId = req.params.userId;
-  const authenticatedUserId = req.user._id;
-  if (userId !== authenticatedUserId.toString()) {
-    return res.status(403).json({ message: "Unauthorized to create a post" });
-  }
+exports.createPost = [
+  // Validation middleware
+  body("body")
+    .trim()
+    .isLength({ min: 1, max: 200 })
+    .withMessage("The post body cannot be empty"),
 
-  try {
-    const post = new Post({
-      body: req.body.body,
-      user: authenticatedUserId,
-    });
-    const savedPost = await post.save();
-    await User.findOneAndUpdate(
-      { _id: authenticatedUserId },
-      { $push: { posts: savedPost._id } }
-    );
-    res
-      .status(200)
-      .json({ post: savedPost, message: "Post created successfully" });
-  } catch (err) {
-    next(err);
-  }
-});
+  // Controller logic
+  asyncHandler(async (req, res, next) => {
+    const userId = req.params.userId;
+    const authenticatedUserId = req.user._id;
+
+    // Check for validation errors
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+    
+    if (userId !== authenticatedUserId.toString()) {
+      return res.status(403).json({ message: "Unauthorized to create a post" });
+    }
+
+    try {
+      const post = new Post({
+        body: req.body.body,
+        user: authenticatedUserId,
+      });
+      const savedPost = await post.save();
+      await User.findOneAndUpdate(
+        { _id: authenticatedUserId },
+        { $push: { posts: savedPost._id } }
+      );
+      res
+        .status(200)
+        .json({ post: savedPost, message: "Post created successfully" });
+    } catch (err) {
+      next(err);
+    }
+  }),
+];
