@@ -2,13 +2,18 @@ const express = require("express");
 const router = express.Router();
 const postController = require("../controllers/postController");
 
-// GET: User feeds
+// GET: Fetching
 router.get("/:userId/userFeed", postController.userFeed);
 
-// create a post
+// POST: Creation
 router.post("/:userId/createPost", postController.createPost);
-// update a post (optional)
+
+// PUT: Updating
+router.put("/:userId/:postId/update", postController.updateSpecificPost);
+
+// DELETE: Deletion
 // delete a post
+
 // like a post
 
 /// Comment Specific (using postId as base route)
