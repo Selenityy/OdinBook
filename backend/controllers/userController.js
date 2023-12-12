@@ -46,6 +46,15 @@ exports.login = asyncHandler(async (req, res, next) => {
       _id: user._id,
       username: user.username,
       testUser: user.testUser,
+      email: user.email,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      fullName: user.fullName,
+      about: user.about,
+      profilePic: user.profilePic,
+      friends: user.friends,
+      friendRequests: user.friendRequests,
+      posts: user.posts,
     };
     const token = jwt.sign({ user: body }, process.env.SESSION_SECRET, {
       expiresIn: "1d",
@@ -54,4 +63,10 @@ exports.login = asyncHandler(async (req, res, next) => {
   } catch (err) {
     next(err);
   }
+});
+
+// Log out
+exports.logout = asyncHandler(async (req, res, next) => {
+  // this will be handled on client side for a sessionless state
+  res.json({ message: "Logged out" });
 });
