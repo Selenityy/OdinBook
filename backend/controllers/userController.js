@@ -1,6 +1,8 @@
 const asyncHandler = require("express-async-handler");
 const { hashPassword } = require("../helpers/bcrypt");
 const User = require("../models/userModel");
+const passport = require("passport");
+const jwt = require("jsonwebtoken");
 
 // Sign up
 exports.signup = asyncHandler(async (req, res, next) => {
@@ -32,4 +34,24 @@ exports.signup = asyncHandler(async (req, res, next) => {
   await newUser.save();
 
   res.status(201).json({ message: "User created successfully" });
+});
+
+// Log in
+exports.login = asyncHandler(async (req, res, next) => {
+  // authenticate user
+  try {
+    const user = req.user;
+    // create a jwt token
+    const body = {
+      _id: user._id,
+      username: user.username,
+      testUser: user.testUser,
+    };
+    const token = jwt.sign({ user: body }, process.env.SESSION_SECRET, {
+      expiresIn: "1d",
+    });
+    res.status(200).json({ body, token });
+  } catch (err) {
+    next(err);
+  }
 });
