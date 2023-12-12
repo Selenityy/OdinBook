@@ -10,24 +10,9 @@ router.post("/:userId/createPost", postController.createPost);
 
 // PUT: Updating
 router.put("/:userId/:postId/update", postController.updateSpecificPost);
+router.put("/:postId/like", postController.likeAPost);
 
 // DELETE: Deletion
-// delete a post
 router.delete("/:userId/:postId/delete", postController.deleteSpecificPost);
-
-// like a post
-
-/// Comment Specific (using postId as base route)
-// get all comments on a specific post
-// get a single comment on a post (optional)
-// get all likes on a comment
-
-// create a comment
-// update a comment (optional)
-// like a comment
-// delete a comment
-// delete all comments on a post
-// delete all likes on a post
-// delete all likes on a comment
 
 module.exports = router;
