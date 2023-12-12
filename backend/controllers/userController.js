@@ -47,21 +47,18 @@ exports.login = asyncHandler(async (req, res, next) => {
     const body = {
       _id: user._id,
       username: user.username,
-      testUser: user.testUser,
-      email: user.email,
-      firstName: user.firstName,
-      lastName: user.lastName,
-      fullName: user.fullName,
-      about: user.about,
-      profilePic: user.profilePic,
-      friends: user.friends,
-      friendRequests: user.friendRequests,
-      posts: user.posts,
     };
     const token = jwt.sign({ user: body }, process.env.SESSION_SECRET, {
       expiresIn: "1d",
     });
-    res.status(200).json({ body, token });
+    res.status(200).json({
+      _id: user._id,
+      username: user.username,
+      email: user.email,
+      fullName: user.fullName,
+      profilePic: user.profilePic,
+      token,
+    });
   } catch (err) {
     next(err);
   }
@@ -71,6 +68,24 @@ exports.login = asyncHandler(async (req, res, next) => {
 exports.logout = asyncHandler(async (req, res, next) => {
   // this will be handled on client side for a sessionless state
   res.json({ message: "Logged out" });
+});
+
+// Get user information
+exports.getUserInfo = asyncHandler(async (req, res, next) => {
+  const userId = req.params.userId;
+  try {
+    const user = await User.findById(userId).select(
+      "username email fullName about profilePic friends friendRequests posts"
+    );
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.json(user);
+  } catch (err) {
+    next(err);
+  }
 });
 
 // Update username
