@@ -44,3 +44,29 @@ exports.userFeed = asyncHandler(async (req, res, next) => {
     next(err);
   }
 });
+
+// Create post
+exports.createPost = asyncHandler(async (req, res, next) => {
+  const userId = req.params.userId;
+  const authenticatedUserId = req.user._id;
+  if (userId !== authenticatedUserId.toString()) {
+    return res.status(403).json({ message: "Unauthorized to create a post" });
+  }
+
+  try {
+    const post = new Post({
+      body: req.body.body,
+      user: authenticatedUserId,
+    });
+    const savedPost = await post.save();
+    await User.findOneAndUpdate(
+      { _id: authenticatedUserId },
+      { $push: { posts: savedPost._id } }
+    );
+    res
+      .status(200)
+      .json({ post: savedPost, message: "Post created successfully" });
+  } catch (err) {
+    next(err);
+  }
+});
