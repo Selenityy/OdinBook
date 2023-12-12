@@ -1,8 +1,9 @@
 const express = require("express");
 const router = express.Router();
+const postController = require("../controllers/postController");
 
-/// Post Specific
-// get all posts (could be the same as feed on users)
+// GET: User feeds
+router.get("/:userId/userFeed", postController.userFeed);
 // get all likes on a post
 
 // create a post
