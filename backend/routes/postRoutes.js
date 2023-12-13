@@ -1,18 +1,21 @@
 const express = require("express");
-const router = express.Router();
+const router = express.Router({ mergeParams: true });
 const postController = require("../controllers/postController");
 
 // GET: Fetching
-router.get("/:userId/userFeed", postController.userFeed);
+router.get("/", postController.userFeed);
 
 // POST: Creation
-router.post("/:userId/createPost", postController.createPost);
+router.post("/", postController.createPost);
 
 // PUT: Updating
-router.put("/:userId/:postId/update", postController.updateSpecificPost);
+router.put("/:postId/", postController.updateSpecificPost);
 router.put("/:postId/like", postController.likeAPost);
 
 // DELETE: Deletion
-router.delete("/:userId/:postId/delete", postController.deleteSpecificPost);
+router.delete("/:postId/", postController.deleteSpecificPost);
+
+const commentRouter = require("./commentRoutes");
+router.use("/:postId/comments", commentRouter);
 
 module.exports = router;
