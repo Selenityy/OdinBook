@@ -2,9 +2,14 @@ const express = require("express");
 const router = express.Router();
 const passport = require("passport");
 const userController = require("../controllers/userController");
+const postController = require("../controllers/postController");
 
 router.get("/", (req, res, next) => {
-  res.send("this is a homepage");
+  if (req.isAuthenticated()) {
+    postController.userFeed(req, res, next);
+  } else {
+    res.redirect("/login");
+  }
 });
 
 // USER
