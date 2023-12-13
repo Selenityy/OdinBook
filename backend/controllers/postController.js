@@ -121,11 +121,11 @@ exports.likeAPost = asyncHandler(async (req, res, next) => {
   if (post.likes.includes(userId)) {
     post.likes.pull(userId);
     await post.save();
-    res.status(200).json({ message: "Post unliked successfully" });
+    res.status(200).json({ post, message: "Post unliked successfully" });
   } else {
     post.likes.push(userId);
     await post.save();
-    res.status(200).json({ message: "Post liked successfully" });
+    res.status(200).json({ post, message: "Post liked successfully" });
   }
 });
 
