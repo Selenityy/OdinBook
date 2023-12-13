@@ -59,3 +59,90 @@ exports.createComment = [
       .json({ comment: savedComment, message: "Comment created successfully" });
   }),
 ];
+
+// Update a comment
+exports.updateComment = [
+  // Validation middleware
+  body("body")
+    .trim()
+    .isLength({ min: 1, max: 200 })
+    .withMessage("The comment body cannot be empty or too long"),
+
+  // Controller Logic
+  asyncHandler(async (req, res, next) => {
+    const commentId = req.params.commentId;
+    const userId = req.params.userId;
+    const authenticatedUserId = req.user._id;
+
+    if (userId !== authenticatedUserId.toString()) {
+      return res
+        .status(403)
+        .json({ message: "Unauthorized to update a comment" });
+    }
+
+    // Check for validation errors
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
+    const updatedComment = await Comment.findByIdAndUpdate(
+      commentId,
+      { body: req.body.body },
+      { new: true }
+    );
+
+    if (!updatedComment) {
+      return res.status(404).json({ message: "Comment not found" });
+    }
+
+    res.json(updatedComment);
+  }),
+];
+
+// Like a comment
+exports.likeComment = asyncHandler(async (req, res, next) => {
+  const commentId = req.params.commentId;
+  const userId = req.params.userId;
+  const authenticatedUserId = req.user._id;
+
+  if (userId !== authenticatedUserId.toString()) {
+    return res.status(403).json({ message: "Unauthorized to like a comment" });
+  }
+
+  const comment = await Comment.findById(commentId);
+  if (!comment) {
+    res.status(404).json({ message: "Comment not found" });
+  }
+
+  if (comment.likes.includes(userId)) {
+    comment.likes.pull(userId);
+    await comment.save();
+    res.status(200).json({ comment, message: "Comment unliked successfully" });
+  } else {
+    comment.likes.push(userId);
+    await comment.save();
+    res.status(200).json({ comment, message: "Comment liked successfully" });
+  }
+});
+
+// Delete a comment
+exports.deleteSpecificComment = asyncHandler(async (req, res, next) => {
+  const commentId = req.params.commentId;
+  const userId = req.params.userId;
+  const authenticatedUserId = req.user._id;
+
+  if (userId !== authenticatedUserId.toString()) {
+    return res
+      .status(403)
+      .json({ message: "Unauthorized to delete a comment" });
+  }
+
+  const deletedComment = await Comment.findByIdAndDelete(commentId);
+
+  if (!deletedComment) {
+    return res.status(404).json({ message: "Comment not found" });
+  }
+
+  res.json({ message: "Comment deleted successfully" });
+});
