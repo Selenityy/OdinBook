@@ -1,7 +1,6 @@
 const asyncHandler = require("express-async-handler");
 const { hashPassword } = require("../helpers/bcrypt");
 const User = require("../models/userModel");
-const passport = require("passport");
 const jwt = require("jsonwebtoken");
 const Post = require("../models/postModel");
 const Comment = require("../models/commentModel");
@@ -189,4 +188,129 @@ exports.deleteUserAccount = asyncHandler(async (req, res, next) => {
   } catch (err) {
     next(err);
   }
+});
+
+// Friending
+
+// Get friends
+exports.getPendingFriendRequests = asyncHandler(async (req, res, next) => {
+  const userId = req.params.userId;
+  const authenticatedUserId = req.user._id;
+
+  if (userId !== authenticatedUserId.toString()) {
+    return res
+      .status(403)
+      .json({ message: "Unauthorized to see pending friend request" });
+  }
+
+  const user = await User.findById(userId).populate({
+    path: "friendRequests",
+    select: "username profilePic",
+  });
+
+  if (!user) {
+    return res.status(404).json({ message: "User not found" });
+  }
+
+  res.status(200).json({ friendRequests: user.friendRequests });
+});
+
+// Send a friend request
+exports.sendFriendRequest = asyncHandler(async (req, res, next) => {
+  const userId = req.params.userId;
+  const requesterId = req.user._id;
+
+  if (userId === requesterId.toString()) {
+    return res
+      .status(404)
+      .json({ message: "Cannot send friend request to yourself" });
+  }
+
+  const recipientUser = await User.findById(userId);
+  if (!recipientUser) {
+    return res.status(404).json({ message: "User not found" });
+  }
+
+  if (
+    recipientUser.friends.includes(requesterId) ||
+    recipientUser.friendRequests.includes(requesterId)
+  ) {
+    return res
+      .status(400)
+      .json({ message: "Already friends or friend request already pending" });
+  }
+
+  recipientUser.friendRequests.push(requesterId);
+  await recipientUser.save();
+
+  res.status(200).json({ message: "Friend request sent successfully" });
+});
+
+// Accept a friend request
+exports.acceptFriendRequest = asyncHandler(async (req, res, next) => {
+  const userId = req.params.userId;
+  const authenticatedUserId = req.user._id;
+  const friendId = req.params.friendId;
+
+  if (userId !== authenticatedUserId.toString()) {
+    return res
+      .status(403)
+      .json({ message: "Unauthorized to accept friend request" });
+  }
+
+  await User.findByIdAndUpdate(userId, {
+    $push: { friends: friendId },
+    $pull: { friendRequests: friendId },
+  });
+  await User.findByIdAndUpdate(friendId, { $push: { friends: userId } });
+  res.status(200).json({ message: "Friend request accepted" });
+});
+
+// Reject a friend request
+exports.rejectFriendRequest = asyncHandler(async (req, res, next) => {
+  const userId = req.params.userId;
+  const authenticatedUserId = req.user._id;
+  const friendId = req.params.friendId;
+
+  if (userId !== authenticatedUserId.toString()) {
+    return res
+      .status(403)
+      .json({ message: "Unauthorized to reject friend request" });
+  }
+
+  await User.findByIdAndUpdate(userId, { $pull: { friendRequests: friendId } });
+  res.status(200).json({ message: "Friend request rejected" });
+});
+
+// Unfriend someone
+exports.unfriend = asyncHandler(async (req, res, next) => {
+  const userId = req.params.userId;
+  const authenticatedUserId = req.user._id;
+  const friendId = req.params.friendId;
+
+  if (userId !== authenticatedUserId.toString()) {
+    return res.status(403).json({ message: "Unauthorized to unfriend" });
+  }
+
+  await User.findByIdAndUpdate(userId, { $pull: { friends: friendId } });
+  await User.findByIdAndUpdate(friendId, { $pull: { friends: userId } });
+
+  res.status(200).json({ message: "Friend removed successfully" });
+});
+
+// Delete own friend request sent
+exports.deleteFriendRequest = asyncHandler(async (req, res, next) => {
+  const userId = req.params.userId;
+  const requesterId = req.user._id;
+
+  if (userId !== requesterId.toString()) {
+    return res
+      .status(403)
+      .json({ message: "Unauthorized to delete friend request " });
+  }
+
+  await User.findByIdAndUpdate(userId, {
+    $pull: { friendRequests: requesterId },
+  });
+  res.status(200).json({ message: "Friend request deleted successfully" });
 });
