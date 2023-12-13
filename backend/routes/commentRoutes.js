@@ -4,8 +4,7 @@ const commentController = require("../controllers/commentController");
 
 /// Comment Specific (using postId as base route)
 // get all comments on a specific post
-// get a single comment on a post (optional)
-// get all likes on a comment
+router.get("/:postId/comments", commentController.commentsOnAPost);
 
 // create a comment
 // update a comment (optional)
