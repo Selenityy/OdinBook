@@ -41,9 +41,15 @@ router.post(
   "/:userId/acceptFriendRequest/:friendId",
   userController.acceptFriendRequest
 );
-router.post("/:userId/rejectFriendRequest/:friendId", userController.rejectFriendRequest);
+router.post(
+  "/:userId/rejectFriendRequest/:friendId",
+  userController.rejectFriendRequest
+);
 router.post("/:userId/unFriend/:friendId", userController.unfriend);
-router.post("/:userId/deleteFriendRequest/:friendId", userController.deleteFriendRequest);
+router.post(
+  "/:userId/deleteFriendRequest/:friendId",
+  userController.deleteFriendRequest
+);
 
 const postRouter = require("./postRoutes");
 router.use("/:userId/posts", postRouter);
