@@ -33,8 +33,8 @@ const UserSchema = new Schema({
     default: "./public/images/profile-pics/panda-avatar.png",
     required: true,
   },
-  friends: [{ type: Schema.Types.ObjectId, ref: "Friends" }],
-  friendRequests: [{ type: Schema.Types.ObjectId, ref: "FriendRequests" }],
+  friends: [{ type: Schema.Types.ObjectId, ref: "User" }],
+  friendRequests: [{ type: Schema.Types.ObjectId, ref: "User" }],
   posts: [{ type: Schema.Types.ObjectId, ref: "Post" }],
 });
 
