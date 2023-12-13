@@ -2,13 +2,12 @@
   "name": "backend",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
   "scripts": {
-    "start": "node .bin/www",
-    "devstart": "nodemon .bin/www",
+    "start": "node ./bin/www",
+    "devstart": "nodemon ./bin/www",
     "serverstart": "DEBUG=backend:* npm run devstart",
     "lint": "eslint src/js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha"
   },
   "author": "",
   "license": "ISC",
@@ -33,6 +32,7 @@
   },
   "devDependencies": {
     "eslint": "^8.55.0",
+    "mocha": "^10.2.0",
     "nodemon": "^3.0.2",
     "supertest": "^6.3.3"
   }
