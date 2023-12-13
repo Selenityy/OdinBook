@@ -14,3 +14,5 @@ router.put("/:commentId/like", commentController.likeComment);
 
 // DELETE: Removing
 router.delete("/:commentId", commentController.deleteSpecificComment);
+
+module.exports = router;
