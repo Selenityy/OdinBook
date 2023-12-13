@@ -7,6 +7,7 @@ router.get("/", (req, res, next) => {
   res.send("this is a homepage");
 });
 
+// USER
 // GET: User information
 router.get("/:userId", userController.getUserInfo);
 
@@ -22,19 +23,18 @@ router.get("/logout", userController.logout);
 // PUT: Updates
 router.put("/:userId/username", userController.updateUserUsername);
 router.put("/:userId/about", userController.updateUserAbout);
-router.put(
-  "/:userId//profilePic",
-  userController.updateUserProfilePic
-);
+router.put("/:userId//profilePic", userController.updateUserProfilePic);
 
 // DELETE: Deletions
 router.delete("/:userId/account", userController.deleteUserAccount);
 
-// user request to be friends
-// user accept friend request
-// user reject friend request
-// user unfriend
-// user delete their own friend request
+// FRIENDS
+// POST
+router.post("/:userId/sendFriendRequest", userController.sendFriendRequest);
+router.post("/:userId/acceptFriendRequest", userController.acceptFriendRequest);
+router.post("/:userId/rejectFriendRequest", userController.rejectFriendRequest);
+router.post("/:userId/unFriend", userController.unfriend);
+router.post("/:userId/deleteFriendRequest", userController.deleteFriendRequest);
 
 const postRouter = require("./postRoutes");
 router.use("/:userId/posts", postRouter);
