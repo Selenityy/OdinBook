@@ -12,6 +12,7 @@ const mongoose = require("mongoose");
 const logger = require("morgan");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
+// const connectDB = require("./helpers/mongoConfig");
 
 const userRouter = require("./routes/userRoutes");
 
@@ -21,6 +22,7 @@ const mongoDb = process.env.MONGODB_URI_ODINBOOK || dev_db_url;
 mongoose.connect(mongoDb);
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "mongo connection error"));
+// connectDB();
 
 const app = express();
 
@@ -41,7 +43,6 @@ app.use(passport.session());
 app.use(cors());
 
 app.use("/user", userRouter);
-// app.use("/:userId", userIdRouter);
 
 app.use(function (req, res, next) {
   next(createError(404));
