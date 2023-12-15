@@ -8,7 +8,8 @@ const Comment = require("../models/commentModel");
 // Sign up
 exports.signup = asyncHandler(async (req, res, next) => {
   const { username, password, email, firstName, lastName } = req.body;
-  const isTestUser = testUserCode === process.env.TEST_USER_CODE;
+  //   const isTestUser = testUserCode === process.env.TEST_USER_CODE;
+  const isTestUser = false;
 
   // check is username or email already exists
   const existingUser = await User.findOne({ $or: [{ username }, { email }] });
