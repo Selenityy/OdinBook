@@ -4,6 +4,8 @@ const User = require("../models/userModel");
 const jwt = require("jsonwebtoken");
 const Post = require("../models/postModel");
 const Comment = require("../models/commentModel");
+const passport = require("passport");
+const LocalStrategy = require("passport-local").Strategy;
 
 // Sign up
 exports.signup = asyncHandler(async (req, res, next) => {
@@ -41,9 +43,18 @@ exports.signup = asyncHandler(async (req, res, next) => {
 // Log in
 exports.login = asyncHandler(async (req, res, next) => {
   // authenticate user
-  try {
-    const user = req.user;
-    // create a jwt token
+  passport.authenticate("local", { session: false }, (err, user, info) => {
+    if (err || !user) {
+      const error = new Error("User does not exist");
+      return next(error);
+    }
+
+    req.login(user, { session: false }, (err) => {
+      if (err) {
+        return next(err);
+      }
+    });
+
     const body = {
       _id: user._id,
       username: user.username,
@@ -51,17 +62,9 @@ exports.login = asyncHandler(async (req, res, next) => {
     const token = jwt.sign({ user: body }, process.env.SESSION_SECRET, {
       expiresIn: "1d",
     });
-    res.status(200).json({
-      _id: user._id,
-      username: user.username,
-      email: user.email,
-      fullName: user.fullName,
-      profilePic: user.profilePic,
-      token,
-    });
-  } catch (err) {
-    next(err);
-  }
+
+    res.status(200).json({ body, token });
+  })(req, res, next);
 });
 
 // Log out

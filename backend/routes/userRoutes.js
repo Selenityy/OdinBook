@@ -20,7 +20,7 @@ router.get("/:userId", userController.getUserInfo);
 router.post("/signup", userController.signup);
 router.post(
   "/login",
-  passport.authenticate("local", { session: false }),
+  // passport.authenticate("local", { session: false }),
   userController.login
 );
 router.get("/logout", userController.logout);
