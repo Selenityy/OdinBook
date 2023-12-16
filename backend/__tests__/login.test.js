@@ -6,7 +6,6 @@ const passport = require("passport");
 const cors = require("cors");
 const path = require("path");
 const { hashPassword } = require("../helpers/bcrypt");
-const User = require("../models/userModel");
 const session = require("express-session");
 const db = require("../helpers/mongoConfigTesting");
 
@@ -24,6 +23,7 @@ app.use(
 );
 app.use(passport.initialize());
 app.use(passport.session());
+require("../helpers/passport");
 app.use(cors());
 
 app.use("/user", userRouter);
@@ -35,9 +35,24 @@ beforeAll(() => {
 
 beforeEach(async () => {
   await db.clearMongoServer();
+  await request(app).post("/user/signup").send({
+    username: "testuser1",
+    password: "password123",
+    email: "test1@example.com",
+    firstName: "Test",
+    lastName: "User",
+  });
 });
 
 // Disconnect and stop server after tests
 afterAll(async () => {
   await db.stopMongoServer();
+});
+
+test("should login an existing user", async () => {
+  const res = await request(app).post("/user/login").send({
+    username: "testuser1",
+    password: "password123",
+  });
+  expect(res.statusCode).toEqual(200);
 });
