@@ -38,8 +38,10 @@ app.use(
     saveUninitialized: false,
   })
 );
+
 app.use(passport.initialize());
 app.use(passport.session());
+require("./helpers/passport");
 app.use(cors());
 
 app.use("/user", userRouter);
@@ -59,7 +61,10 @@ app.use(function (err, req, res, next) {
   );
 
   res.status(err.status || 500);
-  res.render("error");
+  res.json({
+    message: err.message,
+    error: err,
+  });
 });
 
 module.exports = app;
