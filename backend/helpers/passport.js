@@ -41,7 +41,7 @@ passport.use(
   new JwtStrategy({
     jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
     secretOrKey: process.env.SESSION_SECRET,
-  }),
+  },
   async (token, done) => {
     try {
       return done(null, token.user);
@@ -49,4 +49,4 @@ passport.use(
       return done(err);
     }
   }
-);
+));
