@@ -39,9 +39,10 @@ app.use(
   })
 );
 
+require("./helpers/passport");
 app.use(passport.initialize());
 app.use(passport.session());
-require("./helpers/passport");
+// require("./helpers/passport");
 app.use(cors());
 
 app.use("/user", userRouter);
