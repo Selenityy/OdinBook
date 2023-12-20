@@ -52,7 +52,6 @@ exports.createPost = [
 
   // Controller logic
   asyncHandler(async (req, res, next) => {
-    const userId = req.params.userId;
     const authenticatedUserId = req.user._id;
 
     // Check for validation errors
@@ -61,19 +60,18 @@ exports.createPost = [
       return res.status(400).json({ errors: errors.array() });
     }
 
-    if (userId !== authenticatedUserId.toString()) {
-      return res.status(403).json({ message: "Unauthorized to create a post" });
-    }
-
     const post = new Post({
       body: req.body.body,
       user: authenticatedUserId,
     });
     const savedPost = await post.save();
+
+    // Update user's posts
     await User.findOneAndUpdate(
       { _id: authenticatedUserId },
       { $push: { posts: savedPost._id } }
     );
+
     res
       .status(200)
       .json({ post: savedPost, message: "Post created successfully" });
