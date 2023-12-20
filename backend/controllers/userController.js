@@ -55,15 +55,12 @@ exports.login = asyncHandler(async (req, res, next) => {
       }
     });
 
-    const body = {
-      _id: user._id,
-      username: user.username,
-    };
-    const token = jwt.sign({ user: body }, process.env.SESSION_SECRET, {
+    const token = jwt.sign({ id: user._id }, process.env.SESSION_SECRET, {
       expiresIn: "1d",
     });
 
-    res.status(200).json({ body, token });
+    console.log(user._id);
+    res.status(200).json({ token });
   })(req, res, next);
 });
 
