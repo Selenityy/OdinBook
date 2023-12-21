@@ -7,7 +7,7 @@
     "devstart": "nodemon ./bin/www",
     "serverstart": "DEBUG=backend:* npm run devstart",
     "lint": "eslint src/js",
-    "test": "jest"
+    "test": "jest --runInBand --detectOpenHandles"
   },
   "author": "",
   "license": "ISC",
