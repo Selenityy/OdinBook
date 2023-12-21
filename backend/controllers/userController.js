@@ -115,12 +115,12 @@ exports.updateUserUsername = asyncHandler(async (req, res, next) => {
 // Update about section
 exports.updateUserAbout = asyncHandler(async (req, res, next) => {
   const userId = req.params.userId;
-  const { about } = req.body;
+  const newAbout = req.body.about;
 
   try {
     const updatedUser = await User.findByIdAndUpdate(
       userId,
-      { about },
+      { about: newAbout },
       { new: true, runValidators: true }
     );
 
