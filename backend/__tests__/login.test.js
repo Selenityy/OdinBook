@@ -21,6 +21,7 @@ app.use(
     saveUninitialized: false,
   })
 );
+require("../helpers/passport");
 app.use(passport.initialize());
 app.use(passport.session());
 require("../helpers/passport");

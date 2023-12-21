@@ -20,6 +20,7 @@ app.use(
     saveUninitialized: false,
   })
 );
+require("../helpers/passport");
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(cors());

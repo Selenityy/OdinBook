@@ -20,11 +20,14 @@ app.use(
     saveUninitialized: false,
   })
 );
+require("../helpers/passport");
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(cors());
 
 app.use("/user", userRouter);
+
+let token = "";
 
 // Set up MongoDB in-memory server
 beforeAll(() => {
@@ -40,10 +43,11 @@ beforeEach(async () => {
     firstName: "Test",
     lastName: "User",
   });
-  await request(app).post("/user/login").send({
+  const response = await request(app).post("/user/login").send({
     username: "testuser1",
     password: "password123",
   });
+  token = response.body.token;
 });
 
 // Disconnect and stop server after tests
@@ -52,8 +56,13 @@ afterAll(async () => {
 });
 
 test("should create a post", async () => {
-  const res = await request(app).post("/user/:userId/posts/").send({
-    body: "testuser1's first post",
-  });
+  const res = await request(app)
+    .post("/user/:userId/posts/")
+    .set("Authorization", `Bearer ${token}`)
+    .send({
+      body: "testuser1's first post",
+    });
   expect(res.statusCode).toEqual(200);
+  expect(res.body.message).toEqual("Post created successfully");
+  expect(res.body.post.body).toEqual("testuser1's first post");
 });
