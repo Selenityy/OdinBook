@@ -218,16 +218,16 @@ exports.getPendingFriendRequests = asyncHandler(async (req, res, next) => {
 
 // Send a friend request
 exports.sendFriendRequest = asyncHandler(async (req, res, next) => {
-  const userId = req.params.userId;
-  const requesterId = req.user._id;
+  const requesterId = req.params.userId;
+  const friendUsername = req.params.friendUsername;
 
-  if (userId === requesterId.toString()) {
-    return res
-      .status(404)
-      .json({ message: "Cannot send friend request to yourself" });
-  }
+  // if (requesterId === friendUsername) {
+  //   return res
+  //     .status(404)
+  //     .json({ message: "Cannot send friend request to yourself" });
+  // }
 
-  const recipientUser = await User.findById(userId);
+  const recipientUser = await User.findOne({ username: friendUsername });
   if (!recipientUser) {
     return res.status(404).json({ message: "User not found" });
   }
@@ -239,6 +239,12 @@ exports.sendFriendRequest = asyncHandler(async (req, res, next) => {
     return res
       .status(400)
       .json({ message: "Already friends or friend request already pending" });
+  }
+
+  if (recipientUser._id.toString() === requesterId) {
+    return res
+      .status(404)
+      .json({ message: "Cannot sent friend request to yourself" });
   }
 
   recipientUser.friendRequests.push(requesterId);
