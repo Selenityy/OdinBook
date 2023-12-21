@@ -32,15 +32,7 @@ exports.createComment = [
   // Controller logic
   asyncHandler(async (req, res, next) => {
     const postId = req.params.postId;
-    const userId = req.params.userId;
     const authenticatedUserId = req.user._id;
-
-    // Check for authorized user
-    if (userId !== authenticatedUserId.toString()) {
-      return res
-        .status(403)
-        .json({ message: "Unauthorized to create a comment" });
-    }
 
     // check for validation errors
     const errors = validationResult(req);
