@@ -91,11 +91,11 @@ exports.getUserInfo = asyncHandler(async (req, res, next) => {
 // Update username
 exports.updateUserUsername = asyncHandler(async (req, res, next) => {
   const userId = req.params.userId;
-  const { username } = req.body;
+  const newUsername = req.body.username;
   try {
     const updatedUser = await User.findByIdAndUpdate(
       userId,
-      { username },
+      { username: newUsername },
       { new: true, runValidators: true }
     );
 
