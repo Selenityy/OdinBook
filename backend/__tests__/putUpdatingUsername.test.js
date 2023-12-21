@@ -31,6 +31,8 @@ app.use("/user", userRouter);
 let token = "";
 let userId = "";
 let user = "";
+let username = "";
+let about = "";
 
 // Set up MongoDB in-memory server
 beforeAll(() => {
@@ -53,6 +55,9 @@ beforeEach(async () => {
   });
   token = response.body.token;
   user = await User.findOne({ username: "testuser1" });
+  userId = user._id;
+  username = user.username;
+  about = user.about;
 });
 
 // Disconnect and stop server after tests
@@ -61,10 +66,7 @@ afterAll(async () => {
 });
 
 test("should update the username", async () => {
-  userId = user._id;
-  const username = user.username;
   const newUsername = "updatedtestuser1";
-
   const res = await request(app)
     .put(`/user/${userId}/${username}`)
     .send({ username: newUsername });
@@ -72,3 +74,13 @@ test("should update the username", async () => {
   expect(res.body.message).toEqual("Username updated successfully");
   expect(res.body.username).toEqual("updatedtestuser1");
 });
+
+// test("should update the about section", async () => {
+//   const newAbout = "this is the updated about section";
+//   console.log("username", user.username);
+
+//   const res = await request(app)
+//     .put(`/user/${userId}/${username}/about`)
+//     .send({ about: newAbout });
+//   expect(res.statusCode).toEqual(200);
+// });
