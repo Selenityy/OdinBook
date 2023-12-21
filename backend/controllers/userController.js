@@ -140,12 +140,12 @@ exports.updateUserAbout = asyncHandler(async (req, res, next) => {
 // Update profile picture
 exports.updateUserProfilePic = asyncHandler(async (req, res, next) => {
   const userId = req.params.userId;
-  const { profilePic } = req.body;
+  const newProfilePic = req.body.profilePic;
 
   try {
     const updatedUser = await User.findByIdAndUpdate(
       userId,
-      { profilePic },
+      { profilePic: newProfilePic },
       { new: true, runValidators: true }
     );
 
