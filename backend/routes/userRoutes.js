@@ -41,7 +41,10 @@ router.get(
 );
 
 // POST
-router.post("/:userId/sendFriendRequest", userController.sendFriendRequest);
+router.post(
+  "/:userId/sendFriendRequest/:friendUsername",
+  userController.sendFriendRequest
+);
 router.post(
   "/:userId/acceptFriendRequest/:friendId",
   userController.acceptFriendRequest
