@@ -95,3 +95,26 @@ test("should fail sending a friend request to self", async () => {
   expect(res.statusCode).toEqual(404);
   expect(res.body.message).toEqual("Cannot sent friend request to yourself");
 });
+
+test("should not allow to send friend request twice or to users who are already friends", async () => {
+  const friend2 = await User.findOne({ username: "testuser2" });
+  const friendUsername = friend2.username;
+  friend2.friendRequests.push(userId);
+
+  const res = await request(app).post(
+    `/user/${userId}/sendFriendRequest/${friendUsername}`
+  );
+  expect(res.statusCode).toEqual(400);
+  expect(res.body.message).toEqual(
+    "Already friends or friend request already pending"
+  );
+});
+
+test("should not allow to send friend request to unknown user", async () => {
+  const friendUsername = null;
+  const res = await request(app).post(
+    `/user/${userId}/sendFriendRequest/${friendUsername}`
+  );
+  expect(res.statusCode).toEqual(404);
+  expect(res.body.message).toEqual("User not found");
+});
