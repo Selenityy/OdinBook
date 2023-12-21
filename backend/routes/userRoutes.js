@@ -46,16 +46,16 @@ router.post(
   userController.sendFriendRequest
 );
 router.post(
-  "/:userId/acceptFriendRequest/:friendId",
+  "/:userId/acceptFriendRequest/:friendUsername",
   userController.acceptFriendRequest
 );
 router.post(
-  "/:userId/rejectFriendRequest/:friendId",
+  "/:userId/rejectFriendRequest/:friendUsername",
   userController.rejectFriendRequest
 );
-router.post("/:userId/unFriend/:friendId", userController.unfriend);
+router.post("/:userId/unFriend/:friendUsername", userController.unfriend);
 router.post(
-  "/:userId/deleteFriendRequest/:friendId",
+  "/:userId/deleteFriendRequest/:friendUsername",
   userController.deleteFriendRequest
 );
 
