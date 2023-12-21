@@ -81,9 +81,17 @@ test("should send friend request", async () => {
   const res = await request(app).post(
     `/user/${userId}/sendFriendRequest/${friendUsername}`
   );
-  console.log(res);
   expect(res.statusCode).toEqual(200);
   expect(res.body.message).toEqual("Friend request sent successfully");
 });
 
-test("should fail sending a friend request to self", async () => {})
+test("should fail sending a friend request to self", async () => {
+  const self = await User.findOne({ username: "testuser1" });
+  const selfUsername = self.username;
+  const friendUsername = selfUsername;
+  const res = await request(app).post(
+    `/user/${userId}/sendFriendRequest/${friendUsername}`
+  );
+  expect(res.statusCode).toEqual(404);
+  expect(res.body.message).toEqual("Cannot sent friend request to yourself");
+});
