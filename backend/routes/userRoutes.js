@@ -26,7 +26,7 @@ router.post(
 router.get("/logout", userController.logout);
 
 // PUT: Updates
-router.put("/:userId/username", userController.updateUserUsername);
+router.put("/:userId/:username", userController.updateUserUsername);
 router.put("/:userId/about", userController.updateUserAbout);
 router.put("/:userId//profilePic", userController.updateUserProfilePic);
 
