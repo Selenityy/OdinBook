@@ -221,12 +221,6 @@ exports.sendFriendRequest = asyncHandler(async (req, res, next) => {
   const requesterId = req.params.userId;
   const friendUsername = req.params.friendUsername;
 
-  // if (requesterId === friendUsername) {
-  //   return res
-  //     .status(404)
-  //     .json({ message: "Cannot send friend request to yourself" });
-  // }
-
   const recipientUser = await User.findOne({ username: friendUsername });
   if (!recipientUser) {
     return res.status(404).json({ message: "User not found" });
