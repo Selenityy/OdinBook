@@ -18,7 +18,11 @@ router.put("/:postId/", postController.updateSpecificPost);
 router.put("/:postId/like", postController.likeAPost);
 
 // DELETE: Deletion
-router.delete("/:postId/", postController.deleteSpecificPost);
+router.delete(
+  "/:postId/",
+  passport.authenticate("jwt", { session: false }),
+  postController.deleteSpecificPost
+);
 
 const commentRouter = require("./commentRoutes");
 router.use("/:postId/comments", commentRouter);
