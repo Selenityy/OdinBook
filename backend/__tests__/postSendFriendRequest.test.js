@@ -30,6 +30,7 @@ app.use("/user", userRouter);
 
 let token = "";
 let userId = "";
+let user = "";
 
 // Set up MongoDB in-memory server
 beforeAll(() => {
@@ -58,7 +59,7 @@ beforeEach(async () => {
     password: "password123",
   });
   token = response.body.token;
-  const user = await User.findOne({ username: "testuser1" });
+  user = await User.findOne({ username: "testuser1" });
   userId = user._id;
 });
 
@@ -83,6 +84,10 @@ test("should send friend request", async () => {
   );
   expect(res.statusCode).toEqual(200);
   expect(res.body.message).toEqual("Friend request sent successfully");
+  const updatedFriend2 = await User.findOne({ username: "testuser2" });
+  expect(updatedFriend2.friendRequests).toEqual(
+    expect.arrayContaining([expect.objectContaining({ _id: userId })])
+  );
 });
 
 test("should fail sending a friend request to self", async () => {
