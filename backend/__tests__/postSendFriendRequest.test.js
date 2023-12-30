@@ -76,16 +76,15 @@ test("should get a user's info", async () => {
 });
 
 test("should send friend request", async () => {
-  const friend2 = await User.findOne({ username: "testuser2" });
-  const friendUsername = friend2.username;
-
+  const friendUsername = "testuser2";
   const res = await request(app).post(
     `/user/${userId}/sendFriendRequest/${friendUsername}`
   );
   expect(res.statusCode).toEqual(200);
   expect(res.body.message).toEqual("Friend request sent successfully");
-  const updatedFriend2 = await User.findOne({ username: "testuser2" });
-  expect(updatedFriend2.friendRequests).toEqual(
+
+  const actualUser = await User.findOne({ username: friendUsername });
+  expect(actualUser.friendRequests).toEqual(
     expect.arrayContaining([expect.objectContaining({ _id: userId })])
   );
 });
