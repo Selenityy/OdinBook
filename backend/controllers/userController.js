@@ -286,16 +286,12 @@ exports.unfriend = asyncHandler(async (req, res, next) => {
 // Delete own friend request sent
 exports.deleteFriendRequest = asyncHandler(async (req, res, next) => {
   const userId = req.params.userId;
-  const requesterId = req.user._id;
+  const friendUsername = req.params.friendUsername;
+  const friend = await User.findOne({ username: friendUsername });
+  const friendId = friend._id;
 
-  if (userId !== requesterId.toString()) {
-    return res
-      .status(403)
-      .json({ message: "Unauthorized to delete friend request " });
-  }
-
-  await User.findByIdAndUpdate(userId, {
-    $pull: { friendRequests: requesterId },
+  await User.findByIdAndUpdate(friendId, {
+    $pull: { friendRequests: userId },
   });
   res.status(200).json({ message: "Friend request deleted successfully" });
 });
