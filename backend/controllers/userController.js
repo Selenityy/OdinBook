@@ -234,11 +234,11 @@ exports.sendFriendRequest = asyncHandler(async (req, res, next) => {
       .json({ message: "Cannot sent friend request to yourself" });
   }
 
-  console.log("recipientUser:", recipientUser);
-  console.log("requesterId:", requesterId);
-  console.log("before:", recipientUser.friendRequests);
+  // console.log("recipientUser:", recipientUser);
+  // console.log("requesterId:", requesterId);
+  // console.log("before:", recipientUser.friendRequests);
   recipientUser.friendRequests.push(requesterId);
-  console.log("after:", recipientUser.friendRequests);
+  // console.log("after:", recipientUser.friendRequests);
   await recipientUser.save();
 
   res.status(200).json({ message: "Friend request sent successfully" });
@@ -247,14 +247,10 @@ exports.sendFriendRequest = asyncHandler(async (req, res, next) => {
 // Accept a friend request
 exports.acceptFriendRequest = asyncHandler(async (req, res, next) => {
   const userId = req.params.userId;
-  const authenticatedUserId = req.user._id;
-  const friendId = req.params.friendId;
-
-  if (userId !== authenticatedUserId.toString()) {
-    return res
-      .status(403)
-      .json({ message: "Unauthorized to accept friend request" });
-  }
+  const friendUsername = req.params.friendUsername;
+  const friend = await User.findOne({ username: friendUsername });
+  const friendId = friend._id;
+  // const friendId = req.params.friendId;
 
   await User.findByIdAndUpdate(userId, {
     $push: { friends: friendId },
