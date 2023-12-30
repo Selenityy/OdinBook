@@ -53,11 +53,17 @@ router.post(
 );
 router.post(
   "/:userId/rejectFriendRequest/:friendUsername",
+  passport.authenticate("jwt", { session: false }),
   userController.rejectFriendRequest
 );
-router.post("/:userId/unFriend/:friendUsername", userController.unfriend);
+router.post(
+  "/:userId/unFriend/:friendUsername",
+  passport.authenticate("jwt", { session: false }),
+  userController.unfriend
+);
 router.post(
   "/:userId/deleteFriendRequest/:friendUsername",
+  passport.authenticate("jwt", { session: false }),
   userController.deleteFriendRequest
 );
 
