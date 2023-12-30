@@ -250,7 +250,6 @@ exports.acceptFriendRequest = asyncHandler(async (req, res, next) => {
   const friendUsername = req.params.friendUsername;
   const friend = await User.findOne({ username: friendUsername });
   const friendId = friend._id;
-  // const friendId = req.params.friendId;
 
   await User.findByIdAndUpdate(userId, {
     $push: { friends: friendId },
@@ -263,14 +262,9 @@ exports.acceptFriendRequest = asyncHandler(async (req, res, next) => {
 // Reject a friend request
 exports.rejectFriendRequest = asyncHandler(async (req, res, next) => {
   const userId = req.params.userId;
-  const authenticatedUserId = req.user._id;
-  const friendId = req.params.friendId;
-
-  if (userId !== authenticatedUserId.toString()) {
-    return res
-      .status(403)
-      .json({ message: "Unauthorized to reject friend request" });
-  }
+  const friendUsername = req.params.friendUsername;
+  const friend = await User.findOne({ username: friendUsername });
+  const friendId = friend._id;
 
   await User.findByIdAndUpdate(userId, { $pull: { friendRequests: friendId } });
   res.status(200).json({ message: "Friend request rejected" });
@@ -279,12 +273,9 @@ exports.rejectFriendRequest = asyncHandler(async (req, res, next) => {
 // Unfriend someone
 exports.unfriend = asyncHandler(async (req, res, next) => {
   const userId = req.params.userId;
-  const authenticatedUserId = req.user._id;
-  const friendId = req.params.friendId;
-
-  if (userId !== authenticatedUserId.toString()) {
-    return res.status(403).json({ message: "Unauthorized to unfriend" });
-  }
+  const friendUsername = req.params.friendUsername;
+  const friend = await User.findOne({ username: friendUsername });
+  const friendId = friend._id;
 
   await User.findByIdAndUpdate(userId, { $pull: { friends: friendId } });
   await User.findByIdAndUpdate(friendId, { $pull: { friends: userId } });
