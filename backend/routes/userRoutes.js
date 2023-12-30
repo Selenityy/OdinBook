@@ -37,6 +37,7 @@ router.delete("/:userId/account", userController.deleteUserAccount);
 //GET
 router.get(
   "/:userId/pendingFriendRequests",
+  passport.authenticate("jwt", { session: false }),
   userController.getPendingFriendRequests
 );
 
