@@ -195,16 +195,9 @@ exports.deleteUserAccount = asyncHandler(async (req, res, next) => {
 
 // Get friends
 exports.getPendingFriendRequests = asyncHandler(async (req, res, next) => {
-  const userId = req.params.userId;
-  const authenticatedUserId = req.user._id;
+  const authenticatedUserId = req.params.userId;
 
-  if (userId !== authenticatedUserId.toString()) {
-    return res
-      .status(403)
-      .json({ message: "Unauthorized to see pending friend request" });
-  }
-
-  const user = await User.findById(userId).populate({
+  const user = await User.findById(authenticatedUserId).populate({
     path: "friendRequests",
     select: "username profilePic",
   });
@@ -241,7 +234,11 @@ exports.sendFriendRequest = asyncHandler(async (req, res, next) => {
       .json({ message: "Cannot sent friend request to yourself" });
   }
 
+  console.log("recipientUser:", recipientUser);
+  console.log("requesterId:", requesterId);
+  console.log("before:", recipientUser.friendRequests);
   recipientUser.friendRequests.push(requesterId);
+  console.log("after:", recipientUser.friendRequests);
   await recipientUser.save();
 
   res.status(200).json({ message: "Friend request sent successfully" });
