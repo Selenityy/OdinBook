@@ -48,6 +48,7 @@ router.post(
 );
 router.post(
   "/:userId/acceptFriendRequest/:friendUsername",
+  passport.authenticate("jwt", { session: false }),
   userController.acceptFriendRequest
 );
 router.post(
