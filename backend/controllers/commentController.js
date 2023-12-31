@@ -63,14 +63,7 @@ exports.updateComment = [
   // Controller Logic
   asyncHandler(async (req, res, next) => {
     const commentId = req.params.commentId;
-    const userId = req.params.userId;
-    const authenticatedUserId = req.user._id;
-
-    if (userId !== authenticatedUserId.toString()) {
-      return res
-        .status(403)
-        .json({ message: "Unauthorized to update a comment" });
-    }
+    const authenticatedUserId = req.params.userId;
 
     // Check for validation errors
     const errors = validationResult(req);
@@ -121,14 +114,8 @@ exports.likeComment = asyncHandler(async (req, res, next) => {
 // Delete a comment
 exports.deleteSpecificComment = asyncHandler(async (req, res, next) => {
   const commentId = req.params.commentId;
-  const userId = req.params.userId;
-  const authenticatedUserId = req.user._id;
-
-  if (userId !== authenticatedUserId.toString()) {
-    return res
-      .status(403)
-      .json({ message: "Unauthorized to delete a comment" });
-  }
+  const authenticatedUserId = req.params.userId;
+  const postId = req.params.postId;
 
   const deletedComment = await Comment.findByIdAndDelete(commentId);
 
