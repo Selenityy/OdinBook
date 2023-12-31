@@ -4,7 +4,11 @@ const passport = require("passport");
 const postController = require("../controllers/postController");
 
 // GET: Fetching
-router.get("/", postController.userFeed);
+router.get(
+  "/",
+  passport.authenticate("jwt", { session: false }),
+  postController.userFeed
+);
 
 // POST: Creation
 router.post(
@@ -14,8 +18,16 @@ router.post(
 );
 
 // PUT: Updating
-router.put("/:postId/", postController.updateSpecificPost);
-router.put("/:postId/like", postController.likeAPost);
+router.put(
+  "/:postId/",
+  passport.authenticate("jwt", { session: false }),
+  postController.updateSpecificPost
+);
+router.put(
+  "/:postId/like",
+  passport.authenticate("jwt", { session: false }),
+  postController.likeAPost
+);
 
 // DELETE: Deletion
 router.delete(
