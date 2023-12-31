@@ -164,23 +164,17 @@ exports.updateUserProfilePic = asyncHandler(async (req, res, next) => {
 
 // Delete Account
 exports.deleteUserAccount = asyncHandler(async (req, res, next) => {
-  const userId = req.params.userId;
-  const authenticatedUserId = req.user._id;
-
-  // Check if auth user is the same as the user being deleted
-  if (userId !== authenticatedUserId.toString()) {
-    return res.status(403).json({ message: "Unauthorized to delete account" });
-  }
+  const authenticatedUserId = req.params.userId;
 
   try {
     // delete user's posts
-    await Post.deleteMany({ user: userId });
+    await Post.deleteMany({ user: authenticatedUserId });
 
     // delete user's comments
-    await Comment.deleteMany({ user: userId });
+    await Comment.deleteMany({ user: authenticatedUserId });
 
     // delete user's account
-    const deletedUser = await User.findByIdAndDelete(userId);
+    const deletedUser = await User.findByIdAndDelete(authenticatedUserId);
 
     if (!deletedUser) {
       return res.status(404).json({ message: "User not found" });

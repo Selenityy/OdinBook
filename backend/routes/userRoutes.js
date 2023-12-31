@@ -31,7 +31,11 @@ router.put("/:userId/:username/about", userController.updateUserAbout);
 router.put("/:userId//profilePic", userController.updateUserProfilePic);
 
 // DELETE: Deletions
-router.delete("/:userId/account", userController.deleteUserAccount);
+router.delete(
+  "/:userId/account",
+  passport.authenticate("jwt", { session: false }),
+  userController.deleteUserAccount
+);
 
 // FRIENDS
 //GET
