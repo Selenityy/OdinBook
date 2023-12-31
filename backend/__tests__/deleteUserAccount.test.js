@@ -65,7 +65,7 @@ afterAll(async () => {
   await db.stopMongoServer();
 });
 
-test("should get the user's post feed of own and friend's posts", async () => {
+test("should delete the users account", async () => {
   const res = await request(app)
     .delete(`/user/${actualUserId}/account`)
     .set("Authorization", `Bearer ${token}`);
