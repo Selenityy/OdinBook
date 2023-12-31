@@ -14,10 +14,22 @@ router.post(
 );
 
 // PUT: Updating
-router.put("/:commentId", commentController.updateComment);
-router.put("/:commentId/like", commentController.likeComment);
+router.put(
+  "/:commentId",
+  passport.authenticate("jwt", { session: false }),
+  commentController.updateComment
+);
+router.put(
+  "/:commentId/like",
+  passport.authenticate("jwt", { session: false }),
+  commentController.likeComment
+);
 
 // DELETE: Removing
-router.delete("/:commentId", commentController.deleteSpecificComment);
+router.delete(
+  "/:commentId",
+  passport.authenticate("jwt", { session: false }),
+  commentController.deleteSpecificComment
+);
 
 module.exports = router;
