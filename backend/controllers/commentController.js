@@ -18,7 +18,7 @@ exports.commentsOnAPost = asyncHandler(async (req, res, next) => {
   if (!postWithComments) {
     return res.status(404).json({ message: "Post not found" });
   }
-  res.json(postWithComments);
+  res.json(postWithComments.comments);
 });
 
 // Create a comment
