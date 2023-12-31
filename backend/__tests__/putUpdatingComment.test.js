@@ -85,7 +85,7 @@ afterAll(async () => {
   await db.stopMongoServer();
 });
 
-test("should delete a comment on a post", async () => {
+test("should update a comment on a post", async () => {
   const res = await request(app)
     .put(
       `/user/${actualUserId}/posts/${actualPostId}/comments/${actualCommentId}`
