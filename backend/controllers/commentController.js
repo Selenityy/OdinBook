@@ -88,24 +88,19 @@ exports.updateComment = [
 // Like a comment
 exports.likeComment = asyncHandler(async (req, res, next) => {
   const commentId = req.params.commentId;
-  const userId = req.params.userId;
-  const authenticatedUserId = req.user._id;
-
-  if (userId !== authenticatedUserId.toString()) {
-    return res.status(403).json({ message: "Unauthorized to like a comment" });
-  }
+  const authenticatedUserId = req.params.userId;
 
   const comment = await Comment.findById(commentId);
   if (!comment) {
     res.status(404).json({ message: "Comment not found" });
   }
 
-  if (comment.likes.includes(userId)) {
-    comment.likes.pull(userId);
+  if (comment.likes.includes(authenticatedUserId)) {
+    comment.likes.pull(authenticatedUserId);
     await comment.save();
     res.status(200).json({ comment, message: "Comment unliked successfully" });
   } else {
-    comment.likes.push(userId);
+    comment.likes.push(authenticatedUserId);
     await comment.save();
     res.status(200).json({ comment, message: "Comment liked successfully" });
   }
