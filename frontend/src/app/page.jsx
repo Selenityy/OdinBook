@@ -1,5 +1,9 @@
 import React, { useState, useEffect } from "react";
 
+export const metadata = {
+  title: 'OdinBook',
+}
+
 const Home = () => {
   return (
     <div>
