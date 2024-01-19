@@ -1,15 +1,12 @@
-import React, { useState, useEffect } from "react";
+import UserProfile from "@/components/UserProfile";
+import Login from "@/components/Login";
 
-export const metadata = {
-  title: 'OdinBook',
-}
-
-const Home = () => {
+const Home = ({ feed }) => {
   return (
     <div>
       <h1>Home Page</h1>
-      <div>{feed}</div>
-      {/* <Component /> */}
+      {/* <div>{feed}</div> */}
+      <Login />
     </div>
   );
 };
