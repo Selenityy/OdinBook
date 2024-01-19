@@ -1,12 +1,16 @@
-import React from "react";
 import { UserProvider } from "@/context/Context";
+import Header from "@/components/Header";
+
+export const metadata = {
+  title: "OdinBook",
+};
 
 const RootLayout = ({ children }) => {
   return (
     <html lang="en">
       <body>
         <UserProvider>
-          {/* <Header>Header Content</Header> */}
+          {/* <Header /> */}
           <main>{children}</main>
           {/* <Footer>Footer Content</Footer> */}{" "}
         </UserProvider>
