@@ -3,7 +3,7 @@
 // if logged in, show the username and profile pic
 // if not logged in, show sign up button
 import React, { useContext } from "react";
-import { UserContext } from "@/context/context";
+import { UserContext } from "@/context/Context";
 
 const UserProfile = () => {
   const { userData } = useContext(UserContext);

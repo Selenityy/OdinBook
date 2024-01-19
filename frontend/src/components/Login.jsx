@@ -1,8 +1,8 @@
 "use client";
 
-import { UserContext } from "@/context/context";
+import { UserContext } from "@/context/Context";
 import React, { useContext } from "react";
-// import Link from "next/link";
+import Link from "next/link";
 
 const Login = () => {
   const { userData, setUserData, handleLogin } = useContext(UserContext);
@@ -23,7 +23,6 @@ const Login = () => {
         localStorage.setItem("token", token);
         console.log("Login successful:", data);
         handleLogin(userData);
-        // return <Link href="/"></Link>;
       } else {
         console.log(res);
         console.error("Login failed:", res.statusText);
@@ -39,7 +38,45 @@ const Login = () => {
     setUserData({});
   };
 
-  return <div>Login</div>;
+  return (
+    <div>
+      <h2>Login</h2>
+      <form onSubmit={handleLoginSubmit}>
+        <p>
+          <label htmlFor="username">Username:</label>
+          <input
+            type="text"
+            id="username"
+            name="username"
+            value={userData.username || ""}
+            onChange={(e) =>
+              setUserData({ ...userData, username: e.target.value })
+            }
+            required
+          />
+        </p>
+        <p>
+          <label htmlFor="password">Password:</label>
+          <input
+            type="password"
+            id="password"
+            name="password"
+            value={userData.password || ""}
+            onChange={(e) =>
+              setUserData({ ...userData, password: e.target.value })
+            }
+            required
+          />
+        </p>
+        <button id="login-btn" type="submit">
+          Login
+        </button>
+      </form>
+      <div>
+        <Link href="/signup">Do not have an account yet? Sign up here.</Link>
+      </div>
+    </div>
+  );
 };
 
 export default Login;

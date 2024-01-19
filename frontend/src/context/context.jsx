@@ -16,6 +16,7 @@ export const UserProvider = ({ children }) => {
     posts: [],
     isLoggedIn: false,
   });
+  console.log("userData:", userData);
 
   const handleLogin = (userData) => {
     setUserData({ ...userData, isLoggedIn: true });
@@ -37,7 +38,9 @@ export const UserProvider = ({ children }) => {
   };
 
   return (
-    <UserContext.Provider value={{ userData, handleLogin, handleLogout }}>
+    <UserContext.Provider
+      value={{ userData, setUserData, handleLogin, handleLogout }}
+    >
       {children}
     </UserContext.Provider>
   );
