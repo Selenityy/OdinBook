@@ -2,7 +2,7 @@
 
 import React, { useState, createContext } from "react";
 
-export const UserContext = createContext();
+export const UserContext = createContext({});
 
 export const UserProvider = ({ children }) => {
   const [userData, setUserData] = useState({
@@ -21,7 +21,7 @@ export const UserProvider = ({ children }) => {
     setUserData({ ...userData, isLoggedIn: true });
   };
 
-  const handleLogout = (userData) => {
+  const handleLogout = () => {
     setUserData({
       fullname: "",
       email: "",
