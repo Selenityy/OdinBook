@@ -1,12 +1,12 @@
-import UserProfile from "@/components/UserProfile";
-import Login from "@/components/Login";
+import Link from "next/link";
 
 const Home = ({ feed }) => {
   return (
     <div>
       <h1>Home Page</h1>
       {/* <div>{feed}</div> */}
-      <Login />
+      <Link href="login">Log in here.</Link>
+      {/* <Login /> */}
     </div>
   );
 };
