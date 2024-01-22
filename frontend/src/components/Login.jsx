@@ -9,7 +9,7 @@ const Login = () => {
 
   const apiFetchLogIn = async (username, password) => {
     try {
-      const res = await fetch("http://localhost:3000/login", {
+      const res = await fetch("http://localhost:3000/user/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -40,7 +40,6 @@ const Login = () => {
 
   return (
     <div>
-      <h2>Login</h2>
       <form onSubmit={handleLoginSubmit}>
         <p>
           <label htmlFor="username">Username:</label>
