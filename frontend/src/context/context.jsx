@@ -6,9 +6,11 @@ export const UserContext = createContext({});
 
 export const UserProvider = ({ children }) => {
   const [userData, setUserData] = useState({
-    fullname: "",
+    firstName: "",
+    lastName: "",
     email: "",
     username: "",
+    password: "",
     about: "",
     profilePic: "",
     friends: [],
@@ -16,7 +18,6 @@ export const UserProvider = ({ children }) => {
     posts: [],
     isLoggedIn: false,
   });
-  console.log("userData:", userData);
 
   const handleLogin = (userData) => {
     setUserData({ ...userData, isLoggedIn: true });
