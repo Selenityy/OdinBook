@@ -2,12 +2,13 @@
 
 // if logged in, show the username and profile pic
 // if not logged in, show sign up button
-import React, { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { UserContext } from "@/context/Context";
 
 const UserProfile = () => {
   const { userData } = useContext(UserContext);
-  const { username, profilePic } = userData;
+  const { username, profilePic, isLoggedIn } = userData;
+  console.log("userData:", userData);
 
   const handleClick = () => {
     // drops down menu
@@ -15,17 +16,21 @@ const UserProfile = () => {
 
   return (
     <div>
-      <button
-        class="header"
-        id="profile-pic"
-        src={profilePic}
-        onClick={handleClick}
-      >
-        Image
-      </button>
-      <div class="header" id="header-username">
-        {username ? username : "N/A"}
-      </div>
+      {isLoggedIn ? (
+        <>
+          <button
+            className="header"
+            id="profile-pic"
+            src={profilePic}
+            onClick={handleClick}
+          ></button>
+          <div>{username}</div>
+        </>
+      ) : (
+        <div>
+          <button>Log in</button>
+        </div>
+      )}
     </div>
   );
 };
