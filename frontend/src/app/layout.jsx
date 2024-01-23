@@ -10,7 +10,7 @@ const RootLayout = ({ children }) => {
     <html lang="en">
       <body>
         <UserProvider>
-          {/* <Header /> */}
+          <Header />
           <main>{children}</main>
           {/* <Footer>Footer Content</Footer> */}{" "}
         </UserProvider>
