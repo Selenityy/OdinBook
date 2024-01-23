@@ -2,11 +2,11 @@ import UserProfile from "./UserProfile";
 
 const Header = () => {
   return (
-    <div class="header" id="header-bar">
-      <div class="header" id="logo">
+    <div className="header" id="header-bar">
+      <div className="header" id="logo">
         OdinBook
       </div>
-      <UserProfile />
+      {/* <UserProfile /> */}
     </div>
   );
 };
