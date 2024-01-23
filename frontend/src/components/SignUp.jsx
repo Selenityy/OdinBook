@@ -1,20 +1,19 @@
 "use client";
 
-import { UserContext } from "@/context/Context";
-import { useContext } from "react";
-import Link from "next/link";
+import { useState } from "react";
 
 const SignUp = () => {
-  const { userData, setUserData } = useContext(UserContext);
-  const { firstName, lastName, email, username, password } = userData;
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    username: "",
+    password: "",
+  });
+  //   const { firstName, lastName, email, username, password } = formData;
 
-  const apiFetchSignUp = async (
-    firstName,
-    lastName,
-    email,
-    username,
-    password
-  ) => {
+  const apiFetchSignUp = async (formData) => {
+
     try {
       console.log("inside api sign up fetch");
       const res = await fetch("http://localhost:3000/user/signup", {
@@ -22,20 +21,14 @@ const SignUp = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          firstName,
-          lastName,
-          email,
-          username,
-          password,
-        }),
+        body: JSON.stringify(formData),
       });
 
       if (res.ok) {
         const data = await res.json();
         console.log("res:", res);
         console.log("Signup successful:", data);
-        // redirect
+        // redirect to login page
       } else {
         console.log(res);
         console.error("Signup failed:", res.statusText);
@@ -47,8 +40,8 @@ const SignUp = () => {
 
   const handleSignUpSubmit = async (e) => {
     e.preventDefault();
-    await apiFetchSignUp(firstName, lastName, email, username, password);
-    setUserData({
+    await apiFetchSignUp(formData);
+    setFormData({
       firstName: "",
       lastName: "",
       email: "",
@@ -66,9 +59,9 @@ const SignUp = () => {
             type="text"
             id="firstName"
             name="firstName"
-            value={userData.firstName}
+            value={formData.firstName}
             onChange={(e) =>
-              setUserData({ ...userData, firstName: e.target.value })
+              setFormData({ ...formData, firstName: e.target.value })
             }
           />
         </p>
@@ -78,9 +71,9 @@ const SignUp = () => {
             type="text"
             id="lastName"
             name="lastName"
-            value={userData.lastName}
+            value={formData.lastName}
             onChange={(e) =>
-              setUserData({ ...userData, lastName: e.target.value })
+              setFormData({ ...formData, lastName: e.target.value })
             }
           />
         </p>
@@ -90,9 +83,9 @@ const SignUp = () => {
             type="email"
             id="email"
             name="email"
-            value={userData.email}
+            value={formData.email}
             onChange={(e) =>
-              setUserData({ ...userData, email: e.target.value })
+              setFormData({ ...formData, email: e.target.value })
             }
           />
         </p>
@@ -102,9 +95,9 @@ const SignUp = () => {
             type="username"
             id="username"
             name="username"
-            value={userData.username}
+            value={formData.username}
             onChange={(e) =>
-              setUserData({ ...userData, username: e.target.value })
+              setFormData({ ...formData, username: e.target.value })
             }
           />
         </p>
@@ -114,9 +107,9 @@ const SignUp = () => {
             type="password"
             id="password"
             name="password"
-            value={userData.password}
+            value={formData.password}
             onChange={(e) =>
-              setUserData({ ...userData, password: e.target.value })
+              setFormData({ ...formData, password: e.target.value })
             }
           />
         </p>
@@ -124,9 +117,6 @@ const SignUp = () => {
           Sign Up
         </button>
       </form>
-      <div>
-        <Link href="/login">Already have an account? Log in here.</Link>
-      </div>
     </div>
   );
 };
