@@ -5,7 +5,7 @@ import React, { useState, createContext } from "react";
 export const UserContext = createContext({});
 
 export const UserProvider = ({ children }) => {
-  const [userData, setUserData] = useState({
+  const [user, setUser] = useState({
     firstName: "",
     lastName: "",
     email: "",
@@ -16,32 +16,13 @@ export const UserProvider = ({ children }) => {
     friends: [],
     friendRequests: [],
     posts: [],
+    id: "",
+    testUser: false,
     isLoggedIn: false,
   });
 
-  const handleLogin = (userData) => {
-    setUserData({ ...userData, isLoggedIn: true });
-  };
-
-  const handleLogout = () => {
-    setUserData({
-      fullname: "",
-      email: "",
-      username: "",
-      about: "",
-      profilePic: "",
-      friends: [],
-      friendRequests: [],
-      posts: [],
-      isLoggedIn: false,
-    });
-    localStorage.removeItem("token");
-  };
-
   return (
-    <UserContext.Provider
-      value={{ userData, setUserData, handleLogin, handleLogout }}
-    >
+    <UserContext.Provider value={{ user, setUser }}>
       {children}
     </UserContext.Provider>
   );
