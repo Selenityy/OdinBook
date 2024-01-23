@@ -37,7 +37,7 @@ exports.signup = asyncHandler(async (req, res, next) => {
   // save the user to the database
   await newUser.save();
 
-  res.status(201).json({ message: "User created successfully" });
+  res.status(201).json({ message: "User created successfully", newUser });
 });
 
 // Log in
@@ -60,7 +60,7 @@ exports.login = asyncHandler(async (req, res, next) => {
     });
 
     console.log(user._id);
-    res.status(200).json({ token });
+    res.status(200).json({ user, token });
   })(req, res, next);
 });
 
