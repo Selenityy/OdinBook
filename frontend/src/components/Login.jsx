@@ -44,12 +44,17 @@ const Login = () => {
   };
 
   useEffect(() => {
-    console.log(user)
+    console.log(user);
+    console.log("login profile pic:", user.profilePic);
   }, [user]);
 
   const handleLoginSubmit = async (e) => {
     e.preventDefault();
     await apiFetchLogIn(formData);
+    setFormData({
+      username: "",
+      password: "",
+    });
   };
 
   return (
