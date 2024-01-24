@@ -30,7 +30,7 @@ const UserSchema = new Schema({
   about: { type: String, minLength: 3, maxLength: 100, required: false },
   profilePic: {
     type: String,
-    default: "./public/images/profile-pics/panda-avatar.png",
+    default: "/images/profile-pics/panda-avatar.png",
     required: true,
   },
   friends: [{ type: Schema.Types.ObjectId, ref: "User" }],
