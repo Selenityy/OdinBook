@@ -16,6 +16,9 @@ router.get("/", (req, res, next) => {
 // GET: User information
 router.get("/:userId/info", userController.getUserInfo);
 
+// GET: All users
+router.get("/all", userController.getAllUsers);
+
 // POST: Authentications
 router.post("/signup", userController.signup);
 router.post(

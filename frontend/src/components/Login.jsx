@@ -32,7 +32,7 @@ const Login = () => {
           ...activeUser,
           isLoggedIn: true,
         }));
-        console.log("activeUser:", activeUser);
+        // console.log("activeUser:", activeUser);
         // redirect to User Home Page
       } else {
         console.log(res);
@@ -43,10 +43,10 @@ const Login = () => {
     }
   };
 
-  useEffect(() => {
-    console.log(user);
-    console.log("login profile pic:", user.profilePic);
-  }, [user]);
+  // useEffect(() => {
+  //   console.log(user);
+  //   console.log("login profile pic:", user.profilePic);
+  // }, [user]);
 
   const handleLoginSubmit = async (e) => {
     e.preventDefault();

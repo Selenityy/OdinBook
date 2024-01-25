@@ -27,7 +27,13 @@ const UserSchema = new Schema({
   firstName: { type: String, minLength: 2, maxLength: 50, required: true },
   lastName: { type: String, minLength: 2, maxLength: 50, required: true },
   testUser: { type: Boolean, default: false },
-  about: { type: String, minLength: 3, maxLength: 100, required: false },
+  about: {
+    type: String,
+    default: "About me",
+    minLength: 3,
+    maxLength: 100,
+    required: false,
+  },
   profilePic: {
     type: String,
     default: "/images/profile-pics/panda-avatar.png",
