@@ -19,6 +19,13 @@ router.get("/:userId/info", userController.getUserInfo);
 // GET: All users
 router.get("/all", userController.getAllUsers);
 
+// GET USER FROM TOKEN
+router.get(
+  "/data",
+  passport.authenticate("jwt", { session: false }),
+  userController.getUserFromToken
+);
+
 // POST: Authentications
 router.post("/signup", userController.signup);
 router.post(
