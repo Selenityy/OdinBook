@@ -1,6 +1,6 @@
 "use client";
 
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import { UserContext } from "@/context/Context";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -11,6 +11,14 @@ const UserProfile = () => {
   const [showDropdown, setShowDropdown] = useState(false);
   const router = useRouter();
   let userId = user._id;
+
+//   useEffect(() => {
+//     console.log("useEffect user:", user);
+//   }, [user]);
+
+  const handleLogInClick = () => {
+    router.push("/login");
+  };
 
   const handleDropDownClick = () => {
     setShowDropdown(!showDropdown);
@@ -33,6 +41,7 @@ const UserProfile = () => {
       isLoggedIn: false,
     });
     localStorage.removeItem("token");
+    router.push("/");
   };
 
   return (
@@ -60,7 +69,7 @@ const UserProfile = () => {
         </>
       ) : (
         <div>
-          <button>Log in</button>
+          <button onClick={handleLogInClick}>Log in</button>
         </div>
       )}
     </div>
