@@ -27,7 +27,7 @@ const getUser = async (userId) => {
 
 const UserProfilePage = async ({ params }) => {
   const user = await getUser(params.userId);
-  console.log("user:", user);
+  // console.log("user:", user);
   return (
     <div>
       <div>(User Profile Page)</div>
