@@ -2,6 +2,7 @@
 
 import { useState, useContext, useEffect } from "react";
 import { UserContext } from "@/context/Context";
+import { useRouter } from "next/navigation";
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -9,6 +10,7 @@ const Login = () => {
     password: "",
   });
   const { user, setUser } = useContext(UserContext);
+  const router = useRouter();
 
   const apiFetchLogIn = async (formData) => {
     try {
@@ -34,6 +36,7 @@ const Login = () => {
         }));
         // console.log("activeUser:", activeUser);
         // redirect to User Home Page
+        router.push("/user");
       } else {
         console.log(res);
         console.error("Login failed:", res.statusText);
@@ -44,8 +47,7 @@ const Login = () => {
   };
 
   // useEffect(() => {
-  //   console.log(user);
-  //   console.log("login profile pic:", user.profilePic);
+  //   console.log("login user:", user);
   // }, [user]);
 
   const handleLoginSubmit = async (e) => {
