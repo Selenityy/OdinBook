@@ -1,67 +1,32 @@
 "use client";
 
-import { useState, useContext, useEffect } from "react";
-import { UserContext } from "@/context/Context";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
+
+import { useDispatch } from "react-redux";
+import { loginUser } from "@/redux/features/user-slice";
 
 const Login = () => {
   const [formData, setFormData] = useState({
     username: "",
     password: "",
   });
-  const { user, setUser } = useContext(UserContext);
+  const dispatch = useDispatch();
   const router = useRouter();
 
-  const apiFetchLogIn = async (formData) => {
-    try {
-      const res = await fetch("http://localhost:3000/user/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
-
-      if (res.ok) {
-        const data = await res.json();
-        const token = data.token;
-        const activeUser = data.user;
-        localStorage.setItem("token", token);
-        console.log("Login successful:", data);
-        // setUserData global
-        setUser((prevState) => ({
-          ...prevState,
-          ...activeUser,
-          isLoggedIn: true,
-        }));
-        // console.log("activeUser:", activeUser);
-        // redirect to User Home Page
-        router.push("/user");
-      } else {
-        console.log(res);
-        console.error("Login failed:", res.statusText);
-      }
-    } catch (error) {
-      console.error("Error during login:", error);
-    }
-  };
-
-  // useEffect(() => {
-  //   console.log("login user:", user);
-  // }, [user]);
-
-  const handleLoginSubmit = async (e) => {
+  const onClickLogIn = (e) => {
     e.preventDefault();
-    await apiFetchLogIn(formData);
+    dispatch(loginUser(formData));
     setFormData({
       username: "",
       password: "",
     });
+    router.push("/user");
   };
 
   return (
     <div>
-      <form onSubmit={handleLoginSubmit}>
+      <form onSubmit={onClickLogIn}>
         <p>
           <label htmlFor="username">Username:</label>
           <input

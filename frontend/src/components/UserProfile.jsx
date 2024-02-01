@@ -1,20 +1,26 @@
 "use client";
 
-import { useContext, useState, useEffect } from "react";
-import { UserContext } from "@/context/Context";
+import { useState, useEffect, Suspense } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import Loading from "./Loading";
+import { useSelector, useDispatch } from "react-redux";
+import { logout } from "@/redux/features/user-slice";
 
 const UserProfile = () => {
-  const { user, setUser } = useContext(UserContext);
-  const { username, profilePic, isLoggedIn } = user;
   const [showDropdown, setShowDropdown] = useState(false);
   const router = useRouter();
-  let userId = user._id;
+  const dispatch = useDispatch();
 
-//   useEffect(() => {
-//     console.log("useEffect user:", user);
-//   }, [user]);
+  const userState = useSelector((state) => state.user);
+  const userId = userState.value._id;
+  const username = userState.value.username;
+  const profilePic = userState.value.profilePic;
+  const isLoggedIn = userState.isLoggedIn;
+
+  useEffect(() => {
+    console.log(userState);
+  }, [userState]);
 
   const handleLogInClick = () => {
     router.push("/login");
@@ -26,26 +32,18 @@ const UserProfile = () => {
 
   const handleProfileClick = () => {
     router.push(`/user/${userId}`);
+    setShowDropdown(!showDropdown);
   };
 
   const handleLogOut = () => {
-    setUser({
-      fullname: "",
-      email: "",
-      username: "",
-      about: "",
-      profilePic: "",
-      friends: [],
-      friendRequests: [],
-      posts: [],
-      isLoggedIn: false,
-    });
+    dispatch(logout());
     localStorage.removeItem("token");
     router.push("/");
+    setShowDropdown(!showDropdown);
   };
 
   return (
-    <div>
+    <Suspense fallback={<Loading />}>
       {isLoggedIn ? (
         <>
           <div>
@@ -72,7 +70,7 @@ const UserProfile = () => {
           <button onClick={handleLogInClick}>Log in</button>
         </div>
       )}
-    </div>
+    </Suspense>
   );
 };
 

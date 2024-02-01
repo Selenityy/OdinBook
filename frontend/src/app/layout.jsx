@@ -1,5 +1,5 @@
-import { UserProvider } from "@/context/Context";
 import Header from "@/components/Header";
+import { ReduxProvider } from "@/redux/provider";
 
 export const metadata = {
   title: "OdinBook",
@@ -9,11 +9,10 @@ const RootLayout = ({ children }) => {
   return (
     <html lang="en">
       <body>
-        <UserProvider>
+        <ReduxProvider>
           <Header />
           <main>{children}</main>
-          {/* <Footer>Footer Content</Footer> */}{" "}
-        </UserProvider>
+        </ReduxProvider>
       </body>
     </html>
   );

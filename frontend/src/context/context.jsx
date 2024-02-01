@@ -1,5 +1,6 @@
 "use client";
 
+// NOT IN USE, SEE REDUX
 import React, { useState, createContext, useEffect } from "react";
 
 export const UserContext = createContext({});
