@@ -1,6 +1,9 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useDispatch } from "react-redux";
+import { signUpUser } from "@/redux/features/user-slice";
 
 const SignUp = () => {
   const [formData, setFormData] = useState({
@@ -10,37 +13,12 @@ const SignUp = () => {
     username: "",
     password: "",
   });
-  //   const { firstName, lastName, email, username, password } = formData;
+  const dispatch = useDispatch();
+  const router = useRouter();
 
-  const apiFetchSignUp = async (formData) => {
-
-    try {
-      console.log("inside api sign up fetch");
-      const res = await fetch("http://localhost:3000/user/signup", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
-
-      if (res.ok) {
-        const data = await res.json();
-        console.log("res:", res);
-        console.log("Signup successful:", data);
-        // redirect to login page
-      } else {
-        console.log(res);
-        console.error("Signup failed:", res.statusText);
-      }
-    } catch (error) {
-      console.error("Error during signup:", error);
-    }
-  };
-
-  const handleSignUpSubmit = async (e) => {
+  const onClickSignUp = async (e) => {
     e.preventDefault();
-    await apiFetchSignUp(formData);
+    dispatch(signUpUser(formData));
     setFormData({
       firstName: "",
       lastName: "",
@@ -48,11 +26,12 @@ const SignUp = () => {
       username: "",
       password: "",
     });
+    router.push("/login");
   };
 
   return (
     <div>
-      <form onSubmit={handleSignUpSubmit}>
+      <form onSubmit={onClickSignUp}>
         <p>
           <label htmlFor="firstName">First Name:</label>
           <input
