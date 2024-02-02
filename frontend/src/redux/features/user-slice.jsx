@@ -19,8 +19,8 @@ export const fetchUserData = createAsyncThunk(
       if (!response.ok) {
         throw new Error("Failed to fetch user data");
       }
-      const data = await response.json();
-      return data;
+      const user = await response.json();
+      return user;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
     }
@@ -42,8 +42,8 @@ export const signUpUser = createAsyncThunk(
       if (!response.ok) {
         throw new Error("Failed to fetch user data");
       }
-      const data = await response.json();
-      return data;
+      const user = await response.json();
+      return user;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
     }
@@ -111,6 +111,7 @@ export const userSlice = createSlice({
       })
       .addCase(fetchUserData.fulfilled, (state, action) => {
         state.value = { ...state.value, ...action.payload };
+        state.isLoggedIn = true;
         state.loading = false;
         state.error = null;
       })
