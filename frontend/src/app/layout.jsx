@@ -1,5 +1,5 @@
-import Header from "@/components/Header";
 import { ReduxProvider } from "@/redux/provider";
+import CheckAuth from "@/components/CheckAuth";
 
 export const metadata = {
   title: "OdinBook",
@@ -10,7 +10,7 @@ const RootLayout = ({ children }) => {
     <html lang="en">
       <body>
         <ReduxProvider>
-          <Header />
+          <CheckAuth />
           <main>{children}</main>
         </ReduxProvider>
       </body>
