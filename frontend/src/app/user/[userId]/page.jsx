@@ -1,33 +1,16 @@
+"use client";
+
 import Image from "next/image";
+import { useSelector } from "react-redux";
 
-export const generateStaticParams = async () => {
-  const res = await fetch(`http://localhost:3000/user/all`, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
-  const data = await res.json();
-  // console.log(data);
+const UserProfilePage = () => {
+  const userState = useSelector((state) => state.user);
+  const username = userState.value.username;
+  const profilePic = userState.value.profilePic;
+  const about = userState.value.about;
+  const friends = userState.value.friends;
+  const posts = userState.value.posts;
 
-  return data;
-};
-
-const getUser = async (userId) => {
-  const res = await fetch(`http://localhost:3000/user/${userId}/info`, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
-  const data = await res.json();
-  // console.log(data);
-  return data;
-};
-
-const UserProfilePage = async ({ params }) => {
-  const user = await getUser(params.userId);
-  // console.log("user:", user);
   return (
     <div>
       <div>(User Profile Page)</div>
@@ -35,21 +18,23 @@ const UserProfilePage = async ({ params }) => {
         className="header"
         priority
         id="profile-pic"
-        src={`http://localhost:3000${user.profilePic}`}
+        src={`http://localhost:3000${profilePic}`}
         alt="profile-pic"
         width={50}
         height={50}
       />
-      <div>{user.username}</div>
-      <div>{user.about}</div>
+      <div>{username}</div>
+      <div>{about}</div>
       <div>
-        {user.friends && user.friends.length >0 
-        ? user.friends.map((friend) => <div key={friend._id}>{friend.username}</div>)
-        : "No friends"}
-        </div>
+        {friends && friends.length > 0
+          ? friends.map((friend) => (
+              <div key={friend._id}>{friend.username}</div>
+            ))
+          : "No friends"}
+      </div>
       <div>
-        {user.posts && user.posts.length > 0
-          ? user.posts.map((post) => <div key={post._id}>{post.content}</div>)
+        {posts && posts.length > 0
+          ? posts.map((post) => <div key={post._id}>{post.content}</div>)
           : "No posts"}
       </div>
     </div>
