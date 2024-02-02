@@ -1,12 +1,25 @@
+import Login from "@/components/Login";
 import Link from "next/link";
 
 const Home = () => {
   return (
     <div>
-      <h1>Welcome to OdinBook</h1>
-      {/* <Link href="login">Log in</Link> */}
-      <br></br>
-      <Link href="signup">Sign up</Link>
+      <section>
+        <h1>OdinBook</h1>
+        <h2>Connect with others</h2>
+      </section>
+      {/* <br></br> */}
+      <section>
+        <Login />
+        <br></br>
+        <div class="line-with-text">
+          <span class="text">or</span>
+        </div>
+        <br></br>
+        <Link href="signup">
+          <button type="button">Create Account</button>
+        </Link>
+      </section>
     </div>
   );
 };
