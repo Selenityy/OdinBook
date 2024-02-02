@@ -2,12 +2,12 @@ import UserProfile from "./UserProfile";
 
 const Header = () => {
   return (
-    <div className="header" id="header-bar">
-      <div className="header" id="logo">
+    <header className="header" id="header-bar">
+      <h1 className="header" id="logo">
         OdinBook
-      </div>
+      </h1>
       <UserProfile />
-    </div>
+    </header>
   );
 };
 
