@@ -5,7 +5,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import Loading from "./Loading";
 import { useSelector, useDispatch } from "react-redux";
-import { fetchUserData, logout } from "@/redux/features/user-slice";
+import { logout } from "@/redux/features/user-slice";
 
 const UserProfile = () => {
   const [showDropdown, setShowDropdown] = useState(false);
@@ -36,13 +36,25 @@ const UserProfile = () => {
   };
 
   const handleHomeClick = () => {
-    router.push("/user");
-    setShowDropdown(!showDropdown);
+    const token = localStorage.getItem("token");
+    if (token) {
+      router.push("/user");
+      setShowDropdown(!showDropdown);
+    } else {
+      router.push("/");
+      setShowDropdown(!showDropdown);
+    }
   };
 
   const handleProfileClick = () => {
-    router.push(`/user/${userId}`);
-    setShowDropdown(!showDropdown);
+    const token = localStorage.getItem("token");
+    if (token) {
+      router.push(`/user/${userId}`);
+      setShowDropdown(!showDropdown);
+    } else {
+      router.push("/");
+      setShowDropdown(!showDropdown);
+    }
   };
 
   const handleLogOut = () => {
