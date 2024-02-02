@@ -8,12 +8,11 @@ const Home = () => {
         <h1>OdinBook</h1>
         <h2>Connect with others</h2>
       </section>
-      {/* <br></br> */}
       <section>
         <Login />
         <br></br>
-        <div class="line-with-text">
-          <span class="text">or</span>
+        <div className="line-with-text">
+          <span className="text">or</span>
         </div>
         <br></br>
         <Link href="signup">
