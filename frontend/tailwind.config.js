@@ -5,7 +5,15 @@ module.exports = {
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
-    extend: {},
+    gridTemplateAreas: {
+      homeLayout: ["header header header", "odin line login ", "footer footer footer"],
+    },
+    gridTemplateColumns: {
+      homeLayout: "1fr auto 1fr",
+    },
+    gridTemplateRows: {
+      homeLayout: "1fr 2fr 1fr",
+    },
   },
-  plugins: [],
+  plugins: [require("@savvywombat/tailwindcss-grid-areas")],
 };
