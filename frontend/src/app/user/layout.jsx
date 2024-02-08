@@ -1,6 +1,7 @@
 import FriendReqList from "@/components/FriendReqList";
 import Header from "@/components/Header";
 import NavSideBar from "@/components/NavSideBar";
+import NavUser from "@/components/NavUser";
 import "../../styles/globals.css";
 
 const UserLayout = async ({ children }) => {
@@ -10,7 +11,7 @@ const UserLayout = async ({ children }) => {
         <Header />
       </section>
       <section className="grid-in-user">
-        <NavSideBar />
+        <NavUser />
       </section>
       <section className="grid-in-nav">
         <NavSideBar />
