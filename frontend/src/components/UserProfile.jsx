@@ -66,7 +66,7 @@ const UserProfile = () => {
 
   return (
     <Suspense fallback={<Loading />}>
-      <section>
+      <section className="flex gap-2">
         <div>
           <Image
             className="header"
@@ -85,7 +85,7 @@ const UserProfile = () => {
             </div>
           )}
         </div>
-        <div>{username}</div>
+        {/* <div>{username}</div> */}
       </section>
     </Suspense>
   );
