@@ -36,7 +36,7 @@ const Login = () => {
             type="text"
             id="username"
             name="username"
-            className="text-gray-800 indent-1 flex grow"
+            className="text-gray-800 text-lg indent-1 flex grow"
             value={formData.username || ""}
             onChange={(e) =>
               setFormData({ ...formData, username: e.target.value })
@@ -52,7 +52,7 @@ const Login = () => {
             type="password"
             id="password"
             name="password"
-            className="text-gray-800 indent-1 flex grow"
+            className="text-gray-800 text-lg indent-1 flex grow"
             value={formData.password || ""}
             onChange={(e) =>
               setFormData({ ...formData, password: e.target.value })
