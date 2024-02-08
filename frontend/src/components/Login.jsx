@@ -25,15 +25,18 @@ const Login = () => {
   };
 
   return (
-    <div>
-      <h1>Log In</h1>
-      <form onSubmit={onClickLogIn}>
-        <p>
-          <label htmlFor="username">Username:</label>
+    <div className="w-96">
+      {/* <h1 className="text-3xl text-left text-gray-800 font-semibold py-3">Log In</h1> */}
+      <form className="w-full grid" onSubmit={onClickLogIn}>
+        <p className="pb-3 flex gap-2">
+          <label htmlFor="username" className="text-gray-700 text-lg">
+            Username:
+          </label>
           <input
             type="text"
             id="username"
             name="username"
+            className="text-gray-800 indent-1 flex grow"
             value={formData.username || ""}
             onChange={(e) =>
               setFormData({ ...formData, username: e.target.value })
@@ -41,12 +44,15 @@ const Login = () => {
             required
           />
         </p>
-        <p>
-          <label htmlFor="password">Password:</label>
+        <p className="pb-6 flex gap-3">
+          <label htmlFor="password" className="text-gray-700 text-lg">
+            Password:
+          </label>
           <input
             type="password"
             id="password"
             name="password"
+            className="text-gray-800 indent-1 flex grow"
             value={formData.password || ""}
             onChange={(e) =>
               setFormData({ ...formData, password: e.target.value })
@@ -54,8 +60,8 @@ const Login = () => {
             required
           />
         </p>
-        <button id="login-btn" type="submit">
-          Submit
+        <button id="login-btn" type="submit" className="btn">
+          Log In
         </button>
       </form>
     </div>
