@@ -2,7 +2,10 @@ import UserProfile from "./UserProfile";
 
 const Header = () => {
   return (
-    <header className="header flex justify-between" id="header-bar">
+    <header
+      className="header flex justify-between"
+      id="header-bar"
+    >
       <h1 className="header text-base" id="logo">
         OdinBook
       </h1>
