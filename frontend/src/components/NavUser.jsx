@@ -15,7 +15,7 @@ const NavUser = () => {
   const friendLength = friends.length;
 
   return (
-    <div className="rounded border-2 border-gray-600 grid grid-cols-3 grid-rows-3 grid-flow-row w-fit p-2.5 gap-2 items-center">
+    <div className="rounded-lg border-2 border-gray-600 grid grid-cols-3 grid-rows-3 grid-flow-row w-fit p-2.5 gap-2 items-center">
       <div className="col-start-1 row-span-2 row-start-1">
         <Image
           className="header"
