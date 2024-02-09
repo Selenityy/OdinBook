@@ -106,7 +106,10 @@ exports.getAllUsers = asyncHandler(async (req, res, next) => {
 // Get user from token
 exports.getUserFromToken = asyncHandler(async (req, res, next) => {
   try {
-    const user = await User.findById(req.user.id).select("-password");
+    const user = await User.findById(req.user.id)
+      .select("-password")
+      .populate("friends")
+      .exec();
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
