@@ -6,7 +6,7 @@ import "../../styles/globals.css";
 
 const UserLayout = async ({ children }) => {
   return (
-    <div className="my-6 mx-16 grid grid-areas-userLayout grid-cols-userLayout grid-rows-userLayout h-screen gap-3">
+    <div className="my-6 mx-16 grid grid-areas-userLayout grid-cols-userLayout grid-rows-userLayout h-screen gap-y-4 gap-x-6">
       <section className="grid-in-header">
         <Header />
       </section>
