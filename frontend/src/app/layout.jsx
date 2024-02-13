@@ -8,7 +8,7 @@ export const metadata = {
 const RootLayout = ({ children }) => {
   return (
     <html lang="en">
-      <body>
+      <body className="bg-slate-800 h-screen">
         <ReduxProvider>
           <CheckAuth />
           <main>{children}</main>
