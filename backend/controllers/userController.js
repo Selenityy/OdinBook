@@ -43,24 +43,33 @@ exports.signup = asyncHandler(async (req, res, next) => {
 // Log in
 exports.login = asyncHandler(async (req, res, next) => {
   // authenticate user
-  passport.authenticate("local", { session: false }, (err, user, info) => {
+  passport.authenticate("local", { session: false }, async (err, user, info) => {
     if (err || !user) {
       const error = new Error("User does not exist");
       return next(error);
     }
 
-    req.login(user, { session: false }, (err) => {
-      if (err) {
-        return next(err);
-      }
-    });
+    // req.login(user, { session: false }, (err) => {
+    //   if (err) {
+    //     return next(err);
+    //   }
+    // });
+    
+    try {
+      const populatedUser = await User.findById(user._id)
+        .select("-password")
+        .populate("friends")
+        .populate("friendRequests")
+        .exec();
 
-    const token = jwt.sign({ id: user._id }, process.env.SESSION_SECRET, {
-      expiresIn: "1d",
-    });
+      const token = jwt.sign({ id: populatedUser._id }, process.env.SESSION_SECRET, {
+        expiresIn: "1d",
+      });
 
-    console.log(user._id);
-    res.status(200).json({ user, token });
+      res.status(200).json({ user: populatedUser, token });
+    } catch (populateError) {
+      next(populateError);
+    }
   })(req, res, next);
 });
 
@@ -95,7 +104,7 @@ exports.getAllUsers = asyncHandler(async (req, res, next) => {
     if (!users) {
       return res.status(404).json({ message: "Users not found" });
     } else {
-      console.log(users);
+      // console.log(users);
       res.json(users);
     }
   } catch (error) {
@@ -109,6 +118,7 @@ exports.getUserFromToken = asyncHandler(async (req, res, next) => {
     const user = await User.findById(req.user.id)
       .select("-password")
       .populate("friends")
+      .populate("friendRequests")
       .exec();
     if (!user) {
       return res.status(404).json({ message: "User not found" });
