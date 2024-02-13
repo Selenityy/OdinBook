@@ -15,7 +15,7 @@ const NavUser = () => {
   const friendLength = friends.length;
 
   return (
-    <div className="rounded-lg border-2 border-gray-600 grid grid-cols-3 grid-rows-3 grid-flow-row w-fit p-2.5 gap-2 items-center">
+    <div className="rounded-lg grid grid-cols-3 grid-rows-3 grid-flow-row w-fit p-2.5 gap-2 items-center bg-slate-50">
       <div className="col-start-1 row-span-2 row-start-1">
         <Image
           className="header"
@@ -27,19 +27,19 @@ const NavUser = () => {
           height={70}
         />
       </div>
-      <div className="col-start-2 col-span-2 row-start-1 m-px flex text-xl items-end justify-center">
-        <p className="font-semibold">{username}</p>
+      <div className="col-start-2 col-span-2 row-start-1 m-px flex items-end justify-center items-end">
+        <div className="font-semibold text-lg">{username}</div>
       </div>
-      <div className="col-start-2 row-start-2 flex gap-1 text-sm w-fit">
-        <p>{postLength}</p>
-        <p>Posts</p>
+      <div className="col-start-2 row-start-2 flex gap-1 text-xs w-fit">
+        <div>{postLength}</div>
+        <div>Posts</div>
       </div>
-      <div className="col-start-3 row-start-2 flex gap-1 text-sm w-fit">
-        <p>{friendLength}</p>
-        <p>Friends</p>
+      <div className="col-start-3 row-start-2 flex gap-1 text-xs w-fit">
+        <div>{friendLength}</div>
+        <div>Friends</div>
       </div>
-      <div className="col-start-1 col-span-3 row-start-3 items-center text-lg py-2">
-        <p>{about}</p>
+      <div className="col-start-1 col-span-3 row-start-3 items-center text-base py-2">
+        <div>{about}</div>
       </div>
     </div>
   );
