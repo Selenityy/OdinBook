@@ -13,8 +13,8 @@ module.exports = {
       ],
       userLayout: [
         "header header header",
-        "user main friends",
-        "nav main friends",
+        "user main main",
+        "nav main main",
       ],
     },
     gridTemplateColumns: {
