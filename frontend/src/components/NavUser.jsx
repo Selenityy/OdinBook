@@ -22,6 +22,7 @@ const NavUser = () => {
           id="profile-pic"
           src={`http://localhost:3000${profilePic}`}
           alt="profile-pic"
+          priority
           width={70}
           height={70}
         />

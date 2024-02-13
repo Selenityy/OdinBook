@@ -73,6 +73,7 @@ const UserProfile = () => {
             id="profile-pic"
             src={`http://localhost:3000${profilePic}`}
             alt="profile-pic"
+            priority
             width={50}
             height={50}
             onClick={handleDropDownClick}
