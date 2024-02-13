@@ -26,9 +26,8 @@ const Login = () => {
 
   return (
     <div className="w-96">
-      {/* <h1 className="text-3xl text-left text-gray-800 font-semibold py-3">Log In</h1> */}
       <form className="w-full grid" onSubmit={onClickLogIn}>
-        <p className="pb-3 flex gap-2">
+        <div className="pb-3 flex gap-2">
           <label htmlFor="username" className="text-gray-700 text-lg">
             Username:
           </label>
@@ -43,8 +42,8 @@ const Login = () => {
             }
             required
           />
-        </p>
-        <p className="pb-6 flex gap-3">
+        </div>
+        <div className="pb-6 flex gap-3">
           <label htmlFor="password" className="text-gray-700 text-lg">
             Password:
           </label>
@@ -59,7 +58,7 @@ const Login = () => {
             }
             required
           />
-        </p>
+        </div>
         <button id="login-btn" type="submit" className="btn">
           Log In
         </button>
