@@ -4,7 +4,7 @@ import NavSideBar from "@/components/NavSideBar";
 import NavUser from "@/components/NavUser";
 import "../../styles/globals.css";
 
-const UserLayout = async ({ children }) => {
+const UserLayout = ({ children }) => {
   return (
     <div className="my-6 mx-16 grid grid-areas-userLayout grid-cols-userLayout grid-rows-userLayout h-screen gap-y-4 gap-x-6">
       <section className="grid-in-header">
@@ -17,9 +17,6 @@ const UserLayout = async ({ children }) => {
         <NavSideBar />
       </section>
       <main className="grid-in-main">{children}</main>
-      <section className="grid-in-friends">
-        <FriendReqList />
-      </section>
     </div>
   );
 };
