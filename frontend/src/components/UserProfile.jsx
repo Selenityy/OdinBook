@@ -76,7 +76,7 @@ const UserProfile = () => {
             priority
             width={50}
             height={50}
-            onClick={handleDropDownClick}
+            // onClick={handleDropDownClick}
           />
           {showDropdown && (
             <div>
