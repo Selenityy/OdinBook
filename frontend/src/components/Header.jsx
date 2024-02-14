@@ -6,10 +6,15 @@ const Header = () => {
       className="header flex justify-between items-center"
       id="header-bar"
     >
-      <h1 className="header text-3xl font-semibold text-white/[0.9]" id="logo">
+      <h1
+        className="header text-3xl font-semibold text-white/[0.9] ml-[138px]"
+        id="logo"
+      >
         OdinBook
       </h1>
-      <UserProfile />
+      <div className="mr-[138px]">
+        <UserProfile />
+      </div>
     </header>
   );
 };
