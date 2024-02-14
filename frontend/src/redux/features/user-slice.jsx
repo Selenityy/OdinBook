@@ -27,6 +27,36 @@ export const fetchUserData = createAsyncThunk(
   }
 );
 
+// Async thunk for retrieving posts
+export const fetchUserFeedPosts = createAsyncThunk(
+  "/user/fetchUserFeedPosts",
+  async (userId, thunkAPI) => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      return thunkAPI.rejectWithValue("No token found");
+    }
+    try {
+      const response = await fetch(
+        `http://localhost:3000/user/${userId}/posts`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      if (!response.ok) {
+        throw new Error("Failed to fetch user post feed data");
+      }
+      const posts = await response.json();
+      return posts;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
+
 // Async thunk for signing up
 export const signUpUser = createAsyncThunk(
   "/user/signUp",
@@ -118,6 +148,20 @@ export const userSlice = createSlice({
       .addCase(fetchUserData.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload || "Failed to fetch user data";
+      })
+      // FETCH USER FEED POSTS
+      .addCase(fetchUserFeedPosts.pending, (state, action) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchUserFeedPosts.fulfilled, (state, action) => {
+        state.value = { ...state.value, ...action.payload };
+        state.loading = false;
+        state.error = null;
+      })
+      .addCase(fetchUserFeedPosts.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload || "Failed to fetch user feed post data";
       })
       // LOG IN
       .addCase(loginUser.pending, (state, action) => {
