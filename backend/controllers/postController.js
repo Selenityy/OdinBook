@@ -13,33 +13,27 @@ exports.userFeed = asyncHandler(async (req, res, next) => {
   if (!user) {
     return res.status(404).json({ message: "User not found" });
   }
-  // create an array of friend Ids and own
-  const friendIds = user.friends.map((friend) => friend._id);
-  friendIds.push(user._id);
 
-  const posts = await Post.find({
-    user: { $in: friendIds },
-  })
+  // fetch user's posts
+  const userPosts = await Post.find({ user: userId })
     .sort({ timestamp: -1 })
-    .populate({
-      path: "user",
-      select: "username profilePic",
-    })
-    // .populate({
-    //    path: "likeCount",
-    //  })
-    // should be able to access through post.likeCount
+    .populate("user", "username profilePic")
     .populate({
       path: "comments",
-      // select: "body likeCount",
-      // should be able to access through comment.likeCount
-      populate: {
-        path: "user",
-        select: "username profilePic",
-      },
+      populate: { path: "user", select: "username profilePic" },
     });
 
-  res.json(posts);
+  // create an array of friend Ids and own
+  const friendIds = user.friends.map((friend) => friend._id);
+  const friendsPosts = await Post.find({ user: { $in: friendIds } })
+    .sort({ timestamp: -1 })
+    .populate("user", "'username profilePic")
+    .populate({
+      path: "comments",
+      populate: { path: "user", select: "username profilePic" },
+    });
+
+  res.json({userPosts, friendsPosts});
 });
 
 // Create post
