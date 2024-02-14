@@ -12,14 +12,14 @@ module.exports = {
         "footer footer footer",
       ],
       userLayout: [
-        "header header header",
-        "user main main",
-        "nav main main",
+        "header header",
+        "user main",
+        "nav main",
       ],
     },
     gridTemplateColumns: {
       homeLayout: "1fr auto 1fr",
-      userLayout: "auto 1fr 0.5fr",
+      userLayout: "auto 1fr",
     },
     gridTemplateRows: {
       homeLayout: "1fr 2fr 1fr",
