@@ -28,17 +28,17 @@ const NavUser = () => {
         />
       </div>
       <div className="col-start-2 col-span-2 row-start-1 m-px flex items-end justify-center items-end">
-        <div className="font-semibold text-lg">{username}</div>
+        <div className="font-semibold text-lg text-gray-800">{username}</div>
       </div>
-      <div className="col-start-2 row-start-2 flex gap-1 text-xs w-fit">
+      <div className="col-start-2 row-start-2 flex gap-1 text-xs w-fit text-gray-800">
         <div>{postLength}</div>
         <div>Posts</div>
       </div>
-      <div className="col-start-3 row-start-2 flex gap-1 text-xs w-fit">
+      <div className="col-start-3 row-start-2 flex gap-1 text-xs w-fit text-gray-800">
         <div>{friendLength}</div>
         <div>Friends</div>
       </div>
-      <div className="col-start-1 col-span-3 row-start-3 items-center text-base py-2">
+      <div className="col-start-1 col-span-3 row-start-3 items-center text-base py-2 text-gray-800">
         <div>{about}</div>
       </div>
     </div>
