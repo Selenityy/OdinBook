@@ -27,7 +27,7 @@ exports.userFeed = asyncHandler(async (req, res, next) => {
   const friendIds = user.friends.map((friend) => friend._id);
   const friendsPosts = await Post.find({ user: { $in: friendIds } })
     .sort({ timestamp: -1 })
-    .populate("user", "'username profilePic")
+    .populate("user", "username profilePic")
     .populate({
       path: "comments",
       populate: { path: "user", select: "username profilePic" },
