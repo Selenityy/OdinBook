@@ -3,6 +3,7 @@ const Post = require("../models/postModel");
 const Comment = require("../models/commentModel");
 const User = require("../models/userModel");
 const { body, validationResult } = require("express-validator");
+const { mongoose } = require("mongoose");
 
 // Display all posts, user feed of their posts and friend posts
 exports.userFeed = asyncHandler(async (req, res, next) => {
@@ -14,26 +15,124 @@ exports.userFeed = asyncHandler(async (req, res, next) => {
     return res.status(404).json({ message: "User not found" });
   }
 
-  // fetch user's posts
-  const userPosts = await Post.find({ user: userId })
-    .sort({ timestamp: -1 })
-    .populate("user", "username profilePic")
-    .populate({
-      path: "comments",
-      populate: { path: "user", select: "username profilePic" },
-    });
+  // convert userId to MongoDB ObjectId
+  const userObjectId = new mongoose.Types.ObjectId(userId);
 
-  // create an array of friend Ids and own
+  const userPosts = await Post.aggregate([
+    {
+      $match: {
+        // match posts by user and their friends
+        user: userObjectId,
+      },
+    },
+    {
+      $lookup: {
+        from: "users",
+        localField: "user",
+        foreignField: "_id",
+        as: "userDetails",
+      },
+    },
+    {
+      $unwind: "$userDetails",
+    },
+    {
+      $lookup: {
+        from: "comments",
+        localField: "_id",
+        foreignField: "post",
+        as: "comments",
+      },
+    },
+    {
+      $addFields: {
+        commentCount: { $size: "$comments" },
+        likeCount: { $size: "$likes" },
+      },
+    },
+    {
+      $project: {
+        body: 1,
+        timestamp: 1,
+        "user.username": "$userDetails.username",
+        "user.profilePic": "$userDetails.profilePic",
+        likes: 1,
+        likeCount: 1,
+        comments: 1,
+        commentCount: 1,
+      },
+    },
+  ]);
+
   const friendIds = user.friends.map((friend) => friend._id);
-  const friendsPosts = await Post.find({ user: { $in: friendIds } })
-    .sort({ timestamp: -1 })
-    .populate("user", "username profilePic")
-    .populate({
-      path: "comments",
-      populate: { path: "user", select: "username profilePic" },
-    });
+  const friendPosts = await Post.aggregate([
+    {
+      $match: {
+        // match posts by user and their friends
+        user: { $in: friendIds },
+      },
+    },
+    {
+      $lookup: {
+        from: "users",
+        localField: "user",
+        foreignField: "_id",
+        as: "userDetails",
+      },
+    },
+    {
+      $unwind: "$userDetails",
+    },
+    {
+      $lookup: {
+        from: "comments",
+        localField: "_id",
+        foreignField: "post",
+        as: "comments",
+      },
+    },
+    {
+      $addFields: {
+        commentCount: { $size: "$comments" },
+        likeCount: { $size: "$likes" },
+      },
+    },
+    {
+      $project: {
+        body: 1,
+        timestamp: 1,
+        "user.username": "$userDetails.username",
+        "user.profilePic": "$userDetails.profilePic",
+        likes: 1,
+        likeCount: 1,
+        comments: 1,
+        commentCount: 1,
+      },
+    },
+  ]);
 
-  res.json({userPosts, friendsPosts});
+  res.json({ userPosts, friendPosts });
+
+  // // fetch user's posts
+  // const userPosts = await Post.find({ user: userId })
+  //   .sort({ timestamp: -1 })
+  //   .populate("user", "username profilePic")
+  //   .populate({
+  //     path: "comments",
+  //     populate: { path: "user", select: "username profilePic" },
+  //   });
+
+  // // create an array of friend Ids and own
+  // const friendIds = user.friends.map((friend) => friend._id);
+  // const friendsPosts = await Post.find({ user: { $in: friendIds } })
+  //   .sort({ timestamp: -1 })
+  //   .populate("user", "username profilePic")
+  //   .populate({
+  //     path: "comments",
+  //     populate: { path: "user", select: "username profilePic" },
+  //   });
+
+  // res.json({ userPosts, friendsPosts });
 });
 
 // Create post
