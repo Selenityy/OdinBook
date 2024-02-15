@@ -18,9 +18,9 @@ const FriendReqList = () => {
   };
 
   return (
-    <div className="flex flex-col rounded-lg p-2 gap-3 bg-slate-50">
+    <div className="flex flex-col rounded-lg p-2 gap-3 bg-slate-700">
       <div>
-        <h1 className="font-semibold text-gray-800">Friend Requests</h1>
+        <h1 className="font-bold tracking-wide text-white">Friend Requests</h1>
         <div className="mx-5 my-3">
           {friendRequests && friendRequests.length > 0 ? (
             <ul>
@@ -39,7 +39,7 @@ const FriendReqList = () => {
                       priority
                     />
                   </div>
-                  <div className="text-gray-800">{friendReq.username}</div>
+                  <div className="text-white">{friendReq.username}</div>
                   <div onClick={onAcceptClick}>
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -47,7 +47,7 @@ const FriendReqList = () => {
                       viewBox="0 0 24 24"
                       strokeWidth={2.5}
                       stroke="currentColor"
-                      className="w-4 h-4"
+                      className="w-4 h-4 text-white"
                     >
                       <path
                         strokeLinecap="round"
@@ -63,7 +63,7 @@ const FriendReqList = () => {
                       viewBox="0 0 24 24"
                       strokeWidth={2.5}
                       stroke="currentColor"
-                      className="w-4 h-4"
+                      className="w-4 h-4 text-white"
                     >
                       <path
                         strokeLinecap="round"
@@ -81,7 +81,7 @@ const FriendReqList = () => {
         </div>
       </div>
       <div>
-        <h1 className="font-semibold text-gray-800">Friends</h1>
+        <h1 className="font-bold tracking-wide text-white">Friends</h1>
         <div className="mx-5 my-3">
           {friends && friends.length > 0 ? (
             <ul>
@@ -97,7 +97,7 @@ const FriendReqList = () => {
                       priority
                     />
                   </div>
-                  <div className="text-gray-800">{friend.username}</div>
+                  <div className="text-white">{friend.username}</div>
                 </li>
               ))}
             </ul>
