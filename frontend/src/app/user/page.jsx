@@ -4,8 +4,8 @@ import UserFeed from "@/components/UserFeed";
 
 const UserHomePage = () => {
   return (
-    <div className="grid grid-cols-[70%_30%] grid-rows-[auto_1fr] gap-x-6 auto-row-auto h-screen w-full">
-      <section className="col-start-1 row-start-1 flex justify-center mb-8">
+    <div className="grid grid-cols-[1fr_auto] grid-rows-[auto_1fr] gap-x-8 auto-row-auto h-screen w-full">
+      <section className="col-start-1 row-start-1 flex justify-center">
         <CreatePostForm />
       </section>
       <section className="col-start-1 row-start-2 flex justify-center">
