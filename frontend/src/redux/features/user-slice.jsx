@@ -57,6 +57,41 @@ export const fetchUserFeedPosts = createAsyncThunk(
   }
 );
 
+// Async thunk for creating post
+export const postCreation = createAsyncThunk(
+  "/user/postCreation",
+  async ({ postData, userId }, thunkAPI) => {
+    console.log(postData);
+    console.log(userId);
+    const token = localStorage.getItem("token");
+    if (!token) {
+      return thunkAPI.rejectWithValue("No token found");
+    }
+    try {
+      const response = await fetch(
+        `http://localhost:3000/user/${userId}/posts`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ body: postData.post }),
+        }
+      );
+      if (!response.ok) {
+        throw new Error("Failed to create post");
+      }
+      const post = await response.json();
+      console.log("post", post);
+      // dispatch(fetchUserFeedPosts(userId));
+      return post;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
+
 // Async thunk for signing up
 export const signUpUser = createAsyncThunk(
   "/user/signUp",
@@ -149,6 +184,7 @@ export const userSlice = createSlice({
         state.loading = false;
         state.error = action.payload || "Failed to fetch user data";
       })
+
       // FETCH USER FEED POSTS
       .addCase(fetchUserFeedPosts.pending, (state, action) => {
         state.loading = true;
@@ -163,6 +199,27 @@ export const userSlice = createSlice({
         state.loading = false;
         state.error = action.payload || "Failed to fetch user feed post data";
       })
+
+      // CREATE POST
+      .addCase(postCreation.pending, (state, action) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(postCreation.fulfilled, (state, action) => {
+        // if (state.value.posts) {
+        //   state.value.posts = [action.payload, ...state.value.posts];
+        // } else {
+        //   state.value.posts = [action.payload];
+        // }
+        state.value = { ...state.value, ...action.payload };
+        state.loading = false;
+        state.error = null;
+      })
+      .addCase(postCreation.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload || "Failed to fetch post creation";
+      })
+
       // LOG IN
       .addCase(loginUser.pending, (state, action) => {
         state.loading = true;
@@ -178,6 +235,7 @@ export const userSlice = createSlice({
         state.loading = false;
         state.error = action.payload || "Failed to login user";
       })
+
       // SIGN UP
       .addCase(signUpUser.pending, (state, action) => {
         state.loading = true;
