@@ -1,14 +1,21 @@
 "use client";
 
 import { useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { postCreation, fetchUserFeedPosts } from "@/redux/features/user-slice";
 
 const CreatePostForm = () => {
   const [postData, setPostData] = useState({
     post: "",
   });
+  const dispatch = useDispatch();
+  const userState = useSelector((state) => state.user);
+  const userId = userState.value._id;
 
   const onPostCreationClick = (e) => {
     e.preventDefault();
+    dispatch(postCreation({ postData, userId }));
+    // dispatch(fetchUserFeedPosts(userId));
     setPostData({
       post: "",
     });
@@ -29,6 +36,10 @@ const CreatePostForm = () => {
               name="post-creation-content"
               className="text-lg px-2 pt-2 pb-10 w-full bg-slate-700 text-white"
               placeholder="What's on your mind..."
+              value={postData.post || ""}
+              onChange={(e) =>
+                setPostData({ ...postData, post: e.target.value })
+              }
               required
             />
           </div>
