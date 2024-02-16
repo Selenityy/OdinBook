@@ -19,7 +19,7 @@ module.exports = {
     },
     gridTemplateColumns: {
       homeLayout: "1fr auto 1fr",
-      userLayout: "auto 1fr",
+      userLayout: "0.3fr 1fr",
     },
     gridTemplateRows: {
       homeLayout: "1fr 2fr 1fr",
