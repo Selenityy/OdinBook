@@ -11,9 +11,8 @@ const UserFeed = () => {
   const userId = userState.value._id;
   const userPostArray = userState.value.userPosts || [];
   const friendsPostArray = userState.value.friendPosts || [];
-  const allPosts = [...userPostArray, ...friendsPostArray].sort(
-    (a, b) => b.timestamp - a.timestamp
-  );
+  const allPosts = [...userPostArray, ...friendsPostArray];
+  const sortedPosts = allPosts.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
 
   useEffect(() => {
     dispatch(fetchUserFeedPosts(userId));
@@ -22,9 +21,9 @@ const UserFeed = () => {
   return (
     <div className="w-full flex flex-col gap-6 auto-row-auto">
       <div className="flex flex-col">
-        {allPosts &&
-          allPosts.length > 0 &&
-          allPosts.map((post) => (
+        {sortedPosts &&
+          sortedPosts.length > 0 &&
+          sortedPosts.map((post) => (
             <div
               key={post._id}
               className="bg-slate-700 border border-slate-500 p-3 grid grid-cols-[min-content_min-content_min-content_1fr_min-content_min-content_min-content] grid-rows-[auto_1fr_min-content]"
