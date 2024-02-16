@@ -50,12 +50,6 @@ export const fetchUserFeedPosts = createAsyncThunk(
         throw new Error("Failed to fetch user post feed data");
       }
       const posts = await response.json();
-      // const allPosts = [...posts.userPosts, ...posts.friendPosts];
-
-      // const sortedPosts = allPosts.sort(
-      //   (a, b) => new Date(b.timestamp) - new Date(a.timestamp)
-      // );
-      console.log(posts);
       return posts;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
