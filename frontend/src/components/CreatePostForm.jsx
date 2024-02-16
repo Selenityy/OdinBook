@@ -12,13 +12,15 @@ const CreatePostForm = () => {
   const userState = useSelector((state) => state.user);
   const userId = userState.value._id;
 
-  const onPostCreationClick = (e) => {
+  const onPostCreationClick = async (e) => {
     e.preventDefault();
-    dispatch(postCreation({ postData, userId }));
-    // dispatch(fetchUserFeedPosts(userId));
-    setPostData({
-      post: "",
-    });
+    try {
+      await dispatch(postCreation({ postData, userId })).unwrap();
+      dispatch(fetchUserFeedPosts(userId));
+      setPostData({ post: "" });
+    } catch (error) {
+      console.error("Failed to create post:", error);
+    }
   };
 
   return (
