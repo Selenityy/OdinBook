@@ -7,7 +7,7 @@ import "../../styles/globals.css";
 const UserLayout = ({ children }) => {
   return (
     <div className="grid grid-areas-userLayout grid-cols-userLayout grid-rows-userLayout h-screen gap-y-4">
-      <section className="py-3 grid-in-header border-b-2 border-slate-50/[0.2]">
+      <section className="py-3 grid-in-header border-b-2 border-slate-50/[0.2] sticky top-0 backdrop-blur-lg z-10 bg-gradient-to-b from-slate-800">
         <Header />
       </section>
       {/* <section className="grid-in-user ml-[138px]">
