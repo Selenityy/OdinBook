@@ -206,11 +206,6 @@ export const userSlice = createSlice({
         state.error = null;
       })
       .addCase(postCreation.fulfilled, (state, action) => {
-        // if (state.value.posts) {
-        //   state.value.posts = [action.payload, ...state.value.posts];
-        // } else {
-        //   state.value.posts = [action.payload];
-        // }
         state.value = { ...state.value, ...action.payload };
         state.loading = false;
         state.error = null;
