@@ -146,13 +146,13 @@ exports.createPost = [
   // Controller logic
   asyncHandler(async (req, res, next) => {
     const authenticatedUserId = req.user._id;
-
+    
     // Check for validation errors
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
-
+    
     const post = new Post({
       body: req.body.body,
       user: authenticatedUserId,
