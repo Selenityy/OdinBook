@@ -43,34 +43,42 @@ exports.signup = asyncHandler(async (req, res, next) => {
 // Log in
 exports.login = asyncHandler(async (req, res, next) => {
   // authenticate user
-  passport.authenticate("local", { session: false }, async (err, user, info) => {
-    if (err || !user) {
-      const error = new Error("User does not exist");
-      return next(error);
+  passport.authenticate(
+    "local",
+    { session: false },
+    async (err, user, info) => {
+      if (err || !user) {
+        const error = new Error("User does not exist");
+        return next(error);
+      }
+
+      // req.login(user, { session: false }, (err) => {
+      //   if (err) {
+      //     return next(err);
+      //   }
+      // });
+
+      try {
+        const populatedUser = await User.findById(user._id)
+          .select("-password")
+          .populate("friends")
+          .populate("friendRequests")
+          .exec();
+
+        const token = jwt.sign(
+          { id: populatedUser._id },
+          process.env.SESSION_SECRET,
+          {
+            expiresIn: "1d",
+          }
+        );
+
+        res.status(200).json({ user: populatedUser, token });
+      } catch (populateError) {
+        next(populateError);
+      }
     }
-
-    // req.login(user, { session: false }, (err) => {
-    //   if (err) {
-    //     return next(err);
-    //   }
-    // });
-    
-    try {
-      const populatedUser = await User.findById(user._id)
-        .select("-password")
-        .populate("friends")
-        .populate("friendRequests")
-        .exec();
-
-      const token = jwt.sign({ id: populatedUser._id }, process.env.SESSION_SECRET, {
-        expiresIn: "1d",
-      });
-
-      res.status(200).json({ user: populatedUser, token });
-    } catch (populateError) {
-      next(populateError);
-    }
-  })(req, res, next);
+  )(req, res, next);
 });
 
 // Log out
