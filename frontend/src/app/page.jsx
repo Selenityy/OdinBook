@@ -1,4 +1,5 @@
 import Login from "@/components/Login";
+import TestUserLogIn from "@/components/TestUserLogIn";
 import Link from "next/link";
 import "../styles/globals.css";
 
@@ -21,6 +22,7 @@ const Home = () => {
           <div className="w-full border border-gray-500"></div>
         </div>
         <br></br>
+        <TestUserLogIn />
         <Link href="signup" className="">
           <button type="button" className="btn w-96">
             Create Account
