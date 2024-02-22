@@ -61,7 +61,7 @@ const FriendReqList = () => {
               {friendRequests.map((friendReq) => (
                 <li
                   key={friendReq._id}
-                  className="flex justify-center items-center space-x-3"
+                  className="flex justify-center items-center space-x-3 mb-3"
                 >
                   <div className="w-10 h-10 relative">
                     <Image
@@ -118,7 +118,10 @@ const FriendReqList = () => {
           {friends && friends.length > 0 ? (
             <ul>
               {friends.map((friend) => (
-                <li key={friend._id} className="flex items-center space-x-3">
+                <li
+                  key={friend._id}
+                  className="flex items-center space-x-3 mb-3"
+                >
                   <div className="w-10 h-10 relative">
                     <Image
                       src={`http://localhost:3000${friend.profilePic}`}
@@ -146,7 +149,7 @@ const FriendReqList = () => {
           {filteredUsers && filteredUsers.length > 0 ? (
             <ul>
               {filteredUsers.map((user) => (
-                <li key={user._id} className="flex items-center space-x-3">
+                <li key={user._id} className="flex items-center space-x-3 mb-3">
                   <div className="w-10 h-10 relative">
                     <Image
                       src={`http://localhost:3000${user.profilePic}`}
