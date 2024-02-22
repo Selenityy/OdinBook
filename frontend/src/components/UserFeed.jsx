@@ -32,9 +32,9 @@ const UserFeed = () => {
                 <Image
                   src={`http://localhost:3000${post.user.profilePic}`}
                   alt={`${post.user.username}'s profile picture`}
-                  layout="fill"
-                  objectFit="cover"
-                  className="rounded-full"
+                  fill
+                  className="rounded-full object-cover"
+                  sizes="100%"
                   priority
                 />
               </div>
