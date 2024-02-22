@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { signUpUser } from "@/redux/features/user-slice";
 
@@ -16,8 +15,9 @@ const SignUp = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [passwordMismatch, setPasswordMismatch] = useState(false);
   const [userCreated, setUserCreated] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
   const dispatch = useDispatch();
-  const router = useRouter();
+  let res;
 
   const onClickSignUp = async (e) => {
     e.preventDefault();
@@ -25,7 +25,12 @@ const SignUp = () => {
       setPasswordMismatch(true);
     } else {
       setPasswordMismatch(false);
-      dispatch(signUpUser(formData));
+      res = dispatch(signUpUser(formData));
+    }
+
+    if (!res.ok) {
+      setErrorMessage("*Username or Email already exists.");
+    } else {
       setUserCreated(true);
       setFormData({
         firstName: "",
@@ -35,53 +40,54 @@ const SignUp = () => {
         password: "",
       });
       setConfirmPassword("");
-      // router.push("/");
     }
   };
 
   return (
     <div className="w-96">
-      <form className="w-full grid" onSubmit={onClickSignUp}>
-        <div className="pb-3 flex gap-2">
-          <label htmlFor="firstName" className="text-gray-700 text-lg">
-            First Name:
-          </label>
-          <input
-            type="text"
-            id="firstName"
-            name="firstName"
-            className="text-gray-800 text-lg indent-1 flex grow"
-            value={formData.firstName || ""}
-            onChange={(e) =>
-              setFormData({ ...formData, firstName: e.target.value })
-            }
-            required
-          />
+      <form className="w-96 grid" onSubmit={onClickSignUp}>
+        <div className="pb-3 w-96 flex gap-2">
+          <div className="flex-1">
+            <label
+              htmlFor="firstName"
+              className="text-gray-700 text-lg"
+            ></label>
+            <input
+              type="text"
+              id="firstName"
+              name="firstName"
+              placeholder="First Name"
+              className="text-gray-800 text-lg indent-1 w-full"
+              value={formData.firstName || ""}
+              onChange={(e) =>
+                setFormData({ ...formData, firstName: e.target.value })
+              }
+              required
+            />
+          </div>
+          <div className="flex-1">
+            <label htmlFor="lastName" className="text-gray-700 text-lg"></label>
+            <input
+              type="text"
+              id="lastName"
+              name="lastName"
+              placeholder="Last Name"
+              className="text-gray-800 text-lg indent-1 w-full"
+              value={formData.lastName || ""}
+              onChange={(e) =>
+                setFormData({ ...formData, lastName: e.target.value })
+              }
+              required
+            />
+          </div>
         </div>
-        <div className="pb-3 flex gap-2">
-          <label htmlFor="lastName" className="text-gray-700 text-lg">
-            Last Name:
-          </label>
-          <input
-            type="text"
-            id="lastName"
-            name="lastName"
-            className="text-gray-800 text-lg indent-1 flex grow"
-            value={formData.lastName || ""}
-            onChange={(e) =>
-              setFormData({ ...formData, lastName: e.target.value })
-            }
-            required
-          />
-        </div>
-        <div className="pb-3 flex gap-2">
-          <label htmlFor="email" className="text-gray-700 text-lg">
-            Email:
-          </label>
+        <div className="pb-3 w-96 flex">
+          <label htmlFor="email" className="text-gray-700 text-lg"></label>
           <input
             type="email"
             id="email"
             name="email"
+            placeholder="Email"
             className="text-gray-800 text-lg indent-1 flex grow"
             value={formData.email || ""}
             onChange={(e) =>
@@ -90,14 +96,13 @@ const SignUp = () => {
             required
           />
         </div>
-        <div className="pb-3 flex gap-2">
-          <label htmlFor="username" className="text-gray-700 text-lg">
-            Username:
-          </label>
+        <div className="pb-3 w-96 flex">
+          <label htmlFor="username" className="text-gray-700 text-lg"></label>
           <input
             type="username"
             id="username"
             name="username"
+            placeholder="Username"
             className="text-gray-800 text-lg indent-1 flex grow"
             value={formData.username || ""}
             onChange={(e) =>
@@ -106,14 +111,13 @@ const SignUp = () => {
             required
           />
         </div>
-        <div className="pb-3 flex gap-2">
-          <label htmlFor="password" className="text-gray-700 text-lg">
-            Password:
-          </label>
+        <div className="pb-3 w-96 flex">
+          <label htmlFor="password" className="text-gray-700 text-lg"></label>
           <input
             type="password"
             id="password"
             name="password"
+            placeholder="Password"
             className={`text-gray-800 text-lg indent-1 flex grow ${
               passwordMismatch ? "border border-red-500" : ""
             }`}
@@ -125,14 +129,16 @@ const SignUp = () => {
             required
           />
         </div>
-        <div className="pb-3 flex gap-2">
-          <label htmlFor="confirmPassword" className="text-gray-700 text-lg">
-            Confirm Password:
-          </label>
+        <div className="pb-6 w-96 flex">
+          <label
+            htmlFor="confirmPassword"
+            className="text-gray-700 text-lg"
+          ></label>
           <input
             type="password"
             id="confirmPassword"
             name="confirmPassword"
+            placeholder="Confirm Password"
             className={`text-gray-800 text-lg indent-1 flex grow ${
               passwordMismatch ? "border border-red-500" : ""
             }`}
@@ -149,7 +155,10 @@ const SignUp = () => {
             *Passwords do not match
           </div>
         )}
-        <button id="sign-up-btn" type="submit" className="btn">
+        {errorMessage.length > 1 && (
+          <div className="text-red-500 text-sm italic">{errorMessage}</div>
+        )}
+        <button id="sign-up-btn" type="submit" className="btn w-96">
           Sign Up
         </button>
       </form>
