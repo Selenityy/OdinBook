@@ -1,5 +1,6 @@
 import SignUp from "@/components/SignUp";
 import Link from "next/link";
+import "../../styles/globals.css";
 
 const HomeSignUp = () => {
   return (

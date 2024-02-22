@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useSelector } from "react-redux";
+import "../../../styles/globals.css";
 
 const UserProfilePage = () => {
   const userState = useSelector((state) => state.user);
