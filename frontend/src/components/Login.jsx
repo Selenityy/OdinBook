@@ -11,17 +11,31 @@ const Login = () => {
     username: "",
     password: "",
   });
+  const [errorMessage, setErrorMessage] = useState("");
+
   const dispatch = useDispatch();
   const router = useRouter();
 
-  const onClickLogIn = (e) => {
+  const onClickLogIn = async (e) => {
     e.preventDefault();
-    dispatch(loginUser(formData));
-    setFormData({
-      username: "",
-      password: "",
-    });
-    router.push("/user");
+    try {
+      const res = await dispatch(loginUser(formData));
+      console.log(res);
+      const user = res.payload._id;
+
+      if (user) {
+        setFormData({
+          username: "",
+          password: "",
+        });
+        router.push("/user");
+      } else {
+        setErrorMessage("*Username or Password is incorrect.");
+      }
+    } catch (error) {
+      setErrorMessage("*Username or Password is incorrect.");
+      console.error("Failed to log in:", error);
+    }
   };
 
   return (
@@ -59,6 +73,9 @@ const Login = () => {
             required
           />
         </div>
+        {errorMessage.length > 1 && (
+          <div className="text-red-500 text-sm italic">{errorMessage}</div>
+        )}
         <button id="login-btn" type="submit" className="btn">
           Log In
         </button>
