@@ -86,7 +86,7 @@ const UserProfile = () => {
             </div>
           )}
         </div>
-        {/* <div>{username}</div> */}
+        <div className="flex items-center font-semibold text-white">{username}</div>
       </section>
     </Suspense>
   );
