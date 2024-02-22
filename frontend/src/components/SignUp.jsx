@@ -23,14 +23,16 @@ const SignUp = () => {
     e.preventDefault();
     if (formData.password !== confirmPassword) {
       setPasswordMismatch(true);
-    } else {
-      setPasswordMismatch(false);
-      res = dispatch(signUpUser(formData));
+      return; // Stop the execution if passwords don't match
     }
 
-    if (!res.ok) {
-      setErrorMessage("*Username or Email already exists.");
-    } else {
+    // Reset state in case of previous errors or mismatch
+    setPasswordMismatch(false);
+    setErrorMessage("");
+
+    const actionResult = await dispatch(signUpUser(formData));
+    console.log(actionResult);
+    if (signUpUser.fulfilled.match(actionResult)) {
       setUserCreated(true);
       setFormData({
         firstName: "",
@@ -40,6 +42,11 @@ const SignUp = () => {
         password: "",
       });
       setConfirmPassword("");
+    } else if (signUpUser.rejected.match(actionResult)) {
+      const errorMessage = actionResult.payload
+        ? actionResult.payload
+        : "An error occurred";
+      setErrorMessage(errorMessage);
     }
   };
 
