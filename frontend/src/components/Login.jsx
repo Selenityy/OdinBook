@@ -20,7 +20,6 @@ const Login = () => {
     e.preventDefault();
     try {
       const res = await dispatch(loginUser(formData));
-      console.log(res);
       const user = res.payload._id;
 
       if (user) {
