@@ -112,7 +112,6 @@ exports.getAllUsers = asyncHandler(async (req, res, next) => {
     if (!users) {
       return res.status(404).json({ message: "Users not found" });
     } else {
-      // console.log(users);
       res.json(users);
     }
   } catch (error) {
