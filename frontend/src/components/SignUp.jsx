@@ -43,10 +43,10 @@ const SignUp = () => {
       });
       setConfirmPassword("");
     } else if (signUpUser.rejected.match(actionResult)) {
-      const errorMessage = actionResult.payload
-        ? actionResult.payload
-        : "An error occurred";
-      setErrorMessage(errorMessage);
+      // const errorMessage = actionResult.payload
+      //   ? actionResult.payload
+      //   : "An error occurred";
+      setErrorMessage("*Username or Email is already taken");
     }
   };
 
@@ -66,9 +66,10 @@ const SignUp = () => {
               placeholder="First Name"
               className="text-gray-800 text-lg indent-1 w-full"
               value={formData.firstName || ""}
-              onChange={(e) =>
-                setFormData({ ...formData, firstName: e.target.value })
-              }
+              onChange={(e) => {
+                setFormData({ ...formData, firstName: e.target.value });
+                setUserCreated(false);
+              }}
               required
             />
           </div>
@@ -81,9 +82,10 @@ const SignUp = () => {
               placeholder="Last Name"
               className="text-gray-800 text-lg indent-1 w-full"
               value={formData.lastName || ""}
-              onChange={(e) =>
-                setFormData({ ...formData, lastName: e.target.value })
-              }
+              onChange={(e) => {
+                setFormData({ ...formData, lastName: e.target.value });
+                setUserCreated(false);
+              }}
               required
             />
           </div>
@@ -97,9 +99,10 @@ const SignUp = () => {
             placeholder="Email"
             className="text-gray-800 text-lg indent-1 flex grow"
             value={formData.email || ""}
-            onChange={(e) =>
-              setFormData({ ...formData, email: e.target.value })
-            }
+            onChange={(e) => {
+              setFormData({ ...formData, email: e.target.value });
+              setUserCreated(false);
+            }}
             required
           />
         </div>
@@ -112,9 +115,10 @@ const SignUp = () => {
             placeholder="Username"
             className="text-gray-800 text-lg indent-1 flex grow"
             value={formData.username || ""}
-            onChange={(e) =>
-              setFormData({ ...formData, username: e.target.value })
-            }
+            onChange={(e) => {
+              setFormData({ ...formData, username: e.target.value });
+              setUserCreated(false);
+            }}
             required
           />
         </div>
@@ -132,6 +136,7 @@ const SignUp = () => {
             onChange={(e) => {
               setFormData({ ...formData, password: e.target.value });
               setPasswordMismatch(false);
+              setUserCreated(false);
             }}
             required
           />
@@ -153,6 +158,7 @@ const SignUp = () => {
             onChange={(e) => {
               setConfirmPassword(e.target.value);
               setPasswordMismatch(false);
+              setUserCreated(false);
             }}
             required
           />
