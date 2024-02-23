@@ -17,7 +17,6 @@ const SignUp = () => {
   const [userCreated, setUserCreated] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const dispatch = useDispatch();
-  let res;
 
   const onClickSignUp = async (e) => {
     e.preventDefault();
