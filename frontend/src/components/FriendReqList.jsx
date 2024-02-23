@@ -74,7 +74,7 @@ const FriendReqList = () => {
                     />
                   </div>
                   <div className="text-white">{friendReq.username}</div>
-                  <div onClick={onAcceptClick}>
+                  <div onClick={() => onAcceptClick()}>
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       viewBox="0 0 24 24"
@@ -89,7 +89,7 @@ const FriendReqList = () => {
                       />
                     </svg>
                   </div>
-                  <div onClick={onRejectClick}>
+                  <div onClick={() => onRejectClick()}>
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       viewBox="0 0 24 24"
@@ -161,7 +161,7 @@ const FriendReqList = () => {
                     />
                   </div>
                   <div className="text-white">{user.username}</div>
-                  <div onClick={onFriendRequestClick}>
+                  <div onClick={() => onFriendRequestClick()}>
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       viewBox="0 0 24 24"
