@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
-// Async thunk for current user
+// Get the current user model from jwt token
 export const fetchUserData = createAsyncThunk(
   "/user/fetchUserData",
   async (_, thunkAPI) => {
@@ -27,7 +27,7 @@ export const fetchUserData = createAsyncThunk(
   }
 );
 
-// Async thunk for retrieving posts
+// Retrieving current user's posts and their friend's posts
 export const fetchUserFeedPosts = createAsyncThunk(
   "/user/fetchUserFeedPosts",
   async (userId, thunkAPI) => {
@@ -57,7 +57,39 @@ export const fetchUserFeedPosts = createAsyncThunk(
   }
 );
 
-// Async thunk for creating post
+// Send friend request
+export const fetchSendFriendRequests = createAsyncThunk(
+  "/user/fetchSendFriendRequests",
+  async ({ userId, friendUsername }, thunkAPI) => {
+    console.log(userId);
+    const token = localStorage.getItem("token");
+    if (!token) {
+      return thunkAPI.rejectWithValue("No token found");
+    }
+    try {
+      const response = await fetch(
+        `http://localhost:3000/user/${userId}/sendFriendRequest/${friendUsername}`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      const data = await response.json();
+      console.log("data", data);
+      if (!response.ok) {
+        throw new Error(data.message || "Could not send friend request");
+      }
+      return { userId, recipientId };
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
+
+// Creating a post
 export const postCreation = createAsyncThunk(
   "/user/postCreation",
   async ({ postData, userId }, thunkAPI) => {
@@ -92,7 +124,7 @@ export const postCreation = createAsyncThunk(
   }
 );
 
-// Async thunk for signing up
+// Signing up
 export const signUpUser = createAsyncThunk(
   "/user/signUp",
   async (formData, thunkAPI) => {
@@ -115,7 +147,7 @@ export const signUpUser = createAsyncThunk(
   }
 );
 
-// Async thunk for logging in
+// Logging in
 export const loginUser = createAsyncThunk(
   "/user/login",
   async (formData, thunkAPI) => {
@@ -139,6 +171,7 @@ export const loginUser = createAsyncThunk(
   }
 );
 
+// Initial State values
 const initialState = {
   value: {
     firstName: "",
@@ -150,6 +183,7 @@ const initialState = {
     profilePic: "",
     friends: [],
     friendRequests: [],
+    sentRequests: [],
     posts: [],
     _id: "",
     testUser: false,
@@ -198,6 +232,22 @@ export const userSlice = createSlice({
       .addCase(fetchUserFeedPosts.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload || "Failed to fetch user feed post data";
+      })
+
+      // SEND FRIEND REQUEST
+      .addCase(fetchSendFriendRequests.pending, (state, action) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchSendFriendRequests.fulfilled, (state, action) => {
+        state.value = { ...state.value, ...action.payload };
+        state.isLoggedIn = true;
+        state.loading = false;
+        state.error = null;
+      })
+      .addCase(fetchSendFriendRequests.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload || "Failed to send friend request";
       })
 
       // CREATE POST
