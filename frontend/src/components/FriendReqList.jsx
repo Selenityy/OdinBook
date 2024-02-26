@@ -3,27 +3,20 @@
 import { useSelector, useDispatch } from "react-redux";
 import Image from "next/image";
 import { useState, useEffect } from "react";
+import { fetchSendFriendRequests } from "@/redux/features/user-slice";
 
 const FriendReqList = () => {
-  //   const dispatch = useDispatch();
+  const dispatch = useDispatch();
   const userState = useSelector((state) => state.user);
   const friends = userState.value.friends;
   const friendRequests = userState.value.friendRequests;
-  const [allUsers, setAllUsers] = useState([]);
-
-  // Extract Ids
-  const friendIds = friends.map((friend) => friend._id);
-  const friendRequestsId = friendRequests.map((request) => request._id);
+  const sentRequests = userState.value.sentRequests;
   const currentUserId = userState.value._id;
+  const [allUsers, setAllUsers] = useState([]);
+  const [unfriendedUsers, setUnfriendedUsers] = useState([]);
+  const [refreshDataTrigger, setRefreshDataTrigger] = useState(false);
 
-  // Filter allUsers removing the friends, friend requests and current user
-  const filteredUsers = allUsers.filter(
-    (user) =>
-      !friendIds.includes(user._id) &&
-      !friendRequestsId.includes(user._id) &&
-      user._id !== currentUserId
-  );
-
+  // on render, fetch all users and update the allUsers state
   useEffect(() => {
     async function fetchData() {
       const res = await fetch(`http://localhost:3000/user/all`, {
@@ -35,9 +28,21 @@ const FriendReqList = () => {
       const allUsersObj = await res.json();
       setAllUsers(allUsersObj);
     }
-
     fetchData();
-  }, []);
+  }, [refreshDataTrigger]);
+
+  // rerender the unfriendedUsers when allUsers, friends, friendRequests or current user changes
+  useEffect(() => {
+    const friendIds = friends.map((friend) => friend._id);
+    const friendRequestsId = friendRequests.map((request) => request._id);
+    const remainingUsers = allUsers.filter(
+      (user) =>
+        !friendIds.includes(user._id) &&
+        !friendRequestsId.includes(user._id) &&
+        user._id !== currentUserId
+    );
+    setUnfriendedUsers(remainingUsers);
+  }, [allUsers, friends, friendRequests, currentUserId]);
 
   const onAcceptClick = () => {
     console.log("accepted");
@@ -47,7 +52,9 @@ const FriendReqList = () => {
     console.log("rejected");
   };
 
-  const onFriendRequestClick = () => {
+  const onFriendRequestClick = async (userId, friendUsername) => {
+    await dispatch(fetchSendFriendRequests({ userId, friendUsername }));
+    setRefreshDataTrigger((prev) => !prev);
     console.log("friend requested");
   };
 
@@ -146,9 +153,9 @@ const FriendReqList = () => {
           People You May Know
         </h1>
         <div className="mx-5 my-3">
-          {filteredUsers && filteredUsers.length > 0 ? (
+          {unfriendedUsers && unfriendedUsers.length > 0 ? (
             <ul>
-              {filteredUsers.map((user) => (
+              {unfriendedUsers.map((user) => (
                 <li key={user._id} className="flex items-center space-x-3 mb-3">
                   <div className="w-10 h-10 relative">
                     <Image
@@ -161,21 +168,43 @@ const FriendReqList = () => {
                     />
                   </div>
                   <div className="text-white">{user.username}</div>
-                  <div onClick={() => onFriendRequestClick()}>
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 24 24"
-                      strokeWidth={1.75}
-                      stroke="currentColor"
-                      className="w-5 h-5 text-white fill-none"
+                  {sentRequests.some((request) => request._id === user._id) ? (
+                    <div>
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                        strokeWidth={1.5}
+                        stroke="currentColor"
+                        className="w-5 h-5 text-white fill-none"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M8.625 12a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H8.25m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H12m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0h-.375M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                        />
+                      </svg>
+                    </div>
+                  ) : (
+                    <div
+                      onClick={() =>
+                        onFriendRequestClick(currentUserId, user.username)
+                      }
                     >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M18 7.5v3m0 0v3m0-3h3m-3 0h-3m-2.25-4.125a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0ZM3 19.235v-.11a6.375 6.375 0 0 1 12.75 0v.109A12.318 12.318 0 0 1 9.374 21c-2.331 0-4.512-.645-6.374-1.766Z"
-                      />
-                    </svg>
-                  </div>
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                        strokeWidth={1.75}
+                        stroke="currentColor"
+                        className="w-5 h-5 text-white fill-none"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M18 7.5v3m0 0v3m0-3h3m-3 0h-3m-2.25-4.125a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0ZM3 19.235v-.11a6.375 6.375 0 0 1 12.75 0v.109A12.318 12.318 0 0 1 9.374 21c-2.331 0-4.512-.645-6.374-1.766Z"
+                        />
+                      </svg>
+                    </div>
+                  )}
                 </li>
               ))}
             </ul>
