@@ -64,6 +64,7 @@ exports.login = asyncHandler(async (req, res, next) => {
           .select("-password")
           .populate("friends")
           .populate("friendRequests")
+          .populate("sentRequests")
           .exec();
 
         const token = jwt.sign(
@@ -286,12 +287,14 @@ exports.sendFriendRequest = asyncHandler(async (req, res, next) => {
 
   await recipientUser.save();
   await currentUser.save();
-  console.log("friend", recipientUser);
-  console.log("user", currentUser);
+  const updatedCurrentUser = await User.findById(currentUser._id).populate(
+    "sentRequests"
+  );
 
   res.status(200).json({
     message: "Friend request sent successfully",
     recipientId: recipientUser._id,
+    currentUser: updatedCurrentUser,
   });
 });
 
