@@ -20,6 +20,7 @@ export const fetchUserData = createAsyncThunk(
         throw new Error("Failed to fetch user data");
       }
       const user = await response.json();
+      console.log(user);
       return user;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
@@ -61,7 +62,6 @@ export const fetchUserFeedPosts = createAsyncThunk(
 export const fetchSendFriendRequests = createAsyncThunk(
   "/user/fetchSendFriendRequests",
   async ({ userId, friendUsername }, thunkAPI) => {
-    console.log(userId);
     const token = localStorage.getItem("token");
     if (!token) {
       return thunkAPI.rejectWithValue("No token found");
@@ -78,11 +78,14 @@ export const fetchSendFriendRequests = createAsyncThunk(
         }
       );
       const data = await response.json();
-      console.log("data", data);
       if (!response.ok) {
         throw new Error(data.message || "Could not send friend request");
       }
-      return { userId, recipientId };
+      return {
+        userId,
+        recipientId: data.recipientId,
+        currentUser: data.currentUser,
+      };
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
     }
@@ -240,7 +243,7 @@ export const userSlice = createSlice({
         state.error = null;
       })
       .addCase(fetchSendFriendRequests.fulfilled, (state, action) => {
-        state.value = { ...state.value, ...action.payload };
+        state.value.sentRequests = action.payload.currentUser.sentRequests;
         state.isLoggedIn = true;
         state.loading = false;
         state.error = null;
