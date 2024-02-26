@@ -6,6 +6,7 @@ const Post = require("../models/postModel");
 const Comment = require("../models/commentModel");
 const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
+const mongoose = require("mongoose");
 
 // Sign up
 exports.signup = asyncHandler(async (req, res, next) => {
@@ -126,6 +127,7 @@ exports.getUserFromToken = asyncHandler(async (req, res, next) => {
       .select("-password")
       .populate("friends")
       .populate("friendRequests")
+      .populate("sentRequests")
       .exec();
     if (!user) {
       return res.status(404).json({ message: "User not found" });
@@ -255,9 +257,12 @@ exports.getPendingFriendRequests = asyncHandler(async (req, res, next) => {
 exports.sendFriendRequest = asyncHandler(async (req, res, next) => {
   const requesterId = req.params.userId;
   const friendUsername = req.params.friendUsername;
+  const id = new mongoose.Types.ObjectId(requesterId);
 
+  const currentUser = await User.findOne({ _id: id });
   const recipientUser = await User.findOne({ username: friendUsername });
-  if (!recipientUser) {
+
+  if (!recipientUser || !currentUser) {
     return res.status(404).json({ message: "User not found" });
   }
 
@@ -276,14 +281,18 @@ exports.sendFriendRequest = asyncHandler(async (req, res, next) => {
       .json({ message: "Cannot sent friend request to yourself" });
   }
 
-  // console.log("recipientUser:", recipientUser);
-  // console.log("requesterId:", requesterId);
-  // console.log("before:", recipientUser.friendRequests);
   recipientUser.friendRequests.push(requesterId);
-  // console.log("after:", recipientUser.friendRequests);
-  await recipientUser.save();
+  currentUser.sentRequests.push(recipientUser._id);
 
-  res.status(200).json({ message: "Friend request sent successfully" });
+  await recipientUser.save();
+  await currentUser.save();
+  console.log("friend", recipientUser);
+  console.log("user", currentUser);
+
+  res.status(200).json({
+    message: "Friend request sent successfully",
+    recipientId: recipientUser._id,
+  });
 });
 
 // Accept a friend request
