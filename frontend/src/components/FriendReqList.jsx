@@ -26,15 +26,16 @@ const FriendReqList = () => {
   useEffect(() => {
     async function fetchUpdatedUser() {
       try {
-        // Using unwrap to handle the promise from dispatch
-        const resultAction = await dispatch(fetchUserData()).unwrap();
-        // Do something with resultAction if needed, e.g., update state
+        await dispatch(fetchUserData()).unwrap();
       } catch (error) {
         console.error("Failed to fetch user data:", error);
       }
     }
 
     fetchUpdatedUser();
+
+    const intervalId = setInterval(fetchUpdatedUser, 6000); // 6000 = 1 minute
+    return () => clearInterval(intervalId);
   }, [dispatch, refreshDataTrigger]);
 
   // on render and on trigger rerender, fetch all users and update the state
