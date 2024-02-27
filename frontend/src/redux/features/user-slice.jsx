@@ -231,8 +231,6 @@ export const fetchUnfriend = createAsyncThunk(
 export const postCreation = createAsyncThunk(
   "/user/postCreation",
   async ({ postData, userId }, thunkAPI) => {
-    console.log(postData);
-    console.log(userId);
     const token = localStorage.getItem("token");
     if (!token) {
       return thunkAPI.rejectWithValue("No token found");
@@ -253,8 +251,6 @@ export const postCreation = createAsyncThunk(
         throw new Error("Failed to create post");
       }
       const post = await response.json();
-      console.log("post", post);
-      // dispatch(fetchUserFeedPosts(userId));
       return post;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
