@@ -12,11 +12,30 @@ const UserFeed = () => {
   const userPostArray = userState.value.userPosts || [];
   const friendsPostArray = userState.value.friendPosts || [];
   const allPosts = [...userPostArray, ...friendsPostArray];
-  const sortedPosts = allPosts.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+  const sortedPosts = allPosts.sort(
+    (a, b) => new Date(b.timestamp) - new Date(a.timestamp)
+  );
 
   useEffect(() => {
-    dispatch(fetchUserFeedPosts(userId));
+    const updateUserFeed = async () => {
+      try {
+        await dispatch(fetchUserFeedPosts(userId));
+      } catch (error) {
+        console.error("Failed to fetch userFeed:", error);
+      }
+    };
+
+    updateUserFeed();
+
+    const intervalId = setInterval(updateUserFeed, 60000); // 60000 = 1 minute
+    return () => clearInterval(intervalId);
   }, [dispatch, userId]);
+
+  const onLikeClick = () => {
+      // if the comment has a like then unlike
+      // if the comment has an unlike then like
+      
+  };
 
   return (
     <div className="w-full flex flex-col gap-6 auto-row-auto">
@@ -47,14 +66,16 @@ const UserFeed = () => {
               <div className="col-start-2 col-span-5 row-start-2 mb-5 text-white">
                 {post.body}
               </div>
-              <div className="col-start-2 row-start-3">
+              <div
+                onClick={() => onLikeClick()}
+                className="col-start-2 row-start-3"
+              >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
                   viewBox="0 0 24 24"
                   strokeWidth={1.5}
                   stroke="currentColor"
-                  className="w-6 h-6 text-white"
+                  className="w-6 h-6 text-white fill-none"
                 >
                   <path
                     strokeLinecap="round"
@@ -69,11 +90,10 @@ const UserFeed = () => {
               <div className="col-start-5 row-start-3">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
                   viewBox="0 0 24 24"
                   strokeWidth={1.5}
                   stroke="currentColor"
-                  className="w-6 h-6 text-white"
+                  className="w-6 h-6 text-white fill-none"
                 >
                   <path
                     strokeLinecap="round"
