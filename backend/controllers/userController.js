@@ -362,14 +362,12 @@ exports.rejectFriendRequest = asyncHandler(async (req, res, next) => {
     .populate("friendRequests")
     .populate("sentRequests");
 
-  res
-    .status(200)
-    .json({
-      message: "Friend request rejected",
-      userId,
-      recipientId: updatedRecipientUser._id,
-      currentUser: updatedCurrentUser,
-    });
+  res.status(200).json({
+    message: "Friend request rejected",
+    userId,
+    recipientId: updatedRecipientUser._id,
+    currentUser: updatedCurrentUser,
+  });
 });
 
 // Unfriend someone
@@ -379,10 +377,26 @@ exports.unfriend = asyncHandler(async (req, res, next) => {
   const friend = await User.findOne({ username: friendUsername });
   const friendId = friend._id;
 
+  // the friend's id is pulled from the current user's friends
   await User.findByIdAndUpdate(userId, { $pull: { friends: friendId } });
+
+  // the current user id is pulled from the recipient's friends
   await User.findByIdAndUpdate(friendId, { $pull: { friends: userId } });
 
-  res.status(200).json({ message: "Friend removed successfully" });
+  // Get the most up to date user model for current user and recipient user
+  const updatedRecipientUser = await User.findById(friendId).populate(
+    "friends"
+  );
+  const updatedCurrentUser = await User.findById(userId).populate("friends");
+
+  res
+    .status(200)
+    .json({
+      message: "Friend removed successfully",
+      userId,
+      recipientId: updatedRecipientUser._id,
+      currentUser: updatedCurrentUser,
+    });
 });
 
 // Delete own friend request sent
@@ -392,8 +406,30 @@ exports.deleteFriendRequest = asyncHandler(async (req, res, next) => {
   const friend = await User.findOne({ username: friendUsername });
   const friendId = friend._id;
 
+  // the current user id is pulled from the recipient's friend's requests
   await User.findByIdAndUpdate(friendId, {
     $pull: { friendRequests: userId },
   });
-  res.status(200).json({ message: "Friend request deleted successfully" });
+
+  // the friend's id is pull from the current user's sent requests
+  await User.findByIdAndUpdate(userId, {
+    $pull: { sentRequests: friendId },
+  });
+
+  // Get the most up to date user model for current user and recipient user
+  const updatedRecipientUser = await User.findById(friendId)
+    .populate("friends")
+    .populate("friendRequests")
+    .populate("sentRequests");
+  const updatedCurrentUser = await User.findById(userId)
+    .populate("friends")
+    .populate("friendRequests")
+    .populate("sentRequests");
+
+  res.status(200).json({
+    message: "Friend request deleted successfully",
+    userId,
+    recipientId: updatedRecipientUser._id,
+    currentUser: updatedCurrentUser,
+  });
 });
