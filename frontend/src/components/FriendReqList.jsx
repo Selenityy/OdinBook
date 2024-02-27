@@ -34,7 +34,7 @@ const FriendReqList = () => {
 
     fetchUpdatedUser();
 
-    const intervalId = setInterval(fetchUpdatedUser, 6000); // 6000 = 1 minute
+    const intervalId = setInterval(fetchUpdatedUser, 60000); // 60000 = 1 minute
     return () => clearInterval(intervalId);
   }, [dispatch, refreshDataTrigger]);
 
