@@ -3,7 +3,11 @@
 import { useSelector, useDispatch } from "react-redux";
 import Image from "next/image";
 import { useState, useEffect } from "react";
-import { fetchSendFriendRequests } from "@/redux/features/user-slice";
+import {
+  fetchSendFriendRequests,
+  fetchAcceptFriendRequest,
+  fetchRejectFriendRequest,
+} from "@/redux/features/user-slice";
 
 const FriendReqList = () => {
   const dispatch = useDispatch();
@@ -16,7 +20,7 @@ const FriendReqList = () => {
   const [unfriendedUsers, setUnfriendedUsers] = useState([]);
   const [refreshDataTrigger, setRefreshDataTrigger] = useState(false);
 
-  // on render, fetch all users and update the allUsers state
+  // on render and on trigger rerender, fetch all users and update the state
   useEffect(() => {
     async function fetchData() {
       const res = await fetch(`http://localhost:3000/user/all`, {
@@ -28,35 +32,52 @@ const FriendReqList = () => {
       const allUsersObj = await res.json();
       setAllUsers(allUsersObj);
     }
+
     fetchData();
   }, [refreshDataTrigger]);
 
-  // rerender the unfriendedUsers when allUsers, friends, friendRequests or current user changes
+  // on render and on users change, set the people you may know
   useEffect(() => {
+    // get friend, friend request and user id
     const friendIds = friends.map((friend) => friend._id);
     const friendRequestsId = friendRequests.map((request) => request._id);
+
+    // filter those ids out of all the users
     const remainingUsers = allUsers.filter(
       (user) =>
         !friendIds.includes(user._id) &&
         !friendRequestsId.includes(user._id) &&
         user._id !== currentUserId
     );
+
+    // remaining users are people you may know, aka non-friends
     setUnfriendedUsers(remainingUsers);
   }, [allUsers, friends, friendRequests, currentUserId]);
 
-  const onAcceptClick = () => {
+  // when clicking accept, we fetch and set the trigger to rerender the component to reflect the changes
+  const onAcceptClick = async (userId, friendUsername) => {
+    await dispatch(fetchAcceptFriendRequest({ userId, friendUsername }));
+    // needs window to be reloaded because friends, friendRequests and sentRequests are not a state but being pulled in on initial load. Do not need to reload the allUsers at the moment.
+    // setRefreshDataTrigger((prev) => !prev);
     console.log("accepted");
   };
 
-  const onRejectClick = () => {
+  // when clicking reject, we fetch and set the trigger to rerender the component to reflect the changes
+  const onRejectClick = async (userId, friendUsername) => {
+    await dispatch(fetchRejectFriendRequest({ userId, friendUsername }));
+    // needs window to be reloaded because friends, friendRequests and sentRequests are not a state but being pulled in on initial load. Do not need to reload the allUsers at the moment.
+    // setRefreshDataTrigger((prev) => !prev);
     console.log("rejected");
   };
 
+  // when clicking add friend, we fetch and set the trigger to rerender the component to reflect the changes
   const onFriendRequestClick = async (userId, friendUsername) => {
     await dispatch(fetchSendFriendRequests({ userId, friendUsername }));
+
     setRefreshDataTrigger((prev) => !prev);
-    console.log("friend requested");
   };
+
+  // Add in removing friend request and removing friend
 
   return (
     <div className="flex flex-col rounded-lg p-2 gap-3 bg-slate-700">
@@ -81,7 +102,11 @@ const FriendReqList = () => {
                     />
                   </div>
                   <div className="text-white">{friendReq.username}</div>
-                  <div onClick={() => onAcceptClick()}>
+                  <div
+                    onClick={() =>
+                      onAcceptClick(currentUserId, friendReq.username)
+                    }
+                  >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       viewBox="0 0 24 24"
@@ -96,7 +121,11 @@ const FriendReqList = () => {
                       />
                     </svg>
                   </div>
-                  <div onClick={() => onRejectClick()}>
+                  <div
+                    onClick={() =>
+                      onRejectClick(currentUserId, friendReq.username)
+                    }
+                  >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       viewBox="0 0 24 24"
