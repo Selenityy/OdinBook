@@ -9,6 +9,7 @@ import {
   fetchRejectFriendRequest,
   fetchCancelRequest,
   fetchUnfriend,
+  fetchUserData,
 } from "@/redux/features/user-slice";
 
 const FriendReqList = () => {
@@ -21,6 +22,20 @@ const FriendReqList = () => {
   const [allUsers, setAllUsers] = useState([]);
   const [unfriendedUsers, setUnfriendedUsers] = useState([]);
   const [refreshDataTrigger, setRefreshDataTrigger] = useState(false);
+
+  useEffect(() => {
+    async function fetchUpdatedUser() {
+      try {
+        // Using unwrap to handle the promise from dispatch
+        const resultAction = await dispatch(fetchUserData()).unwrap();
+        // Do something with resultAction if needed, e.g., update state
+      } catch (error) {
+        console.error("Failed to fetch user data:", error);
+      }
+    }
+
+    fetchUpdatedUser();
+  }, [dispatch, refreshDataTrigger]);
 
   // on render and on trigger rerender, fetch all users and update the state
   useEffect(() => {
@@ -56,42 +71,30 @@ const FriendReqList = () => {
     setUnfriendedUsers(remainingUsers);
   }, [allUsers, friends, friendRequests, currentUserId]);
 
-  // when clicking accept, we fetch and set the trigger to rerender the component to reflect the changes
   const onAcceptClick = async (userId, friendUsername) => {
     await dispatch(fetchAcceptFriendRequest({ userId, friendUsername }));
-    // needs window to be reloaded because friends, friendRequests and sentRequests are not a state but being pulled in on initial load. Do not need to reload the allUsers at the moment.
-    // setRefreshDataTrigger((prev) => !prev);
-    console.log("accepted");
+    setRefreshDataTrigger((prev) => !prev);
   };
 
-  // when clicking reject, we fetch and set the trigger to rerender the component to reflect the changes
   const onRejectClick = async (userId, friendUsername) => {
     await dispatch(fetchRejectFriendRequest({ userId, friendUsername }));
-    // needs window to be reloaded because friends, friendRequests and sentRequests are not a state but being pulled in on initial load. Do not need to reload the allUsers at the moment.
-    // setRefreshDataTrigger((prev) => !prev);
-    console.log("rejected");
+    setRefreshDataTrigger((prev) => !prev);
   };
 
-  // when clicking add friend, we fetch and set the trigger to rerender the component to reflect the changes
   const onFriendRequestClick = async (userId, friendUsername) => {
     await dispatch(fetchSendFriendRequests({ userId, friendUsername }));
-
     setRefreshDataTrigger((prev) => !prev);
   };
 
   const onCancelRequestClick = async (userId, friendUsername) => {
     await dispatch(fetchCancelRequest({ userId, friendUsername }));
-
     setRefreshDataTrigger((prev) => !prev);
   };
 
   const onUnfriendRequestClick = async (userId, friendUsername) => {
     await dispatch(fetchUnfriend({ userId, friendUsername }));
-
     setRefreshDataTrigger((prev) => !prev);
   };
-
-  // Add in removing friend request and removing friend
 
   return (
     <div className="flex flex-col rounded-lg p-2 gap-3 bg-slate-700">
