@@ -159,6 +159,74 @@ export const fetchRejectFriendRequest = createAsyncThunk(
   }
 );
 
+// Canceling a friend request
+export const fetchCancelRequest = createAsyncThunk(
+  "user/fetchCancelRequest",
+  async ({ userId, friendUsername }, thunkAPI) => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      return thunkAPI.rejectWithValue("No token found");
+    }
+    try {
+      const response = await fetch(
+        `http://localhost:3000/user/${userId}/deleteFriendRequest/${friendUsername}`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.message || "Could not send friend request");
+      }
+      return {
+        userId,
+        recipientId: data.recipientId,
+        currentUser: data.currentUser,
+      };
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
+
+// Removing a friend
+export const fetchUnfriend = createAsyncThunk(
+  "user/fetchUnfriend",
+  async ({ userId, friendUsername }, thunkAPI) => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      return thunkAPI.rejectWithValue("No token found");
+    }
+    try {
+      const response = await fetch(
+        `http://localhost:3000/user/${userId}/unFriend/${friendUsername}`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.message || "Could not send friend request");
+      }
+      return {
+        userId,
+        recipientId: data.recipientId,
+        currentUser: data.currentUser,
+      };
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
+
 // Creating a post
 export const postCreation = createAsyncThunk(
   "/user/postCreation",
@@ -350,6 +418,38 @@ export const userSlice = createSlice({
       .addCase(fetchRejectFriendRequest.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload || "Failed to reject friend request";
+      })
+
+      // CANCEL FRIEND REQUEST
+      .addCase(fetchCancelRequest.pending, (state, action) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchCancelRequest.fulfilled, (state, action) => {
+        state.value = { ...state.value, ...action.payload };
+        state.isLoggedIn = true;
+        state.loading = false;
+        state.error = null;
+      })
+      .addCase(fetchCancelRequest.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload || "Failed to cancel friend request";
+      })
+
+      // UNFRIEND
+      .addCase(fetchUnfriend.pending, (state, action) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchUnfriend.fulfilled, (state, action) => {
+        state.value = { ...state.value, ...action.payload };
+        state.isLoggedIn = true;
+        state.loading = false;
+        state.error = null;
+      })
+      .addCase(fetchUnfriend.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload || "Failed to  unfriend request";
       })
 
       // CREATE POST
