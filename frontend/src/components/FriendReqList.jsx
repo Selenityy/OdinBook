@@ -7,6 +7,8 @@ import {
   fetchSendFriendRequests,
   fetchAcceptFriendRequest,
   fetchRejectFriendRequest,
+  fetchCancelRequest,
+  fetchUnfriend,
 } from "@/redux/features/user-slice";
 
 const FriendReqList = () => {
@@ -73,6 +75,18 @@ const FriendReqList = () => {
   // when clicking add friend, we fetch and set the trigger to rerender the component to reflect the changes
   const onFriendRequestClick = async (userId, friendUsername) => {
     await dispatch(fetchSendFriendRequests({ userId, friendUsername }));
+
+    setRefreshDataTrigger((prev) => !prev);
+  };
+
+  const onCancelRequestClick = async (userId, friendUsername) => {
+    await dispatch(fetchCancelRequest({ userId, friendUsername }));
+
+    setRefreshDataTrigger((prev) => !prev);
+  };
+
+  const onUnfriendRequestClick = async (userId, friendUsername) => {
+    await dispatch(fetchUnfriend({ userId, friendUsername }));
 
     setRefreshDataTrigger((prev) => !prev);
   };
@@ -169,6 +183,25 @@ const FriendReqList = () => {
                     />
                   </div>
                   <div className="text-white">{friend.username}</div>
+                  <div
+                    onClick={() =>
+                      onUnfriendRequestClick(currentUserId, friend.username)
+                    }
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                      strokeWidth={1.5}
+                      stroke="currentColor"
+                      className="w-5 h-5 text-white fill-none"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M22 10.5h-6m-2.25-4.125a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0ZM4 19.235v-.11a6.375 6.375 0 0 1 12.75 0v.109A12.318 12.318 0 0 1 10.374 21c-2.331 0-4.512-.645-6.374-1.766Z"
+                      />
+                    </svg>
+                  </div>
                 </li>
               ))}
             </ul>
@@ -198,20 +231,41 @@ const FriendReqList = () => {
                   </div>
                   <div className="text-white">{user.username}</div>
                   {sentRequests.some((request) => request._id === user._id) ? (
-                    <div>
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 24 24"
-                        strokeWidth={1.5}
-                        stroke="currentColor"
-                        className="w-5 h-5 text-white fill-none"
+                    <div className="flex gap-2">
+                      <div>
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 24 24"
+                          strokeWidth={1.5}
+                          stroke="currentColor"
+                          className="w-5 h-5 text-white fill-none"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M8.625 12a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H8.25m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H12m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0h-.375M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                          />
+                        </svg>
+                      </div>
+                      <div
+                        onClick={() =>
+                          onCancelRequestClick(currentUserId, user.username)
+                        }
                       >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M8.625 12a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H8.25m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H12m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0h-.375M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
-                        />
-                      </svg>
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 24 24"
+                          strokeWidth={1.5}
+                          stroke="currentColor"
+                          className="w-5 h-5 text-white fill-none"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                          />
+                        </svg>
+                      </div>
                     </div>
                   ) : (
                     <div
@@ -222,7 +276,7 @@ const FriendReqList = () => {
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         viewBox="0 0 24 24"
-                        strokeWidth={1.75}
+                        strokeWidth={1.5}
                         stroke="currentColor"
                         className="w-5 h-5 text-white fill-none"
                       >
