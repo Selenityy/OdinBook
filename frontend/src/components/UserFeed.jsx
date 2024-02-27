@@ -1,8 +1,8 @@
 "use client";
 
 import { useSelector, useDispatch } from "react-redux";
-import { fetchUserFeedPosts } from "@/redux/features/user-slice";
-import { useEffect } from "react";
+import { fetchUserFeedPosts, likePost } from "@/redux/features/user-slice";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 
 const UserFeed = () => {
@@ -15,27 +15,28 @@ const UserFeed = () => {
   const sortedPosts = allPosts.sort(
     (a, b) => new Date(b.timestamp) - new Date(a.timestamp)
   );
+  const [refreshDataTrigger, setRefreshDataTrigger] = useState(false);
 
   useEffect(() => {
     const updateUserFeed = async () => {
       try {
-        await dispatch(fetchUserFeedPosts(userId));
+        await dispatch(fetchUserFeedPosts(userId)).unwrap();
       } catch (error) {
         console.error("Failed to fetch userFeed:", error);
       }
-    };
-
+    }
     updateUserFeed();
 
     const intervalId = setInterval(updateUserFeed, 60000); // 60000 = 1 minute
     return () => clearInterval(intervalId);
-  }, [dispatch, userId]);
+  }, [dispatch, refreshDataTrigger, userId]);
 
-  const onLikeClick = () => {
-      // if the comment has a like then unlike
-      // if the comment has an unlike then like
-      
+  const onLikeClick = async (userId, postId) => {
+    await dispatch(likePost({ userId, postId }));
+    setRefreshDataTrigger((prev) => !prev);
   };
+
+  // change empty heart to filled heart when unliked vs liked
 
   return (
     <div className="w-full flex flex-col gap-6 auto-row-auto">
@@ -67,7 +68,7 @@ const UserFeed = () => {
                 {post.body}
               </div>
               <div
-                onClick={() => onLikeClick()}
+                onClick={() => onLikeClick(userId, post._id)}
                 className="col-start-2 row-start-3"
               >
                 <svg
