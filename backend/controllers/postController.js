@@ -125,13 +125,13 @@ exports.createPost = [
   // Controller logic
   asyncHandler(async (req, res, next) => {
     const authenticatedUserId = req.user._id;
-    
+
     // Check for validation errors
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
-    
+
     const post = new Post({
       body: req.body.body,
       user: authenticatedUserId,
@@ -170,10 +170,11 @@ exports.updateSpecificPost = asyncHandler(async (req, res, next) => {
 
 // Like a post
 exports.likeAPost = asyncHandler(async (req, res, next) => {
+  console.log("inside controller");
   const postId = req.params.postId;
   const authenticatedUserId = req.params.userId;
 
-  const post = await Post.findById(postId);
+  const post = await Post.findById(postId).populate("user", "_id");
   if (!post) {
     return res.status(404).json({ message: "Post not found" });
   }
@@ -181,11 +182,25 @@ exports.likeAPost = asyncHandler(async (req, res, next) => {
   if (post.likes.includes(authenticatedUserId)) {
     post.likes.pull(authenticatedUserId);
     await post.save();
-    res.status(200).json({ post, message: "Post unliked successfully" });
+
+    // pull the updated post
+    const updatedPost = await Post.findById(postId).populate("user", "_id");
+
+    res.status(200).json({
+      message: "Post unliked successfully",
+      updatedPost: updatedPost,
+    });
   } else {
     post.likes.push(authenticatedUserId);
     await post.save();
-    res.status(200).json({ post, message: "Post liked successfully" });
+
+    // pull the updated post
+    const updatedPost = await Post.findById(postId).populate("user", "_id");
+    console.log(updatedPost);
+    res.status(200).json({
+      message: "Post liked successfully",
+      updatedPost: updatedPost.toObject({ getters: true }),
+    });
   }
 });
 
