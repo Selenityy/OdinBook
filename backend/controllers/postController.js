@@ -112,27 +112,6 @@ exports.userFeed = asyncHandler(async (req, res, next) => {
   ]);
 
   res.json({ userPosts, friendPosts });
-
-  // // fetch user's posts
-  // const userPosts = await Post.find({ user: userId })
-  //   .sort({ timestamp: -1 })
-  //   .populate("user", "username profilePic")
-  //   .populate({
-  //     path: "comments",
-  //     populate: { path: "user", select: "username profilePic" },
-  //   });
-
-  // // create an array of friend Ids and own
-  // const friendIds = user.friends.map((friend) => friend._id);
-  // const friendsPosts = await Post.find({ user: { $in: friendIds } })
-  //   .sort({ timestamp: -1 })
-  //   .populate("user", "username profilePic")
-  //   .populate({
-  //     path: "comments",
-  //     populate: { path: "user", select: "username profilePic" },
-  //   });
-
-  // res.json({ userPosts, friendsPosts });
 });
 
 // Create post
