@@ -20,7 +20,6 @@ export const fetchUserData = createAsyncThunk(
         throw new Error("Failed to fetch user data");
       }
       const user = await response.json();
-      console.log(user);
       return user;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
@@ -69,6 +68,74 @@ export const fetchSendFriendRequests = createAsyncThunk(
     try {
       const response = await fetch(
         `http://localhost:3000/user/${userId}/sendFriendRequest/${friendUsername}`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.message || "Could not send friend request");
+      }
+      return {
+        userId,
+        recipientId: data.recipientId,
+        currentUser: data.currentUser,
+      };
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
+
+// Accept friend request
+export const fetchAcceptFriendRequest = createAsyncThunk(
+  "user/fetchAcceptFriendRequest",
+  async ({ userId, friendUsername }, thunkAPI) => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      return thunkAPI.rejectWithValue("No token found");
+    }
+    try {
+      const response = await fetch(
+        `http://localhost:3000/user/${userId}/acceptFriendRequest/${friendUsername}`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.message || "Could not send friend request");
+      }
+      return {
+        userId,
+        recipientId: data.recipientId,
+        currentUser: data.currentUser,
+      };
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
+
+// Reject friend request
+export const fetchRejectFriendRequest = createAsyncThunk(
+  "user/fetchRejectFriendRequest",
+  async ({ userId, friendUsername }, thunkAPI) => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      return thunkAPI.rejectWithValue("No token found");
+    }
+    try {
+      const response = await fetch(
+        `http://localhost:3000/user/${userId}/rejectFriendRequest/${friendUsername}`,
         {
           method: "POST",
           headers: {
@@ -251,6 +318,38 @@ export const userSlice = createSlice({
       .addCase(fetchSendFriendRequests.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload || "Failed to send friend request";
+      })
+
+      // ACCEPT FRIEND REQUEST
+      .addCase(fetchAcceptFriendRequest.pending, (state, action) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchAcceptFriendRequest.fulfilled, (state, action) => {
+        state.value = { ...state.value, ...action.payload };
+        state.isLoggedIn = true;
+        state.loading = false;
+        state.error = null;
+      })
+      .addCase(fetchAcceptFriendRequest.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload || "Failed to accept friend request";
+      })
+
+      // REJECT FRIEND REQUEST
+      .addCase(fetchRejectFriendRequest.pending, (state, action) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchRejectFriendRequest.fulfilled, (state, action) => {
+        state.value = { ...state.value, ...action.payload };
+        state.isLoggedIn = true;
+        state.loading = false;
+        state.error = null;
+      })
+      .addCase(fetchRejectFriendRequest.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload || "Failed to reject friend request";
       })
 
       // CREATE POST
