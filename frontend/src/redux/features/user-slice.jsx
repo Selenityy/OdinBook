@@ -258,6 +258,41 @@ export const postCreation = createAsyncThunk(
   }
 );
 
+// Like a post
+export const likePost = createAsyncThunk(
+  "/user/likePost",
+  async ({ userId, postId }, thunkAPI) => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      return thunkAPI.rejectWithValue("No token found");
+    }
+    try {
+      console.log("inside try");
+      const response = await fetch(
+        `http://localhost:3000/user/${userId}/posts/${postId}/like`,
+        {
+          method: "PUT",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      const data = await response.json();
+      console.log("data", data);
+      if (!response.ok) {
+        throw new Error(data.message || "Could not send friend request");
+      }
+      return {
+        posts: data.updatedPost,
+        postUserId: data.updatedPost.userId,
+      };
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
+
 // Signing up
 export const signUpUser = createAsyncThunk(
   "/user/signUp",
@@ -461,6 +496,21 @@ export const userSlice = createSlice({
       .addCase(postCreation.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload || "Failed to fetch post creation";
+      })
+
+      // LIKE/UNLIKE A POST
+      .addCase(likePost.pending, (state, action) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(likePost.fulfilled, (state, action) => {
+        state.value = { ...state.value, ...action.payload };
+        state.loading = false;
+        state.error = null;
+      })
+      .addCase(likePost.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload || "Failed to like/unlike post";
       })
 
       // LOG IN
