@@ -323,6 +323,39 @@ export const likePost = createAsyncThunk(
   }
 );
 
+// Creating a comment
+export const commentCreation = createAsyncThunk(
+  "/user/post/commentCreation",
+  async ({ postId, userId, commentData }, thunkAPI) => {
+    console.log("inside user slice");
+    const token = localStorage.getItem("token");
+    if (!token) {
+      return thunkAPI.rejectWithValue("No token found");
+    }
+    try {
+      const response = await fetch(
+        `http://localhost:3000/user/${userId}/posts/${postId}/comments/`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ body: commentData.comment }),
+        }
+      );
+      if (!response.ok) {
+        throw new Error("Failed to create post");
+      }
+      const comment = await response.json();
+      console.log("comment", comment);
+      return comment;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
+
 // Signing up
 export const signUpUser = createAsyncThunk(
   "/user/signUp",
@@ -554,6 +587,24 @@ export const userSlice = createSlice({
         state.error = null;
       })
       .addCase(postCreation.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload || "Failed to fetch post creation";
+      })
+
+      // CREATE COMMENT
+      .addCase(commentCreation.pending, (state, action) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(commentCreation.fulfilled, (state, action) => {
+        state.uniquePost.comments.push(action.payload);
+        if ("commentCount" in state.uniquePost) {
+          state.uniquePost.commentCount += 1;
+        }
+        state.loading = false;
+        state.error = null;
+      })
+      .addCase(commentCreation.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload || "Failed to fetch post creation";
       })
