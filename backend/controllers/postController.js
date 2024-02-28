@@ -114,6 +114,23 @@ exports.userFeed = asyncHandler(async (req, res, next) => {
   res.json({ userPosts, friendPosts });
 });
 
+// Get a specific post
+exports.uniquePost = asyncHandler(async (req, res, next) => {
+  const userId = req.params.userId;
+  const postId = req.params.postId;
+  try {
+    const post = await Post.findById(postId);
+
+    if (!post) {
+      return res.status(404).json({ message: "Post not found" });
+    }
+
+    res.json(post);
+  } catch (error) {
+    next(err);
+  }
+});
+
 // Create post
 exports.createPost = [
   // Validation middleware
@@ -170,38 +187,32 @@ exports.updateSpecificPost = asyncHandler(async (req, res, next) => {
 
 // Like a post
 exports.likeAPost = asyncHandler(async (req, res, next) => {
-  console.log("inside controller");
   const postId = req.params.postId;
   const authenticatedUserId = req.params.userId;
 
-  const post = await Post.findById(postId).populate("user", "_id");
+  const post = await Post.findById(postId);
   if (!post) {
     return res.status(404).json({ message: "Post not found" });
   }
 
+  let responseMessage = "";
   if (post.likes.includes(authenticatedUserId)) {
     post.likes.pull(authenticatedUserId);
-    await post.save();
-
-    // pull the updated post
-    const updatedPost = await Post.findById(postId).populate("user", "_id");
-
-    res.status(200).json({
-      message: "Post unliked successfully",
-      updatedPost: updatedPost,
-    });
+    post.likeCount = Math.max(0, post.likeCount - 1);
+    responseMessage = "Post unliked successfully";
   } else {
     post.likes.push(authenticatedUserId);
-    await post.save();
-
-    // pull the updated post
-    const updatedPost = await Post.findById(postId).populate("user", "_id");
-    console.log(updatedPost);
-    res.status(200).json({
-      message: "Post liked successfully",
-      updatedPost: updatedPost.toObject({ getters: true }),
-    });
+    post.likeCount += 1;
+    responseMessage = "Post liked successfully";
   }
+  await post.save();
+  //  pull the updated post
+  const updatedPost = await Post.findById(postId).populate("user", "_id");
+  res.status(200).json({
+    message: responseMessage,
+    updatedPost: updatedPost.toObject({ getters: true }),
+    likeCount: post.likeCount,
+  });
 });
 
 // Delete a post

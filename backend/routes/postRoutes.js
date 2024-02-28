@@ -9,6 +9,11 @@ router.get(
   passport.authenticate("jwt", { session: false }),
   postController.userFeed
 );
+router.get(
+  "/:postId",
+  passport.authenticate("jwt", { session: false }),
+  postController.uniquePost
+);
 
 // POST: Creation
 router.post(
