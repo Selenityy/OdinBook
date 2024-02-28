@@ -4,9 +4,11 @@ import { useSelector, useDispatch } from "react-redux";
 import { fetchUserFeedPosts, likePost } from "@/redux/features/user-slice";
 import { useEffect, useState } from "react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 const UserFeed = () => {
   const dispatch = useDispatch();
+  const router = useRouter();
   const userState = useSelector((state) => state.user);
   const userId = userState.value._id;
   const userPostArray = userState.value.userPosts || [];
@@ -36,7 +38,14 @@ const UserFeed = () => {
     setRefreshDataTrigger((prev) => !prev);
   };
 
-  // change empty heart to filled heart when unliked vs liked
+  const onCommentClick = async (postId) => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      router.push(`/user/post/${postId}`);
+    } else {
+      router.push("/");
+    }
+  };
 
   return (
     <div className="w-full flex flex-col gap-6 auto-row-auto">
@@ -100,7 +109,10 @@ const UserFeed = () => {
               <div className="col-start-3 row-start-3 flex items-center ml-1 text-sm text-white">
                 {post.likeCount}
               </div>
-              <div className="col-start-5 row-start-3">
+              <div
+                onClick={() => onCommentClick(post._id)}
+                className="col-start-5 row-start-3"
+              >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 24 24"
