@@ -119,13 +119,23 @@ exports.uniquePost = asyncHandler(async (req, res, next) => {
   const userId = req.params.userId;
   const postId = req.params.postId;
   try {
-    const post = await Post.findById(postId);
+    const post = await Post.findById(postId)
+      .populate({
+        path: "comments",
+        populate: { path: "user", select: "username profilePic" },
+      })
+      .populate({
+        path: "commentCount",
+      })
+      .populate("user", "username profilePic")
+      .exec();
 
     if (!post) {
       return res.status(404).json({ message: "Post not found" });
     }
+    const postObject = post.toObject({ virtuals: true });
 
-    res.json(post);
+    res.json(postObject);
   } catch (error) {
     next(err);
   }
