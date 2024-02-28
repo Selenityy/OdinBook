@@ -6,19 +6,25 @@ const ImageSchema = new Schema({
   imageUrl: { type: String },
 });
 
-const PostSchema = new Schema({
-  body: { type: String, required: true, minLength: 3, maxLength: 200 },
-  timestamp: { type: Date, default: Date.now },
-  user: { type: Schema.Types.ObjectId, ref: "User", required: true },
-  likes: [
-    {
-      type: Schema.Types.ObjectId,
-      ref: "User",
-    },
-  ],
-  likeCount: { type: Number, default: 0 },
-  images: [ImageSchema],
-});
+const PostSchema = new Schema(
+  {
+    body: { type: String, required: true, minLength: 3, maxLength: 200 },
+    timestamp: { type: Date, default: Date.now },
+    user: { type: Schema.Types.ObjectId, ref: "User", required: true },
+    likes: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "User",
+      },
+    ],
+    likeCount: { type: Number, default: 0 },
+    images: [ImageSchema],
+  },
+  {
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true },
+  }
+);
 
 // get comments from a specific post
 PostSchema.virtual("comments", {
