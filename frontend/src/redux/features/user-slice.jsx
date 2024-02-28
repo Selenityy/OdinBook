@@ -258,6 +258,40 @@ export const postCreation = createAsyncThunk(
   }
 );
 
+// Fetch a specific post
+export const fetchUniquePost = createAsyncThunk(
+  "/user/post/uniquePost",
+  async ({ userId, postId }, thunkAPI) => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      return thunkAPI.rejectWithValue("No token found");
+    }
+    try {
+      const response = await fetch(
+        `http://localhost:3000/user/${userId}/posts/${postId}/`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      const data = await response.json();
+      console.log(data);
+
+      if (!response.ok) {
+        throw new Error(data.message || "Could not get unique post");
+      }
+      return {
+        post: data,
+      };
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
+
 // Like a post
 export const likePost = createAsyncThunk(
   "/user/likePost",
@@ -267,7 +301,6 @@ export const likePost = createAsyncThunk(
       return thunkAPI.rejectWithValue("No token found");
     }
     try {
-      console.log("inside try");
       const response = await fetch(
         `http://localhost:3000/user/${userId}/posts/${postId}/like`,
         {
@@ -279,7 +312,7 @@ export const likePost = createAsyncThunk(
         }
       );
       const data = await response.json();
-      console.log("data", data);
+      console.log(data);
       if (!response.ok) {
         throw new Error(data.message || "Could not send friend request");
       }
@@ -356,6 +389,13 @@ const initialState = {
     posts: [],
     _id: "",
     testUser: false,
+  },
+  uniquePost: {
+    body: "",
+    user: "",
+    likes: [],
+    likeCount: "",
+    comments: [],
   },
   isLoggedIn: false,
   loading: false,
@@ -496,6 +536,21 @@ export const userSlice = createSlice({
       .addCase(postCreation.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload || "Failed to fetch post creation";
+      })
+
+      // GET UNIQUE POST
+      .addCase(fetchUniquePost.pending, (state, action) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchUniquePost.fulfilled, (state, action) => {
+        state.uniquePost = { ...state.uniquePost, ...action.payload };
+        state.loading = false;
+        state.error = null;
+      })
+      .addCase(fetchUniquePost.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload || "Failed to get unique post";
       })
 
       // LIKE/UNLIKE A POST
