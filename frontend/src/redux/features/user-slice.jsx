@@ -389,10 +389,17 @@ const initialState = {
   },
   uniquePost: {
     body: "",
-    user: "",
+    timestamp: null,
+    user: {
+      _id: "",
+      username: "",
+      profilePic: "",
+    },
     likes: [],
-    likeCount: "",
+    likeCount: 0,
+    images: [],
     comments: [],
+    commentCount: 0,
   },
   isLoggedIn: false,
   loading: false,
@@ -541,7 +548,7 @@ export const userSlice = createSlice({
         state.error = null;
       })
       .addCase(fetchUniquePost.fulfilled, (state, action) => {
-        state.uniquePost = { ...state.uniquePost, ...action.payload };
+        state.uniquePost = { ...action.payload.post };
         state.loading = false;
         state.error = null;
       })
