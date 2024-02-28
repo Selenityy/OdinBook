@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { resetUniquePost } from "@/redux/features/user-slice";
 import "../../../../styles/globals.css";
+import CreateCommentForm from "@/components/CreateCommentForm";
 
 const UniquePostPage = () => {
   const router = useRouter();
@@ -43,7 +44,9 @@ const UniquePostPage = () => {
       <section>
         <UniquePost />
       </section>
-      <section>(form for posting comment, probably a component)</section>
+      <section>
+        <CreateCommentForm />
+      </section>
       <section>(list out the comments, probably a comment component)</section>
     </div>
   );
