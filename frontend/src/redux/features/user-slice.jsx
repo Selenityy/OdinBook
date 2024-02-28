@@ -278,8 +278,6 @@ export const fetchUniquePost = createAsyncThunk(
         }
       );
       const data = await response.json();
-      console.log(data);
-
       if (!response.ok) {
         throw new Error(data.message || "Could not get unique post");
       }
@@ -312,7 +310,6 @@ export const likePost = createAsyncThunk(
         }
       );
       const data = await response.json();
-      console.log(data);
       if (!response.ok) {
         throw new Error(data.message || "Could not send friend request");
       }
