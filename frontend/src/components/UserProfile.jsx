@@ -31,9 +31,9 @@ const UserProfile = () => {
   //   }
   // }, [dispatch]);
 
-  const handleDropDownClick = () => {
-    setShowDropdown(!showDropdown);
-  };
+  // const handleDropDownClick = () => {
+  //   setShowDropdown(!showDropdown);
+  // };
 
   const handleHomeClick = () => {
     const token = localStorage.getItem("token");
