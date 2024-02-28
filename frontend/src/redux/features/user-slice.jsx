@@ -413,6 +413,22 @@ export const userSlice = createSlice({
     logout: () => {
       return initialState;
     },
+    resetUniquePost: (state) => {
+      state.uniquePost = {
+        body: "",
+        timestamp: null,
+        user: {
+          _id: "",
+          username: "",
+          profilePic: "",
+        },
+        likes: [],
+        likeCount: 0,
+        images: [],
+        comments: [],
+        commentCount: 0,
+      };
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -605,5 +621,5 @@ export const userSlice = createSlice({
   },
 });
 
-export const { logout } = userSlice.actions;
+export const { logout, resetUniquePost } = userSlice.actions;
 export default userSlice.reducer;
