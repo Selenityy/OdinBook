@@ -14,13 +14,11 @@ const UniquePostComments = ({
   const dispatch = useDispatch();
   const router = useRouter();
 
-  // add liking a comment property
   const onCommentLikeClick = async (userId, commentId) => {
-    await dispatch(likeComment({ userId, postId, commentId }));
+    await dispatch(likeComment({ userId, commentId }));
     setRefreshDataTrigger((prev) => !prev);
   };
 
-  // add clicking comment to go to the postId page again with that comment being the new postId
   const onCommentCommentClick = async (postId, commentId) => {
     const token = localStorage.getItem("token");
     if (token) {
@@ -61,7 +59,7 @@ const UniquePostComments = ({
               </div>
               {/* <div className="w-full border border-gray-500"></div> */}
               <div
-                onClick={() => onCommentLikeClick(postId, comment._id)}
+                onClick={() => onCommentLikeClick(userId, comment._id)}
                 className="col-start-2 row-start-3"
               >
                 {comment.likes.includes(userId) ? (
@@ -94,7 +92,7 @@ const UniquePostComments = ({
                 {comment.likeCount}
               </div>
               <div
-                onClick={() => onCommentCommentClick(comment._id)}
+                onClick={() => onCommentCommentClick(postId, comment._id)}
                 className="col-start-5 row-start-3"
               >
                 <svg
