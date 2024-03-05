@@ -354,6 +354,39 @@ export const commentCreation = createAsyncThunk(
   }
 );
 
+// Fetch a specific comment
+export const fetchUniqueComment = createAsyncThunk(
+  "/user/comment/uniqueComment",
+  async ({ userId, postId, commentId }, thunkAPI) => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      return thunkAPI.rejectWithValue("No token found");
+    }
+    try {
+      const response = await fetch(
+        `http://localhost:3000/user/${userId}/posts/${postId}/comments/${commentId}`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      const data = await response.json();
+      console.log("user slice:", data);
+      if (!response) {
+        throw new Error(data.message || "Could not get unique comment");
+      }
+      return {
+        comment: data,
+      };
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
+
 // Like a comment
 export const likeComment = createAsyncThunk(
   "/user/likeComment",
@@ -377,7 +410,7 @@ export const likeComment = createAsyncThunk(
       const data = await response.json();
       if (!response.ok) {
         throw new Error(data.message || "Could not like a comment");
-      } 
+      }
       return {
         comment: data.updatedComment,
         commentUserId: data.updatedComment.userId,
@@ -459,6 +492,23 @@ const initialState = {
       _id: "",
       username: "",
       profilePic: "",
+    },
+    likes: [],
+    likeCount: 0,
+    images: [],
+    comments: [],
+    commentCount: 0,
+  },
+  uniqueComment: {
+    body: "",
+    timestamp: null,
+    user: {
+      _id: "",
+      username: "",
+      profilePic: "",
+    },
+    post: {
+      _id: "",
     },
     likes: [],
     likeCount: 0,
@@ -639,6 +689,21 @@ export const userSlice = createSlice({
       .addCase(commentCreation.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload || "Failed to fetch post creation";
+      })
+
+      // GET UNIQUE COMMENT
+      .addCase(fetchUniqueComment.pending, (state, action) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchUniqueComment.fulfilled, (state, action) => {
+        state.uniqueComment = { ...action.payload.comment };
+        state.loading = false;
+        state.error = null;
+      })
+      .addCase(fetchUniqueComment.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload || "Failed to get unique comment";
       })
 
       // LIKE/UNLIKE A COMMENT
