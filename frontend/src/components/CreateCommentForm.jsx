@@ -22,10 +22,9 @@ const CreateCommentForm = ({
         commentCreation({
           postId,
           userId,
-          commentData: { comment: commentData.comment },
+          commentData: commentData.comment,
         })
       ).unwrap();
-      //   dispatch(fetchUniquePost({ userId, postId }));
       setRefreshDataTrigger((prev) => !prev);
       setCommentData({ comment: "" });
     } catch (error) {
