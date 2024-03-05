@@ -1,8 +1,24 @@
 "use client";
 
 import Image from "next/image";
+import { likeComment } from "@/redux/features/user-slice";
+import { useDispatch } from "react-redux";
 
-const UniquePostComments = ({ userId, commentsArray }) => {
+const UniquePostComments = ({
+  userId,
+  commentsArray,
+  setRefreshDataTrigger,
+  postId,
+}) => {
+  const dispatch = useDispatch();
+
+  // add liking a comment property
+  const onCommentLikeClick = async (userId, commentId) => {
+    await dispatch(likeComment({ userId, postId, commentId }));
+    setRefreshDataTrigger((prev) => !prev);
+  };
+
+  // add clicking comment to go to the postId page again with that comment being the new postId
   return (
     <div className="w-full flex flex-col gap-6 auto-row-auto">
       <div>
@@ -34,7 +50,7 @@ const UniquePostComments = ({ userId, commentsArray }) => {
               </div>
               {/* <div className="w-full border border-gray-500"></div> */}
               <div
-                //   onClick={() => onLikeClick(userId, postId)}
+                onClick={() => onCommentLikeClick(userId, comment._id)}
                 className="col-start-2 row-start-3"
               >
                 {comment.likes.includes(userId) ? (

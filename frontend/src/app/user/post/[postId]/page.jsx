@@ -75,7 +75,12 @@ const UniquePostPage = () => {
         />
       </section>
       <section>
-        <UniquePostComments userId={userId} commentsArray={commentsArray} />
+        <UniquePostComments
+          userId={userId}
+          commentsArray={commentsArray}
+          setRefreshDataTrigger={setRefreshDataTrigger}
+          postId={postId}
+        />
       </section>
     </div>
   );
