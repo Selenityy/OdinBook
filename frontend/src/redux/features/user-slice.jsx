@@ -340,13 +340,14 @@ export const commentCreation = createAsyncThunk(
             Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ body: commentData.comment }),
+          body: JSON.stringify({ body: commentData }),
         }
       );
-      if (!response.ok) {
-        throw new Error("Failed to create post");
-      }
       const commentResponse = await response.json();
+
+      if (!response.ok) {
+        throw new Error("Failed to create comment");
+      }
       return commentResponse.comment;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
