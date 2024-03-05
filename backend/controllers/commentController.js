@@ -45,10 +45,19 @@ exports.createComment = [
       user: authenticatedUserId,
       post: postId,
     });
+    
     const savedComment = await comment.save();
+
+    const populatedComment = await Comment.findById(savedComment._id)
+      .populate("user", "username profilePic")
+      .exec();
+
     res
       .status(200)
-      .json({ comment: savedComment, message: "Comment created successfully" });
+      .json({
+        comment: populatedComment,
+        message: "Comment created successfully",
+      });
   }),
 ];
 
