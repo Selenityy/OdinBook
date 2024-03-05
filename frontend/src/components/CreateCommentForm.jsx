@@ -1,27 +1,23 @@
 "use client";
 
 import { useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { fetchUniquePost, commentCreation } from "@/redux/features/user-slice";
-import { usePathname } from "next/navigation";
+import { useDispatch } from "react-redux";
+import { commentCreation } from "@/redux/features/user-slice";
 
-const CreateCommentForm = () => {
+const CreateCommentForm = ({
+  postId,
+  userId,
+  refreshDataTrigger,
+  setRefreshDataTrigger,
+}) => {
   const dispatch = useDispatch();
-  const pathname = usePathname();
-  const segments = pathname.split("/");
-  const postId = segments.pop();
-  const post = useSelector((state) => state.user.uniquePost);
-  const userState = useSelector((state) => state.user.value);
-  const userId = userState._id;
   const [commentData, setCommentData] = useState({
     comment: "",
   });
 
   const onCommentCreationClick = async (e) => {
-    console.log("inside comment creation click");
     e.preventDefault();
     try {
-      console.log("inside try");
       await dispatch(
         commentCreation({
           postId,
@@ -29,7 +25,8 @@ const CreateCommentForm = () => {
           commentData: { comment: commentData.comment },
         })
       ).unwrap();
-      dispatch(fetchUniquePost({ userId, postId }));
+      //   dispatch(fetchUniquePost({ userId, postId }));
+      setRefreshDataTrigger((prev) => !prev);
       setCommentData({ comment: "" });
     } catch (error) {
       console.error("Failed to create comment:", error);

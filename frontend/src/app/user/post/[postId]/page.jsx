@@ -1,15 +1,37 @@
 "use client";
 
 import UniquePost from "@/components/UniquePost";
-import { useRouter } from "next/navigation";
-import { useDispatch } from "react-redux";
+import { useRouter, usePathname } from "next/navigation";
+import { useDispatch, useSelector } from "react-redux";
 import { resetUniquePost } from "@/redux/features/user-slice";
 import "../../../../styles/globals.css";
 import CreateCommentForm from "@/components/CreateCommentForm";
+import UniquePostComments from "@/components/UniquePostComments";
+import { useEffect, useState } from "react";
+import { fetchUniquePost } from "@/redux/features/user-slice";
 
 const UniquePostPage = () => {
   const router = useRouter();
   const dispatch = useDispatch();
+  const pathname = usePathname();
+  const segments = pathname.split("/");
+  const postId = segments.pop();
+  const post = useSelector((state) => state.user.uniquePost);
+  const userState = useSelector((state) => state.user.value);
+  const userId = userState._id;
+  const commentsArray = post.comments;
+  const [refreshDataTrigger, setRefreshDataTrigger] = useState(false);
+
+  useEffect(() => {
+    const updateUniquePostPage = async () => {
+      try {
+        await dispatch(fetchUniquePost({ userId, postId })).unwrap();
+      } catch (error) {
+        console.error("Failed to reload unique post page:", error);
+      }
+    };
+    updateUniquePostPage();
+  }, [dispatch, refreshDataTrigger, userId, postId]);
 
   const onBackClick = async () => {
     await dispatch(resetUniquePost());
@@ -45,9 +67,16 @@ const UniquePostPage = () => {
         <UniquePost />
       </section>
       <section>
-        <CreateCommentForm />
+        <CreateCommentForm
+          refreshDataTrigger={refreshDataTrigger}
+          setRefreshDataTrigger={setRefreshDataTrigger}
+          postId={postId}
+          userId={userId}
+        />
       </section>
-      <section>(list out the comments, probably a comment component)</section>
+      <section>
+        <UniquePostComments userId={userId} commentsArray={commentsArray} />
+      </section>
     </div>
   );
 };
