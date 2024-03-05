@@ -362,26 +362,24 @@ export const likeComment = createAsyncThunk(
     if (!token) {
       return thunkAPI.rejectWithValue("No token found");
     }
-    console.log("userId:", userId);
-    console.log("postId:", postId);
-    console.log("commentId:", commentId);
     try {
       const response = await fetch(
-        `http://localhost:300/user/${userId}/posts/${postId}/comments/${commentId}/like`,
+        `http://localhost:3000/user/${userId}/posts/${postId}/comments/${commentId}/like`,
         {
           method: "PUT",
           headers: {
             Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
           },
+          body: JSON.stringify({ commentId, userId }),
         }
       );
       const data = await response.json();
       if (!response.ok) {
         throw new Error(data.message || "Could not like a comment");
-      }
+      } 
       return {
-        comment: updatedComment,
+        comment: data.updatedComment,
         commentUserId: data.updatedComment.userId,
       };
     } catch (error) {
