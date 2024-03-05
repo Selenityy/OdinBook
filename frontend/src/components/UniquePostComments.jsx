@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { likeComment } from "@/redux/features/user-slice";
+import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
 
 const UniquePostComments = ({
@@ -11,6 +12,7 @@ const UniquePostComments = ({
   postId,
 }) => {
   const dispatch = useDispatch();
+  const router = useRouter();
 
   // add liking a comment property
   const onCommentLikeClick = async (userId, commentId) => {
@@ -19,6 +21,15 @@ const UniquePostComments = ({
   };
 
   // add clicking comment to go to the postId page again with that comment being the new postId
+  const onCommentCommentClick = async (postId, commentId) => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      router.push(`/user/post/${postId}/comment/${commentId}`);
+    } else {
+      router.push("/");
+    }
+  };
+
   return (
     <div className="w-full flex flex-col gap-6 auto-row-auto">
       <div>
@@ -50,7 +61,7 @@ const UniquePostComments = ({
               </div>
               {/* <div className="w-full border border-gray-500"></div> */}
               <div
-                onClick={() => onCommentLikeClick(userId, comment._id)}
+                onClick={() => onCommentLikeClick(postId, comment._id)}
                 className="col-start-2 row-start-3"
               >
                 {comment.likes.includes(userId) ? (
@@ -82,7 +93,10 @@ const UniquePostComments = ({
               <div className="col-start-3 row-start-3 flex items-center ml-1 text-sm text-white">
                 {comment.likeCount}
               </div>
-              <div className="col-start-5 row-start-3">
+              <div
+                onClick={() => onCommentCommentClick(comment._id)}
+                className="col-start-5 row-start-3"
+              >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 24 24"
