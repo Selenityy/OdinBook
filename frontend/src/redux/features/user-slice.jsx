@@ -262,6 +262,7 @@ export const postCreation = createAsyncThunk(
 export const fetchUniquePost = createAsyncThunk(
   "/user/post/uniquePost",
   async ({ userId, postId }, thunkAPI) => {
+    console.log("inside user slice unique post");
     const token = localStorage.getItem("token");
     if (!token) {
       return thunkAPI.rejectWithValue("No token found");
@@ -327,7 +328,6 @@ export const likePost = createAsyncThunk(
 export const commentCreation = createAsyncThunk(
   "/user/post/commentCreation",
   async ({ postId, userId, commentData }, thunkAPI) => {
-    console.log("inside user slice");
     const token = localStorage.getItem("token");
     if (!token) {
       return thunkAPI.rejectWithValue("No token found");
@@ -347,9 +347,8 @@ export const commentCreation = createAsyncThunk(
       if (!response.ok) {
         throw new Error("Failed to create post");
       }
-      const comment = await response.json();
-      console.log("comment", comment);
-      return comment;
+      const commentResponse = await response.json();
+      return commentResponse.comment;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
     }
