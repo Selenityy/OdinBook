@@ -37,7 +37,6 @@ exports.uniqueComment = asyncHandler(async (req, res, next) => {
       });
     }
     const commentObject = comment.toObject();
-    console.log("commentObject:", commentObject);
     res.json(commentObject);
   } catch (error) {
     next(error);
