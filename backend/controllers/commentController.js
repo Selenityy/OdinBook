@@ -21,6 +21,29 @@ exports.commentsOnAPost = asyncHandler(async (req, res, next) => {
   res.json(postWithComments.comments);
 });
 
+// Get a specific comment
+exports.uniqueComment = asyncHandler(async (req, res, next) => {
+  const userId = req.params.userId;
+  const postId = req.params.postId;
+  const commentId = req.params.commentId;
+  try {
+    const comment = await Comment.findById(commentId)
+      .populate("user", "username profilePic")
+      .exec();
+
+    if (!comment) {
+      return res.status(404).json({
+        message: "Comment not found",
+      });
+    }
+    const commentObject = comment.toObject();
+    console.log("commentObject:", commentObject);
+    res.json(commentObject);
+  } catch (error) {
+    next(error);
+  }
+});
+
 // Create a comment
 exports.createComment = [
   // Validation middleware
