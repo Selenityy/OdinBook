@@ -30,21 +30,10 @@ const UniqueCommentPage = () => {
         <UniqueComment />
       </section>
       <section>
-        <CreateCommentForm
-          refreshDataTrigger={refreshDataTrigger}
-          setRefreshDataTrigger={setRefreshDataTrigger}
-          postId={postId}
-          userId={userId}
-        />
+        <CreateCommentForm />
       </section>
       <section>
         <UniqueCommentComments />
-        {/* <UniquePostComments
-          userId={userId}
-          commentsArray={commentsArray}
-          setRefreshDataTrigger={setRefreshDataTrigger}
-          postId={postId}
-        /> */}
       </section>
     </div>
   );
