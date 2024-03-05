@@ -94,35 +94,38 @@ exports.updateComment = [
 
 // Like a comment
 exports.likeComment = asyncHandler(async (req, res, next) => {
-  const commentId = req.params.commentId;
-  const authenticatedUserId = req.params.userId;
+  // const commentId = req.params.commentId;
+  // const authenticatedUserId = req.params.userId;
+  // use req.body instead of req.params
+  const { commentId, userId: authenticatedUserId } = req.body;
 
   const comment = await Comment.findById(commentId);
   if (!comment) {
     res.status(404).json({ message: "Comment not found" });
   }
 
+  let responseMessage = "";
   if (comment.likes.includes(authenticatedUserId)) {
     comment.likes.pull(authenticatedUserId);
+    comment.likeCount = Math.max(0, comment.likeCount - 1);
+    responseMessage = "Comment unliked successfully";
     await comment.save();
-    // pull the updated comment
-    const updatedComment = await (
-      await Comment.findById(commentId)
-    ).populate("user", "_id");
-    res.status(200).json({
-      comment: updatedComment,
-      message: "Comment unliked successfully",
-    });
   } else {
     comment.likes.push(authenticatedUserId);
+    comment.likeCount += 1;
+    responseMessage = "Comment liked successfully";
     await comment.save();
-    const updatedComment = await (
-      await Comment.findById(commentId)
-    ).populate("user", "_id");
-    res
-      .status(200)
-      .json({ comment: updatedComment, message: "Comment liked successfully" });
   }
+
+  const updatedComment = await (
+    await Comment.findById(commentId)
+  ).populate("user", "_id");
+
+  res.status(200).json({
+    message: responseMessage,
+    updatedComment: updatedComment.toObject({ getters: true }),
+    likeCount: updatedComment.likeCount,
+  });
 });
 
 // Delete a comment
