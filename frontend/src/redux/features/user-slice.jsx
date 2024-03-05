@@ -262,7 +262,6 @@ export const postCreation = createAsyncThunk(
 export const fetchUniquePost = createAsyncThunk(
   "/user/post/uniquePost",
   async ({ userId, postId }, thunkAPI) => {
-    console.log("inside user slice unique post");
     const token = localStorage.getItem("token");
     if (!token) {
       return thunkAPI.rejectWithValue("No token found");
@@ -312,7 +311,7 @@ export const likePost = createAsyncThunk(
       );
       const data = await response.json();
       if (!response.ok) {
-        throw new Error(data.message || "Could not send friend request");
+        throw new Error(data.message || "Could not like a post");
       }
       return {
         posts: data.updatedPost,
@@ -349,6 +348,42 @@ export const commentCreation = createAsyncThunk(
       }
       const commentResponse = await response.json();
       return commentResponse.comment;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
+
+// Like a comment
+export const likeComment = createAsyncThunk(
+  "/user/likeComment",
+  async ({ userId, postId, commentId }, thunkAPI) => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      return thunkAPI.rejectWithValue("No token found");
+    }
+    console.log("userId:", userId);
+    console.log("postId:", postId);
+    console.log("commentId:", commentId);
+    try {
+      const response = await fetch(
+        `http://localhost:300/user/${userId}/posts/${postId}/comments/${commentId}/like`,
+        {
+          method: "PUT",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.message || "Could not like a comment");
+      }
+      return {
+        comment: updatedComment,
+        commentUserId: data.updatedComment.userId,
+      };
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
     }
@@ -606,6 +641,21 @@ export const userSlice = createSlice({
       .addCase(commentCreation.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload || "Failed to fetch post creation";
+      })
+
+      // LIKE/UNLIKE A COMMENT
+      .addCase(likeComment.pending, (state, action) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(likeComment.fulfilled, (state, action) => {
+        state.uniquePost = { ...state.uniquePost, ...action.payload };
+        state.loading = false;
+        state.error = null;
+      })
+      .addCase(likeComment.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload || "Failed to like/unlike comment";
       })
 
       // GET UNIQUE POST
