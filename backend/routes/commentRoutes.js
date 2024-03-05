@@ -5,6 +5,11 @@ const commentController = require("../controllers/commentController");
 
 // GET: Fetching
 router.get("/", commentController.commentsOnAPost);
+router.get(
+  "/:commentId",
+  passport.authenticate("jwt", { session: false }),
+  commentController.uniqueComment
+);
 
 // POST: Creating
 router.post(
