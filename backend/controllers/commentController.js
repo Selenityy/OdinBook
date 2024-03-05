@@ -45,19 +45,17 @@ exports.createComment = [
       user: authenticatedUserId,
       post: postId,
     });
-    
+
     const savedComment = await comment.save();
 
     const populatedComment = await Comment.findById(savedComment._id)
       .populate("user", "username profilePic")
       .exec();
 
-    res
-      .status(200)
-      .json({
-        comment: populatedComment,
-        message: "Comment created successfully",
-      });
+    res.status(200).json({
+      comment: populatedComment,
+      message: "Comment created successfully",
+    });
   }),
 ];
 
@@ -107,11 +105,23 @@ exports.likeComment = asyncHandler(async (req, res, next) => {
   if (comment.likes.includes(authenticatedUserId)) {
     comment.likes.pull(authenticatedUserId);
     await comment.save();
-    res.status(200).json({ comment, message: "Comment unliked successfully" });
+    // pull the updated comment
+    const updatedComment = await (
+      await Comment.findById(commentId)
+    ).populate("user", "_id");
+    res.status(200).json({
+      comment: updatedComment,
+      message: "Comment unliked successfully",
+    });
   } else {
     comment.likes.push(authenticatedUserId);
     await comment.save();
-    res.status(200).json({ comment, message: "Comment liked successfully" });
+    const updatedComment = await (
+      await Comment.findById(commentId)
+    ).populate("user", "_id");
+    res
+      .status(200)
+      .json({ comment: updatedComment, message: "Comment liked successfully" });
   }
 });
 
