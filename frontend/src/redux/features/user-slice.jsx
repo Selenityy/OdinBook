@@ -545,6 +545,25 @@ export const userSlice = createSlice({
         commentCount: 0,
       };
     },
+    resetUniqueComment: (state) => {
+      state.uniqueComment = {
+        body: "",
+        timestamp: null,
+        user: {
+          _id: "",
+          username: "",
+          profilePic: "",
+        },
+        post: {
+          _id: "",
+        },
+        likes: [],
+        likeCount: 0,
+        images: [],
+        comments: [],
+        commentCount: 0,
+      };
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -785,5 +804,6 @@ export const userSlice = createSlice({
   },
 });
 
-export const { logout, resetUniquePost } = userSlice.actions;
+export const { logout, resetUniquePost, resetUniqueComment } =
+  userSlice.actions;
 export default userSlice.reducer;
