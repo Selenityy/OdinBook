@@ -5,16 +5,42 @@ import UniqueComment from "@/components/UniqueComment";
 import UniqueCommentComments from "@/components/UniqueCommentComments";
 import { useRouter, usePathname } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
+import { useEffect, useState } from "react";
+import {
+  resetUniqueComment,
+  fetchUniqueComment,
+} from "@/redux/features/user-slice";
 import "../../../../../../styles/globals.css";
 
 const UniqueCommentPage = () => {
   const router = useRouter();
-//   const dispatch = useDispatch();
+  const dispatch = useDispatch();
   const pathname = usePathname();
   const segments = pathname.split("/");
-  const postId = segments.pop();
+  const commentId = segments[5];
+  const comment = useSelector((state) => state.user.uniqueComment);
+  const commentsArray = comment.comments;
+  const post = useSelector((state) => state.user.uniquePost);
+  const postId = post._id;
+  const userState = useSelector((state) => state.user.value);
+  const userId = userState._id;
+  const [refreshDataTrigger, setRefreshDataTrigger] = useState(false);
+
+  useEffect(() => {
+    const updateUniqueCommentPage = async () => {
+      try {
+        await dispatch(
+          fetchUniqueComment({ userId, postId, commentId })
+        ).unwrap();
+      } catch (error) {
+        console.error("Failed to reload unique comment page:", error);
+      }
+    };
+    updateUniqueCommentPage();
+  }, [dispatch, refreshDataTrigger, postId, userId, commentId]);
 
   const onBackClick = async () => {
+    await dispatch(resetUniqueComment());
     const token = localStorage.getItem("token");
     if (token) {
       router.push(`/user/post/${postId}`);
@@ -46,10 +72,20 @@ const UniqueCommentPage = () => {
         <UniqueComment />
       </section>
       <section>
-        <CreateCommentForm />
+        <CreateCommentForm
+          refreshDataTrigger={refreshDataTrigger}
+          setRefreshDataTrigger={setRefreshDataTrigger}
+          postId={postId}
+          userId={userId}
+        />
       </section>
       <section>
-        <UniqueCommentComments />
+        <UniqueCommentComments
+          userId={userId}
+          commentsArray={commentsArray}
+          setRefreshDataTrigger={setRefreshDataTrigger}
+          postId={postId}
+        />
       </section>
     </div>
   );
