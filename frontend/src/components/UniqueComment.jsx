@@ -1,7 +1,7 @@
 "use client";
 
 import { useSelector, useDispatch } from "react-redux";
-import { likePost, fetchUniqueComment } from "@/redux/features/user-slice";
+import { likeComment, fetchUniqueComment } from "@/redux/features/user-slice";
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import { usePathname, useSearchParams, useRouter } from "next/navigation";
@@ -33,8 +33,8 @@ const UniqueComment = () => {
     updateNewPostComments();
   }, [dispatch, refreshDataTrigger, userId, postId, commentId]);
 
-  const onLikeClick = async (userId, postId) => {
-    await dispatch(likePost({ userId, postId }));
+  const onLikeClick = async (userId, postId, commentId) => {
+    await dispatch(likeComment({ userId, postId, commentId }));
     setRefreshDataTrigger((prev) => !prev);
   };
 
@@ -63,7 +63,7 @@ const UniqueComment = () => {
         </div>
         {/* <div className="w-full border border-gray-500"></div> */}
         <div
-          onClick={() => onLikeClick(userId, postId)}
+          onClick={() => onLikeClick(userId, postId, commentId)}
           className="col-start-2 row-start-4"
         >
           {newPost.likes.includes(userId) ? (
