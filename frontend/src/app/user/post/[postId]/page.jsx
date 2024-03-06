@@ -3,12 +3,11 @@
 import UniquePost from "@/components/UniquePost";
 import { useRouter, usePathname } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
-import { resetUniquePost } from "@/redux/features/user-slice";
 import "../../../../styles/globals.css";
 import CreateCommentForm from "@/components/CreateCommentForm";
 import UniquePostComments from "@/components/UniquePostComments";
 import { useEffect, useState } from "react";
-import { fetchUniquePost } from "@/redux/features/user-slice";
+import { fetchUniquePost, resetUniquePost } from "@/redux/features/user-slice";
 
 const UniquePostPage = () => {
   const router = useRouter();
