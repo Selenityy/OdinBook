@@ -90,7 +90,7 @@ const FriendReqList = () => {
   return (
     <div className="flex flex-col rounded-lg p-2 gap-3 bg-slate-700">
       <div>
-        <h1 className="font-bold tracking-wide text-white">Friend Requests</h1>
+        <h1 className="font-bold tracking-wide text-white ml-2 mt-2">Friend Requests</h1>
         <div className="mx-5 my-3">
           {friendRequests && friendRequests.length > 0 ? (
             <ul>
@@ -157,7 +157,7 @@ const FriendReqList = () => {
         </div>
       </div>
       <div>
-        <h1 className="font-bold tracking-wide text-white">Friends</h1>
+        <h1 className="font-bold tracking-wide text-white ml-2">Friends</h1>
         <div className="mx-5 my-3">
           {friends && friends.length > 0 ? (
             <ul>
