@@ -10,7 +10,7 @@ const UniqueComment = () => {
   const dispatch = useDispatch();
   const pathname = usePathname();
   const segments = pathname.split("/");
-  // Assuming the structure is /user/post/[postId]/comment/[commentId]
+  // Assuming the structure is /user/[userId]/post/[postId]/comment/[commentId]
   const postId = segments[3];
   const commentId = segments[5];
 
@@ -41,7 +41,7 @@ const UniqueComment = () => {
   return (
     <div className="w-full">
       <div className="bg-slate-700 border border-slate-500 px-3 pb-3 grid grid-cols-[min-content_min-content_min-content_1fr_min-content_min-content_min-content] grid-rows-[auto_auto_1fr_min-content]">
-        <div class="border border-slate-500 bg-slate-500 h-4 w-1 row-start-1 col-start-1 col-span-1 mb-0.5 ml-4 mt-0"></div>
+        <div className="border border-slate-500 bg-slate-500 h-4 w-1 row-start-1 col-start-1 col-span-1 mb-0.5 ml-4 mt-0"></div>
         <div className="w-10 h-10 relative col-start-1 row-start-2 row-span-2 mr-3">
           <Image
             src={`http://localhost:3000${newPost.user.profilePic}`}
