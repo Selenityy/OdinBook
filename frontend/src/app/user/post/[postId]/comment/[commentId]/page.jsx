@@ -1,6 +1,6 @@
 "use client";
 
-import CreateCommentForm from "@/components/CreateCommentForm";
+import CreateCommentFormForComment from "@/components/CreateCommentFormForComment";
 import UniqueComment from "@/components/UniqueComment";
 import UniqueCommentComments from "@/components/UniqueCommentComments";
 import { useRouter, usePathname } from "next/navigation";
@@ -72,11 +72,13 @@ const UniqueCommentPage = () => {
         <UniqueComment />
       </section>
       <section>
-        <CreateCommentForm
+        <CreateCommentFormForComment
           refreshDataTrigger={refreshDataTrigger}
           setRefreshDataTrigger={setRefreshDataTrigger}
           postId={postId}
           userId={userId}
+          commentId={commentId}
+          comment={comment}
         />
       </section>
       <section>
@@ -85,6 +87,8 @@ const UniqueCommentPage = () => {
           commentsArray={commentsArray}
           setRefreshDataTrigger={setRefreshDataTrigger}
           postId={postId}
+          comment={comment}
+          commentId={commentId}
         />
       </section>
     </div>
