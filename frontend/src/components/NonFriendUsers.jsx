@@ -81,12 +81,12 @@ const NonFriendUsers = () => {
 
   return (
     <div className="flex flex-col rounded-lg p-2 gap-3 bg-slate-700">
-      <div className="mx-5 my-3">
+      <div className="mx-3 my-3">
         {unfriendedUsers && unfriendedUsers.length > 0 ? (
-          <ul>
+          <ul className="grid grid-cols-[1fr_1fr] grid-rows-[1fr_1fr] auto-rows-auto gap-y-7 gap-x-10">
             {unfriendedUsers.map((user) => (
-              <li key={user._id} className="flex items-center space-x-3 mb-3">
-                <div className="w-10 h-10 relative">
+              <li key={user._id} className="flex items-center space-x-3">
+                <div className="w-16 h-16 relative">
                   <Image
                     src={`http://localhost:3000${user.profilePic}`}
                     alt={`${user.username}'s profile picture`}
@@ -96,7 +96,7 @@ const NonFriendUsers = () => {
                     priority
                   />
                 </div>
-                <div className="text-white">{user.username}</div>
+                <div className="text-white text-lg">{user.username}</div>
                 {sentRequests.some((request) => request._id === user._id) ? (
                   <div className="flex gap-2">
                     <div>
@@ -105,7 +105,7 @@ const NonFriendUsers = () => {
                         viewBox="0 0 24 24"
                         strokeWidth={1.5}
                         stroke="currentColor"
-                        className="w-5 h-5 text-white fill-none"
+                        className="w-6 h-6 text-white fill-none"
                       >
                         <path
                           strokeLinecap="round"
@@ -124,7 +124,7 @@ const NonFriendUsers = () => {
                         viewBox="0 0 24 24"
                         strokeWidth={1.5}
                         stroke="currentColor"
-                        className="w-5 h-5 text-white fill-none"
+                        className="w-6 h-6 text-white fill-none"
                       >
                         <path
                           strokeLinecap="round"
@@ -145,7 +145,7 @@ const NonFriendUsers = () => {
                       viewBox="0 0 24 24"
                       strokeWidth={1.5}
                       stroke="currentColor"
-                      className="w-5 h-5 text-white fill-none"
+                      className="w-6 h-6 text-white fill-none"
                     >
                       <path
                         strokeLinecap="round"
