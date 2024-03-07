@@ -40,12 +40,19 @@ const UniqueCommentPage = () => {
   }, [dispatch, refreshDataTrigger, postId, userId, commentId]);
 
   const onBackClick = async () => {
-    await dispatch(resetUniqueComment());
-    const token = localStorage.getItem("token");
-    if (token) {
-      router.push(`/user/post/${postId}`);
+    // await dispatch(resetUniqueComment());
+    // const token = localStorage.getItem("token");
+    // if (token) {
+    //   router.push(`/user/post/${postId}`);
+    // } else {
+    //   router.push("/");
+    // }
+    if (window.history.length > 1) {
+      router.back();
     } else {
-      router.push("/");
+      // Navigate to a default page if there's no history to go back to
+      // For example, back to the main post or a home page
+      router.push("/defaultPage");
     }
   };
   return (
