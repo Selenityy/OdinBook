@@ -15,7 +15,12 @@ router.get(
 router.post(
   "/",
   passport.authenticate("jwt", { session: false }),
-  commentController.createComment
+  commentController.createCommentOnPost
+);
+router.post(
+  "/:commentId",
+  passport.authenticate("jwt", { session: false }),
+  commentController.createCommentOnComment
 );
 
 // PUT: Updating
