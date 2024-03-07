@@ -1,4 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { getCloneableBody } from "next/dist/server/body-streams";
 
 // Get the current user model from jwt token
 export const fetchUserData = createAsyncThunk(
@@ -323,7 +324,7 @@ export const likePost = createAsyncThunk(
   }
 );
 
-// Creating a comment
+// Creating a comment on a post
 export const commentCreation = createAsyncThunk(
   "/user/post/commentCreation",
   async ({ postId, userId, commentData }, thunkAPI) => {
@@ -355,6 +356,42 @@ export const commentCreation = createAsyncThunk(
   }
 );
 
+// Creating a comment on a comment
+export const commentCreationOnComment = createAsyncThunk(
+  "/user/post/commentCreationOnComment",
+  async ({ commentId, postId, userId, commentData }, thunkAPI) => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      return thunkAPI.rejectWithValue("No token found");
+    }
+    try {
+      const response = await fetch(
+        `http://localhost:3000/user/${userId}/posts/${postId}/comments/${commentId}`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            commentId,
+            postId,
+            userId,
+            body: commentData,
+          }),
+        }
+      );
+      const commentResponse = await response.json();
+      if (!response.ok) {
+        throw new Error("Failed to create comment");
+      }
+      return commentResponse.comment;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
+
 // Fetch a specific comment
 export const fetchUniqueComment = createAsyncThunk(
   "/user/comment/uniqueComment",
@@ -375,7 +412,6 @@ export const fetchUniqueComment = createAsyncThunk(
         }
       );
       const data = await response.json();
-      console.log("user slice:", data);
       if (!response) {
         throw new Error(data.message || "Could not get unique comment");
       }
@@ -509,6 +545,9 @@ const initialState = {
       profilePic: "",
     },
     post: {
+      _id: "",
+    },
+    comment: {
       _id: "",
     },
     likes: [],
@@ -693,7 +732,7 @@ export const userSlice = createSlice({
         state.error = action.payload || "Failed to fetch post creation";
       })
 
-      // CREATE COMMENT
+      // CREATE COMMENT ON A POST
       .addCase(commentCreation.pending, (state, action) => {
         state.loading = true;
         state.error = null;
@@ -707,6 +746,24 @@ export const userSlice = createSlice({
         state.error = null;
       })
       .addCase(commentCreation.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload || "Failed to fetch post creation";
+      })
+
+      // CREATE COMMENT ON A COMMENT
+      .addCase(commentCreationOnComment.pending, (state, action) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(commentCreationOnComment.fulfilled, (state, action) => {
+        state.uniqueComment.comments.push(action.payload);
+        if ("commentCount" in state.uniqueComment) {
+          state.uniqueComment.commentCount += 1;
+        }
+        state.loading = false;
+        state.error = null;
+      })
+      .addCase(commentCreationOnComment.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload || "Failed to fetch post creation";
       })
