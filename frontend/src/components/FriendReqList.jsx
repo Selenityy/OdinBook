@@ -82,16 +82,6 @@ const FriendReqList = () => {
     setRefreshDataTrigger((prev) => !prev);
   };
 
-  const onFriendRequestClick = async (userId, friendUsername) => {
-    await dispatch(fetchSendFriendRequests({ userId, friendUsername }));
-    setRefreshDataTrigger((prev) => !prev);
-  };
-
-  const onCancelRequestClick = async (userId, friendUsername) => {
-    await dispatch(fetchCancelRequest({ userId, friendUsername }));
-    setRefreshDataTrigger((prev) => !prev);
-  };
-
   const onUnfriendRequestClick = async (userId, friendUsername) => {
     await dispatch(fetchUnfriend({ userId, friendUsername }));
     setRefreshDataTrigger((prev) => !prev);
