@@ -37,10 +37,12 @@ const NavSideBar = () => {
     }
   };
 
-  const handleLogOutClick = () => {
-    dispatch(logout());
+  const handleLogOutClick = async () => {
+    await router.push("/");
     localStorage.removeItem("token");
-    router.push("/");
+    setTimeout(() => {
+      dispatch(logout());
+    }, 1000);
   };
 
   return (
