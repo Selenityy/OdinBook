@@ -382,6 +382,38 @@ export const deleteOwnPost = createAsyncThunk(
   }
 );
 
+// Edit own post
+export const editOwnPost = createAsyncThunk(
+  "/user/editOwnPost",
+  async ({ userId, postId, updatedPostData }, thunkAPI) => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      return thunkAPI.rejectWithValue("No token found");
+    }
+    try {
+      const response = await fetch(
+        `http://localhost:3000/user/${userId}/posts/${postId}/`,
+        {
+          method: "PUT",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ body: updatedPostData }),
+        }
+      );
+      const data = await response.json();
+      console.log("data:", data);
+      if (!response.ok) {
+        throw new Error(data.message || "Could not delete a post");
+      }
+      return { message: data.message, updatedPost: data.updatedPost };
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
+
 // Like a post
 export const likePost = createAsyncThunk(
   "/user/likePost",
@@ -865,7 +897,22 @@ export const userSlice = createSlice({
       })
       .addCase(deleteOwnPost.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.payload || "Failed to fetch post creation";
+        state.error = action.payload || "Failed to delete own post";
+      })
+
+      // EDIT OWN POST
+      .addCase(editOwnPost.pending, (state, action) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(editOwnPost.fulfilled, (state, action) => {
+        state.value = { ...state.value, ...action.payload };
+        state.loading = false;
+        state.error = null;
+      })
+      .addCase(editOwnPost.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload || "Failed to edit own post";
       })
 
       // CREATE COMMENT ON A POST
