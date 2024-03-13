@@ -11,11 +11,7 @@ module.exports = {
         "odin line login ",
         "footer footer footer",
       ],
-      userLayout: [
-        "header header",
-        "user main",
-        "nav main",
-      ],
+      userLayout: ["header header", "user main", "nav main"],
     },
     gridTemplateColumns: {
       homeLayout: "1fr auto 1fr",
@@ -24,6 +20,14 @@ module.exports = {
     gridTemplateRows: {
       homeLayout: "1fr 2fr 1fr",
       userLayout: "auto auto 1fr",
+    },
+    extend: {
+      dropShadow: {
+        glow: [
+          "0 0px 2px rgba(255,255, 255, 0.35)",
+          "0 0px 5px rgba(255, 255,255, 0.2)",
+        ],
+      },
     },
   },
   plugins: [require("@savvywombat/tailwindcss-grid-areas")],
