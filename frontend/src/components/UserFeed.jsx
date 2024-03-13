@@ -93,12 +93,14 @@ const UserFeed = () => {
               <div className="col-start-2 col-span-5 row-start-1 flex items-center font-semibold text-white">
                 {post.user.username}
               </div>
-              <button
-                className="row-start-1 col-start-7 flex items-start ml-7 text-white cursor-pointer"
-                onClick={() => onEllipsisClick(post._id)}
-              >
-                ...
-              </button>
+              {userId === post.user._id && (
+                <button
+                  className="row-start-1 col-start-7 flex items-start ml-7 text-white cursor-pointer"
+                  onClick={() => onEllipsisClick(post._id)}
+                >
+                  ...
+                </button>
+              )}
               {activePostIdForDropdown === post._id && (
                 <div className="bg-slate-800 border-2 border-slate-500 rounded-2xl px-3 py-2 flex flex-col gap-1 absolute right-1/4 mt-7 drop-shadow-glow">
                   <div className="hover:font-bold text-sm text-white cursor-pointer w-min">
