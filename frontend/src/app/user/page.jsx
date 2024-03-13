@@ -1,7 +1,6 @@
 import CreatePostForm from "@/components/CreatePostForm";
-import FriendReqList from "@/components/FriendReqList";
 import UserFeed from "@/components/UserFeed";
-import "../../styles/globals.css"
+import "../../styles/globals.css";
 
 const UserHomePage = () => {
   return (

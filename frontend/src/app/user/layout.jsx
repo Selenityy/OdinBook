@@ -1,7 +1,6 @@
 import FriendReqList from "@/components/FriendReqList";
 import Header from "@/components/Header";
 import NavSideBar from "@/components/NavSideBar";
-import NavUser from "@/components/NavUser";
 import "../../styles/globals.css";
 
 const UserLayout = ({ children }) => {

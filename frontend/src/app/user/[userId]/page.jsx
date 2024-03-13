@@ -8,7 +8,6 @@ import {
   fetchUserData,
 } from "@/redux/features/user-slice";
 import { useEffect, useState } from "react";
-// import Image from "next/image";
 import { useRouter } from "next/navigation";
 import "../../../styles/globals.css";
 import ModalEditProfile from "@/components/ModalEditProfile";

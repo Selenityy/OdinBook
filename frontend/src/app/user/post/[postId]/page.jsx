@@ -7,10 +7,9 @@ import "../../../../styles/globals.css";
 import CreateCommentForm from "@/components/CreateCommentForm";
 import UniquePostComments from "@/components/UniquePostComments";
 import { useEffect, useState } from "react";
-import { fetchUniquePost, resetUniquePost } from "@/redux/features/user-slice";
+import { fetchUniquePost } from "@/redux/features/user-slice";
 
 const UniquePostPage = () => {
-  const router = useRouter();
   const dispatch = useDispatch();
   const pathname = usePathname();
   const segments = pathname.split("/");
