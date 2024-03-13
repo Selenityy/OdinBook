@@ -1,7 +1,11 @@
 "use client";
 
 import { useSelector, useDispatch } from "react-redux";
-import { fetchUserFeedPosts, likePost } from "@/redux/features/user-slice";
+import {
+  fetchUserFeedPosts,
+  likePost,
+  deleteOwnPost,
+} from "@/redux/features/user-slice";
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -18,6 +22,7 @@ const UserFeed = () => {
     (a, b) => new Date(b.timestamp) - new Date(a.timestamp)
   );
   const [refreshDataTrigger, setRefreshDataTrigger] = useState(false);
+  const [activePostIdForDropdown, setActivePostIdForDropdown] = useState(null);
 
   useEffect(() => {
     const updateUserFeed = async () => {
@@ -47,6 +52,24 @@ const UserFeed = () => {
     }
   };
 
+  const onEllipsisClick = (postId) => {
+    setActivePostIdForDropdown((current) =>
+      current === postId ? null : postId
+    );
+  };
+
+  const onDeleteClick = async (userId, postId) => {
+    try {
+      await dispatch(deleteOwnPost({ userId, postId })).unwrap();
+      setRefreshDataTrigger((prev) => !prev);
+      setActivePostIdForDropdown((current) =>
+        current === postId ? null : postId
+      );
+    } catch (error) {
+      console.error("Error deleting post:", error);
+    }
+  };
+
   return (
     <div className="w-full flex flex-col gap-6 auto-row-auto">
       <div className="flex flex-col">
@@ -70,9 +93,25 @@ const UserFeed = () => {
               <div className="col-start-2 col-span-5 row-start-1 flex items-center font-semibold text-white">
                 {post.user.username}
               </div>
-              <button className="row-start-1 col-start-7 flex items-start ml-7 text-white cursor-pointer">
+              <button
+                className="row-start-1 col-start-7 flex items-start ml-7 text-white cursor-pointer"
+                onClick={() => onEllipsisClick(post._id)}
+              >
                 ...
               </button>
+              {activePostIdForDropdown === post._id && (
+                <div className="bg-slate-800 border-2 border-slate-500 rounded-2xl px-3 py-2 flex flex-col gap-1 absolute right-1/4 mt-7 drop-shadow-glow">
+                  <div className="hover:font-bold text-sm text-white cursor-pointer w-min">
+                    Edit
+                  </div>
+                  <div
+                    className="hover:font-bold text-sm text-white cursor-pointer w-min"
+                    onClick={() => onDeleteClick(userId, post._id)}
+                  >
+                    Delete
+                  </div>
+                </div>
+              )}
               <div className="col-start-2 col-span-5 row-start-2 mb-5 text-white">
                 {post.body}
               </div>
