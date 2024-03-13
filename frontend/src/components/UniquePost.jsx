@@ -60,7 +60,7 @@ const UniquePost = () => {
         {/* <div className="w-full border border-gray-500"></div> */}
         <div
           onClick={() => onLikeClick(userId, postId)}
-          className="col-start-2 row-start-3"
+          className="col-start-2 row-start-3 cursor-pointer"
         >
           {post.likes.includes(userId) ? (
             // filled heart
@@ -91,7 +91,7 @@ const UniquePost = () => {
         <div className="col-start-3 row-start-3 flex items-center ml-1 text-sm text-white">
           {post.likeCount}
         </div>
-        <div className="col-start-5 row-start-3">
+        <div className="col-start-5 row-start-3 cursor-pointer">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"

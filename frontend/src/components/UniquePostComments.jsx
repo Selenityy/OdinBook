@@ -60,7 +60,7 @@ const UniquePostComments = ({
               {/* <div className="w-full border border-gray-500"></div> */}
               <div
                 onClick={() => onCommentLikeClick(userId, comment._id)}
-                className="col-start-2 row-start-3"
+                className="col-start-2 row-start-3 cursor-pointer"
               >
                 {comment.likes.includes(userId) ? (
                   // filled heart
@@ -93,7 +93,7 @@ const UniquePostComments = ({
               </div>
               <div
                 onClick={() => onCommentCommentClick(postId, comment._id)}
-                className="col-start-5 row-start-3"
+                className="col-start-5 row-start-3 cursor-pointer"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
