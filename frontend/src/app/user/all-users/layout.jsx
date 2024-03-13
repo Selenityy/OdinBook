@@ -1,5 +1,3 @@
-import FriendReqList from "@/components/FriendReqList";
-
 const AllUsersLayout = ({ children }) => {
   return (
     <div className="h-screen w-full mt-4">
