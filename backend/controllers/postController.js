@@ -191,8 +191,8 @@ exports.updateSpecificPost = asyncHandler(async (req, res, next) => {
   if (!updatedPost) {
     return res.status(404).json({ message: "Post not found" });
   }
-
-  res.json(updatedPost);
+  console.log("backend:", updatedPost);
+  res.json({ message: "Post updated successfully", updatedPost: updatedPost });
 });
 
 // Like a post
