@@ -74,10 +74,6 @@ const UserProfilePage = () => {
     setShowProfileDropDown(!showProfileDropDown);
   };
 
-  const editUsername = async () => {};
-
-  const editAbout = async () => {};
-
   return (
     <div className="w-full relative">
       {showProfileDropDown && (

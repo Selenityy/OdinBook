@@ -1,14 +1,38 @@
-import FriendReqList from "@/components/FriendReqList";
+"use client";
+import { useRouter } from "next/navigation";
 
 const UniquePostLayout = ({ children }) => {
+  const router = useRouter();
+
+  const onBackClick = async () => {
+    if (window.history.length > 1) {
+      router.back();
+    } else {
+      router.push("/defaultPage");
+    }
+  };
+
   return (
-    <div className="grid grid-cols-[1fr_auto] grid-rows-[auto_1fr] gap-x-8 auto-row-auto h-screen w-full">
-      <main className="col-start-1 row-start-1 flex justify-center">
-        {children}
-      </main>
-      <section className="col-start-2 row-span-2">
-        <FriendReqList />
+    <div className="h-screen w-full">
+      <section className="flex items-center gap-2 mb-3 sticky top-0 z-20 bg-slate-800 pt-3 pb-2">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth={1.5}
+          stroke="currentColor"
+          className="w-6 h-6 text-white"
+          onClick={() => onBackClick()}
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18"
+          />
+        </svg>
+        <h1 className="text-white text-xl font-semibold">Post</h1>
       </section>
+      <main className="flex justify-center z-0">{children}</main>
     </div>
   );
 };

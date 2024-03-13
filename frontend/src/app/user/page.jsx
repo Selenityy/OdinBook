@@ -5,15 +5,12 @@ import "../../styles/globals.css"
 
 const UserHomePage = () => {
   return (
-    <div className="grid grid-cols-[1fr_auto] grid-rows-[auto_1fr] gap-x-8 auto-row-auto h-screen w-full">
-      <section className="col-start-1 row-start-1 flex justify-center">
+    <div className="h-screen w-full">
+      <section className="col-start-1 row-start-1 flex justify-center sticky top-0 z-10">
         <CreatePostForm />
       </section>
       <section className="col-start-1 row-start-2 flex justify-center">
         <UserFeed />
-      </section>
-      <section className="col-start-2 row-span-2">
-        <FriendReqList />
       </section>
     </div>
   );

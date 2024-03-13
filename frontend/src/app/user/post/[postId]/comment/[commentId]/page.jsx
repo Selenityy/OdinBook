@@ -11,6 +11,7 @@ import {
   fetchUniqueComment,
 } from "@/redux/features/user-slice";
 import "../../../../../../styles/globals.css";
+import UniquePost from "@/components/UniquePost";
 
 const UniqueCommentPage = () => {
   const router = useRouter();
@@ -39,46 +40,15 @@ const UniqueCommentPage = () => {
     updateUniqueCommentPage();
   }, [dispatch, refreshDataTrigger, postId, userId, commentId]);
 
-  const onBackClick = async () => {
-    // await dispatch(resetUniqueComment());
-    // const token = localStorage.getItem("token");
-    // if (token) {
-    //   router.push(`/user/post/${postId}`);
-    // } else {
-    //   router.push("/");
-    // }
-    if (window.history.length > 1) {
-      router.back();
-    } else {
-      // Navigate to a default page if there's no history to go back to
-      // For example, back to the main post or a home page
-      router.push("/defaultPage");
-    }
-  };
   return (
     <div className="w-full">
-      <section className="flex items-center gap-2 mb-3">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          strokeWidth={1.5}
-          stroke="currentColor"
-          className="w-6 h-6 text-white"
-          onClick={() => onBackClick()}
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18"
-          />
-        </svg>
-        <h1 className="text-white text-xl font-semibold">Post</h1>
+      <section>
+        <UniquePost />
       </section>
       <section>
         <UniqueComment />
       </section>
-      <section>
+      <section className="sticky top-0 z-10">
         <CreateCommentFormForComment
           refreshDataTrigger={refreshDataTrigger}
           setRefreshDataTrigger={setRefreshDataTrigger}
