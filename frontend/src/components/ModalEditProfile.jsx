@@ -44,12 +44,12 @@ const ModalEditProfile = ({
     <div className="absolute top-1/4 left-24 w-96 h-96 bg-slate-700 border border-slate-500 rounded-2xl drop-shadow-glow">
       <div className="flex justify-between items-start my-3 mx-4">
         <div className="flex gap-3">
-          <div className="text-white" onClick={() => closeModal()}>
+          <div className="text-white cursor-pointer" onClick={() => closeModal()}>
             X
           </div>
           <div className="text-white">Edit Profile</div>
         </div>
-        <button className="btn" onClick={() => onClickSave()}>
+        <button className="btn2" onClick={() => onClickSave()}>
           Save
         </button>
       </div>
