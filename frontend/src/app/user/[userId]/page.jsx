@@ -93,7 +93,7 @@ const UserProfilePage = () => {
       <div className="bg-slate-700 border border-slate-500 grid grid-rows-[auto_1fr_1fr] grid-cols-[min-content_1fr_min-content] gap-y-3 gap-x-6 p-3">
         <div className="col-start-3 row-start-1 flex items-start ml-7 text-xl text-white flex flex-col">
           <div
-            className="text-sm w-24 border-2 border-slate-500 rounded-2xl p-2 flex items-center justify-center"
+            className="btn3"
             onClick={() => onEllipsisClick()}
           >
             Edit Profile
@@ -149,7 +149,7 @@ const UserProfilePage = () => {
                 </div>
                 <div
                   onClick={() => onLikeClick(userId, post._id)}
-                  className="col-start-2 row-start-3"
+                  className="col-start-2 row-start-3 cursor-pointer"
                 >
                   {post.likes.includes(userId) ? (
                     // filled heart
@@ -182,7 +182,7 @@ const UserProfilePage = () => {
                 </div>
                 <div
                   onClick={() => onCommentClick(post._id)}
-                  className="col-start-5 row-start-3"
+                  className="col-start-5 row-start-3 cursor-pointer"
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"

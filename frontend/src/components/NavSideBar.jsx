@@ -48,7 +48,7 @@ const NavSideBar = () => {
   return (
     <div className="flex flex-col gap-y-3 mt-2">
       <div
-        className="flex items-center gap-2 w-fit hover:border hover:border-hidden hover:rounded-lg hover:text-white hover:bg-slate-400/[0.2] hover:py-1 hover:pl-2 hover:pr-3"
+        className="flex items-center gap-2 w-fit hover:border hover:border-hidden hover:rounded-lg hover:text-white hover:bg-slate-400/[0.2] hover:py-1 hover:pl-2 hover:pr-3 cursor-pointer"
         onClick={handleHomeClick}
       >
         <svg
@@ -68,7 +68,7 @@ const NavSideBar = () => {
         <p className="text-lg text-white/[0.9] font-semibold">Home</p>
       </div>
       <div
-        className="flex items-center gap-2 w-fit hover:border hover:border-hidden hover:rounded-lg hover:text-white hover:bg-slate-400/[0.2] hover:py-1 hover:pl-2 hover:pr-3"
+        className="flex items-center gap-2 w-fit hover:border hover:border-hidden hover:rounded-lg hover:text-white hover:bg-slate-400/[0.2] hover:py-1 hover:pl-2 hover:pr-3 cursor-pointer"
         onClick={handleProfileClick}
       >
         <svg
@@ -88,7 +88,7 @@ const NavSideBar = () => {
         <p className="text-lg font-semibold text-white/[0.9]">Profile</p>
       </div>
       <div
-        className="flex items-center gap-2 w-fit hover:border hover:border-hidden hover:rounded-lg hover:text-white hover:bg-slate-400/[0.2] hover:py-1 hover:pl-2 hover:pr-3"
+        className="flex items-center gap-2 w-fit hover:border hover:border-hidden hover:rounded-lg hover:text-white hover:bg-slate-400/[0.2] hover:py-1 hover:pl-2 hover:pr-3 cursor-pointer"
         onClick={handleAllUsersClick}
       >
         <svg
@@ -108,7 +108,7 @@ const NavSideBar = () => {
         <p className="text-lg font-semibold text-white/[0.9]">Users</p>
       </div>
       <div
-        className="flex items-center gap-2 w-fit hover:border hover:border-hidden hover:rounded-lg hover:text-white hover:bg-slate-400/[0.2] hover:py-1 hover:pl-2 hover:pr-3"
+        className="flex items-center gap-2 w-fit hover:border hover:border-hidden hover:rounded-lg hover:text-white hover:bg-slate-400/[0.2] hover:py-1 hover:pl-2 hover:pr-3 cursor-pointer"
         onClick={handleLogOutClick}
       >
         <svg

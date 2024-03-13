@@ -90,7 +90,9 @@ const FriendReqList = () => {
   return (
     <div className="flex flex-col rounded-lg p-2 gap-3 bg-slate-700">
       <div>
-        <h1 className="font-bold tracking-wide text-white ml-2 mt-2">Friend Requests</h1>
+        <h1 className="font-bold tracking-wide text-white ml-2 mt-2">
+          Friend Requests
+        </h1>
         <div className="mx-5 my-3">
           {friendRequests && friendRequests.length > 0 ? (
             <ul>
@@ -114,6 +116,7 @@ const FriendReqList = () => {
                     onClick={() =>
                       onAcceptClick(currentUserId, friendReq.username)
                     }
+                    className="cursor-pointer"
                   >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -133,6 +136,7 @@ const FriendReqList = () => {
                     onClick={() =>
                       onRejectClick(currentUserId, friendReq.username)
                     }
+                    className="cursor-pointer"
                   >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -181,6 +185,7 @@ const FriendReqList = () => {
                     onClick={() =>
                       onUnfriendRequestClick(currentUserId, friend.username)
                     }
+                    className="cursor-pointer"
                   >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"

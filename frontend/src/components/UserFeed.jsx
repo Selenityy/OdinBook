@@ -70,7 +70,7 @@ const UserFeed = () => {
               <div className="col-start-2 col-span-5 row-start-1 flex items-center font-semibold text-white">
                 {post.user.username}
               </div>
-              <button className="row-start-1 col-start-7 flex items-start ml-7 text-white">
+              <button className="row-start-1 col-start-7 flex items-start ml-7 text-white cursor-pointer">
                 ...
               </button>
               <div className="col-start-2 col-span-5 row-start-2 mb-5 text-white">
@@ -78,7 +78,7 @@ const UserFeed = () => {
               </div>
               <div
                 onClick={() => onLikeClick(userId, post._id)}
-                className="col-start-2 row-start-3"
+                className="col-start-2 row-start-3 cursor-pointer"
               >
                 {post.likes.includes(userId) ? (
                   // filled heart
@@ -111,7 +111,7 @@ const UserFeed = () => {
               </div>
               <div
                 onClick={() => onCommentClick(post._id)}
-                className="col-start-5 row-start-3"
+                className="col-start-5 row-start-3 cursor-pointer"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
