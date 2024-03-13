@@ -228,6 +228,68 @@ export const fetchUnfriend = createAsyncThunk(
   }
 );
 
+// Update username
+export const updateUsername = createAsyncThunk(
+  "/user/updateUsername",
+  async ({ userId, username, newUsername }, thunkAPI) => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      return thunkAPI.rejectWithValue("No token found");
+    }
+    try {
+      const response = await fetch(
+        `http://localhost:3000/user/${userId}/${username}`,
+        {
+          method: "PUT",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ username: newUsername }),
+        }
+      );
+      if (!response.ok) {
+        throw new Error("Failed to create post");
+      }
+      const updatedUsername = await response.json();
+      return updatedUsername.username;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
+
+// Update about
+export const updateAbout = createAsyncThunk(
+  "/user/updateAbout",
+  async ({ userId, username, newAbout }, thunkAPI) => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      return thunkAPI.rejectWithValue("No token found");
+    }
+    try {
+      const response = await fetch(
+        `http://localhost:3000/user/${userId}/${username}/about`,
+        {
+          method: "PUT",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ about: newAbout }),
+        }
+      );
+      if (!response.ok) {
+        throw new Error("Failed to create post");
+      }
+      const updatedAbout = await response.json();
+      return updatedAbout.about;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
+
 // Creating a post
 export const postCreation = createAsyncThunk(
   "/user/postCreation",
@@ -715,6 +777,36 @@ export const userSlice = createSlice({
       .addCase(fetchUnfriend.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload || "Failed to  unfriend request";
+      })
+
+      // UPDATE USERNAME
+      .addCase(updateUsername.pending, (state, action) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(updateUsername.fulfilled, (state, action) => {
+        state.value = { ...state.value, ...action.payload };
+        state.loading = false;
+        state.error = null;
+      })
+      .addCase(updateUsername.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload || "Failed to fetch post creation";
+      })
+
+      // UPDATE ABOUT
+      .addCase(updateAbout.pending, (state, action) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(updateAbout.fulfilled, (state, action) => {
+        state.value = { ...state.value, ...action.payload };
+        state.loading = false;
+        state.error = null;
+      })
+      .addCase(updateAbout.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload || "Failed to fetch post creation";
       })
 
       // CREATE POST
