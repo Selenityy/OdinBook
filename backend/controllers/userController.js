@@ -389,14 +389,12 @@ exports.unfriend = asyncHandler(async (req, res, next) => {
   );
   const updatedCurrentUser = await User.findById(userId).populate("friends");
 
-  res
-    .status(200)
-    .json({
-      message: "Friend removed successfully",
-      userId,
-      recipientId: updatedRecipientUser._id,
-      currentUser: updatedCurrentUser,
-    });
+  res.status(200).json({
+    message: "Friend removed successfully",
+    userId,
+    recipientId: updatedRecipientUser._id,
+    currentUser: updatedCurrentUser,
+  });
 });
 
 // Delete own friend request sent
