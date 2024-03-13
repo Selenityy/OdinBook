@@ -56,6 +56,7 @@ exports.userFeed = asyncHandler(async (req, res, next) => {
         timestamp: 1,
         "user.username": "$userDetails.username",
         "user.profilePic": "$userDetails.profilePic",
+        "user._id": "$userDetails._id",
         likes: 1,
         likeCount: 1,
         comments: 1,
@@ -110,7 +111,6 @@ exports.userFeed = asyncHandler(async (req, res, next) => {
       },
     },
   ]);
-
   res.json({ userPosts, friendPosts });
 });
 
