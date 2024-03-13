@@ -5,6 +5,7 @@ import {
   fetchUserFeedPosts,
   likePost,
   deleteOwnPost,
+  editOwnPost,
 } from "@/redux/features/user-slice";
 import { useEffect, useState } from "react";
 import Image from "next/image";
@@ -23,6 +24,8 @@ const UserFeed = () => {
   );
   const [refreshDataTrigger, setRefreshDataTrigger] = useState(false);
   const [activePostIdForDropdown, setActivePostIdForDropdown] = useState(null);
+  const [updatedPostData, setUpdatedPostData] = useState("mewtwo");
+  // have the edited post start with the initial post value, on submit it updates the post data then triggers the edit. have the edit button trigger a modal, that modal's save triggers the edit click function to change it. maybe have the modal not be a pop up but make the div editable?
 
   useEffect(() => {
     const updateUserFeed = async () => {
@@ -70,6 +73,18 @@ const UserFeed = () => {
     }
   };
 
+  const onEditClick = async (userId, postId) => {
+    try {
+      await dispatch(editOwnPost({ userId, postId, updatedPostData })).unwrap();
+      setRefreshDataTrigger((prev) => !prev);
+      setActivePostIdForDropdown((current) =>
+        current === postId ? null : postId
+      );
+    } catch (error) {
+      console.error("Error updating post:", error);
+    }
+  };
+
   return (
     <div className="w-full flex flex-col gap-6 auto-row-auto">
       <div className="flex flex-col">
@@ -103,7 +118,12 @@ const UserFeed = () => {
               )}
               {activePostIdForDropdown === post._id && (
                 <div className="bg-slate-800 border-2 border-slate-500 rounded-2xl px-3 py-2 flex flex-col gap-1 absolute right-1/4 mt-7 drop-shadow-glow">
-                  <div className="hover:font-bold text-sm text-white cursor-pointer w-min">
+                  <div
+                    className="hover:font-bold text-sm text-white cursor-pointer w-min"
+                    onClick={() =>
+                      onEditClick(userId, post._id, updatedPostData)
+                    }
+                  >
                     Edit
                   </div>
                   <div
