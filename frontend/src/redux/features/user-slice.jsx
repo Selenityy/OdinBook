@@ -1,5 +1,4 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { getCloneableBody } from "next/dist/server/body-streams";
 
 // Get the current user model from jwt token
 export const fetchUserData = createAsyncThunk(
@@ -347,6 +346,36 @@ export const fetchUniquePost = createAsyncThunk(
       return {
         post: data,
       };
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
+
+// Delete your own post
+export const deleteOwnPost = createAsyncThunk(
+  "/user/deleteOwnPost",
+  async ({ userId, postId }, thunkAPI) => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      return thunkAPI.rejectWithValue("No token found");
+    }
+    try {
+      const response = await fetch(
+        `http://localhost:3000/user/${userId}/posts/${postId}/`,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.message || "Could not delete a post");
+      }
+      return { message: data.message };
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
     }
@@ -820,6 +849,21 @@ export const userSlice = createSlice({
         state.error = null;
       })
       .addCase(postCreation.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload || "Failed to fetch post creation";
+      })
+
+      // DELETE OWN POST
+      .addCase(deleteOwnPost.pending, (state, action) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(deleteOwnPost.fulfilled, (state, action) => {
+        state.value = { ...state.value, ...action.payload };
+        state.loading = false;
+        state.error = null;
+      })
+      .addCase(deleteOwnPost.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload || "Failed to fetch post creation";
       })
