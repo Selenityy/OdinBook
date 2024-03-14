@@ -385,7 +385,7 @@ export const deleteOwnPost = createAsyncThunk(
 // Edit own post
 export const editOwnPost = createAsyncThunk(
   "/user/editOwnPost",
-  async ({ userId, postId, updatedPostData }, thunkAPI) => {
+  async ({ userId, postId, updatedPost }, thunkAPI) => {
     const token = localStorage.getItem("token");
     if (!token) {
       return thunkAPI.rejectWithValue("No token found");
@@ -399,7 +399,7 @@ export const editOwnPost = createAsyncThunk(
             Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ body: updatedPostData }),
+          body: JSON.stringify({ body: updatedPost }),
         }
       );
       const data = await response.json();
