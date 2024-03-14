@@ -581,6 +581,68 @@ export const likeComment = createAsyncThunk(
   }
 );
 
+// Edit own comment
+export const editOwnComment = createAsyncThunk(
+  "/user/editOwnComment",
+  async ({ userId, postId, commentId, updatedComment }, thunkAPI) => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      return thunkAPI.rejectWithValue("No token found");
+    }
+    try {
+      const response = await fetch(
+        `http://localhost:3000/user/${userId}/posts/${postId}/comments/${commentId}`,
+        {
+          method: "PUT",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ body: updatedComment }),
+        }
+      );
+      const data = await response.json();
+      console.log("data:", data);
+      if (!response.ok) {
+        throw new Error(data.message || "Could not update a comment");
+      }
+      return { message: data.message, updatedComment: data.updatedComment };
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
+
+// Delete your own comment
+export const deleteOwnComment = createAsyncThunk(
+  "/user/deleteOwnComment",
+  async ({ userId, postId, commentId }, thunkAPI) => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      return thunkAPI.rejectWithValue("No token found");
+    }
+    try {
+      const response = await fetch(
+        `http://localhost:3000/user/${userId}/posts/${postId}/comments/${commentId}`,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.message || "Could not delete a comment");
+      }
+      return { message: data.message };
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
+
 // Signing up
 export const signUpUser = createAsyncThunk(
   "/user/signUp",
@@ -979,6 +1041,48 @@ export const userSlice = createSlice({
       .addCase(likeComment.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload || "Failed to like/unlike comment";
+      })
+
+      // DELETE OWN COMMENT
+      .addCase(deleteOwnComment.pending, (state, action) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(deleteOwnComment.fulfilled, (state, action) => {
+        // state.uniquePost = { ...state.value, ...action.payload };
+        const commentId = action.meta.arg.commentId;
+        state.uniquePost.comments = state.uniquePost.comments.filter(
+          (comment) => comment._id !== commentId
+        );
+
+        state.loading = false;
+        state.error = null;
+      })
+      .addCase(deleteOwnComment.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload || "Failed to delete own comment";
+      })
+
+      // EDIT OWN COMMENT
+      .addCase(editOwnComment.pending, (state, action) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(editOwnComment.fulfilled, (state, action) => {
+        // state.uniquePost = { ...state.value, ...action.payload };
+        const { updatedComment } = action.payload;
+        const commentIndex = state.uniquePost.comments.findIndex(
+          (comment) => comment._id === updatedComment._id
+        );
+        if (commentIndex !== -1) {
+          state.uniquePost.comments[commentIndex] = updatedComment;
+        }
+        state.loading = false;
+        state.error = null;
+      })
+      .addCase(editOwnComment.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload || "Failed to edit own comment";
       })
 
       // GET UNIQUE POST
