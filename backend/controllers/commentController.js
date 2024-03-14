@@ -182,7 +182,11 @@ exports.updateComment = [
       return res.status(404).json({ message: "Comment not found" });
     }
 
-    res.json(updatedComment);
+    console.log("backend:", updatedComment);
+    res.json({
+      message: "Comment updated successfully",
+      updatedComment: updatedComment,
+    });
   }),
 ];
 
@@ -232,6 +236,22 @@ exports.deleteSpecificComment = asyncHandler(async (req, res, next) => {
 
   if (!deletedComment) {
     return res.status(404).json({ message: "Comment not found" });
+  }
+  // Remove comment id from the post's comment array
+  await Post.findByIdAndUpdate(postId, {
+    $pull: { comments: commentId },
+  });
+
+  // If this comment has replies (nested comments), you'll also want to delete them.
+  // This assumes that your comments can have nested comments/replies.
+  await Comment.deleteMany({ comment: commentId });
+
+  // Optionally, update the parent comment if this is a nested comment
+  // This is if you're keeping track of nested comments directly in a 'comments' array within each comment
+  if (deletedComment.comment) {
+    await Comment.findByIdAndUpdate(deletedComment.comment, {
+      $pull: { comments: commentId },
+    });
   }
 
   res.json({ message: "Comment deleted successfully" });
