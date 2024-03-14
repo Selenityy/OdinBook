@@ -1,7 +1,12 @@
 "use client";
 
 import { useSelector, useDispatch } from "react-redux";
-import { likePost, fetchUniquePost } from "@/redux/features/user-slice";
+import {
+  likePost,
+  fetchUniquePost,
+  deleteOwnPost,
+  editOwnPost,
+} from "@/redux/features/user-slice";
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
