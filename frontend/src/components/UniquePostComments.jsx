@@ -4,6 +4,12 @@ import Image from "next/image";
 import { likeComment } from "@/redux/features/user-slice";
 import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
+import { useEffect, useState } from "react";
+import {
+  fetchUniquePost,
+  deleteOwnComment,
+  editOwnComment,
+} from "@/redux/features/user-slice";
 
 const UniquePostComments = ({
   userId,
@@ -13,6 +19,9 @@ const UniquePostComments = ({
 }) => {
   const dispatch = useDispatch();
   const router = useRouter();
+  const [activeCommentIdForDropdown, setActiveCommentIdForDropdown] =
+    useState(null);
+  const [editMode, setEditMode] = useState({ commentId: null, content: "" });
 
   const onCommentLikeClick = async (userId, commentId) => {
     await dispatch(likeComment({ userId, commentId }));
@@ -28,6 +37,55 @@ const UniquePostComments = ({
     }
   };
 
+  const onEllipsisClick = (commentId) => {
+    setActiveCommentIdForDropdown((current) =>
+      current === commentId ? null : commentId
+    );
+  };
+
+  const onDeleteClick = async (userId, commentId) => {
+    try {
+      await dispatch(deleteOwnComment({ userId, postId, commentId })).unwrap();
+      setRefreshDataTrigger((prev) => !prev);
+      setActiveCommentIdForDropdown((current) =>
+        current === commentId ? null : commentId
+      );
+    } catch (error) {
+      console.error("Error deleting comment:", error);
+    }
+  };
+
+  const updatingEditedComment = async (userId, commentId, updatedComment) => {
+    try {
+      await dispatch(
+        editOwnComment({ userId, postId, commentId, updatedComment })
+      ).unwrap();
+      setRefreshDataTrigger((prev) => !prev);
+      setActiveCommentIdForDropdown((current) =>
+        current === commentId ? null : commentId
+      );
+    } catch (error) {
+      console.error("Error updating comment:", error);
+    }
+  };
+
+  const onEditClick = (comment) => {
+    setEditMode({ commentId: comment._id, content: comment.body });
+    setActiveCommentIdForDropdown(null);
+  };
+
+  const onEditChange = (e) => {
+    setEditMode((prevState) => ({ ...prevState, content: e.target.value }));
+  };
+
+  const onEditSave = async (commentId) => {
+    if (editMode.commentId === commentId) {
+      await updatingEditedComment(userId, commentId, editMode.content);
+      setEditMode({ commentId: null, content: "" });
+      setActiveCommentIdForDropdown(null);
+    }
+  };
+
   return (
     <div className="w-full flex flex-col gap-6 auto-row-auto">
       <div>
@@ -36,7 +94,7 @@ const UniquePostComments = ({
           commentsArray.map((comment) => (
             <div
               key={comment._id}
-              className="bg-slate-700 border border-slate-500 p-3 grid grid-cols-[min-content_min-content_min-content_1fr_min-content_min-content_min-content] grid-rows-[auto_1fr_min-content]"
+              className="bg-slate-700 border border-slate-500 p-3 grid grid-cols-[min-content_min-content_min-content_1fr_min-content_min-content_40px] grid-rows-[auto_1fr_min-content]"
             >
               <div className="w-10 h-10 relative col-start-1 row-start-1 row-span-2 mr-3">
                 <Image
@@ -51,11 +109,55 @@ const UniquePostComments = ({
               <div className="col-start-2 col-span-5 row-start-1 flex items-center font-semibold text-white">
                 {comment.user.username}
               </div>
-              <button className="row-start-1 col-start-7 flex items-start ml-7 text-white">
-                ...
-              </button>
-              <div className="col-start-2 col-span-5 row-start-2 mb-5 text-white">
-                {comment.body}
+              {/* if you own the comment, you can see the ... */}
+              {userId === comment.user._id && editMode.commentId === null && (
+                <button
+                  className="row-start-1 col-start-7 flex items-start ml-7 text-white cursor-pointer"
+                  onClick={() => onEllipsisClick(comment._id)}
+                >
+                  ...
+                </button>
+              )}
+              {/* if you click on the ... you'll see these options */}
+              {activeCommentIdForDropdown === comment._id && (
+                <div className="bg-slate-800 border-2 border-slate-500 rounded-2xl px-3 py-2 flex flex-col gap-1 col-start-5 col-span-3 row-start-2 row-span-2 drop-shadow-glow">
+                  <div
+                    className="hover:font-bold text-sm text-white cursor-pointer w-min"
+                    onClick={() => onEditClick(comment)}
+                  >
+                    Edit
+                  </div>
+                  <div
+                    className="hover:font-bold text-sm text-white cursor-pointer w-min"
+                    onClick={() => onDeleteClick(userId, comment._id)}
+                  >
+                    Delete
+                  </div>
+                </div>
+              )}
+              {/* if you click edit on your comment, you'll see the save button */}
+              {editMode.commentId === comment._id && (
+                <div className="col-start-5 col-span-3 row-start-1 row-span-2 flex items-center justify-end">
+                  <button
+                    className="cursor-pointer sm-btn3"
+                    onClick={() => onEditSave(comment._id)}
+                  >
+                    Save
+                  </button>
+                </div>
+              )}
+              <div className="col-start-2 col-span-3 row-start-2 mb-5 text-white">
+                {/* if you click edit on your comment, you'll be able to click into the body field, otherwise it's just the comment's body */}
+                {editMode.commentId === comment._id ? (
+                  <input
+                    type="text"
+                    value={editMode.content}
+                    onChange={onEditChange}
+                    className="bg-slate-700 text-white w-full border-2 border-yellow-500 border-dashed p-px"
+                  />
+                ) : (
+                  comment.body
+                )}
               </div>
               {/* <div className="w-full border border-gray-500"></div> */}
               <div
