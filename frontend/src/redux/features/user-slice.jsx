@@ -403,7 +403,6 @@ export const editOwnPost = createAsyncThunk(
         }
       );
       const data = await response.json();
-      // console.log("data:", data);
       if (!response.ok) {
         throw new Error(data.message || "Could not delete a post");
       }
@@ -602,7 +601,6 @@ export const editOwnComment = createAsyncThunk(
         }
       );
       const data = await response.json();
-      // console.log("data:", data);
       if (!response.ok) {
         throw new Error(data.message || "Could not update a comment");
       }
@@ -1054,7 +1052,6 @@ export const userSlice = createSlice({
         state.uniquePost.comments = state.uniquePost.comments.filter(
           (comment) => comment._id !== commentId
         );
-
         state.loading = false;
         state.error = null;
       })
@@ -1071,15 +1068,12 @@ export const userSlice = createSlice({
       .addCase(editOwnComment.fulfilled, (state, action) => {
         // state.uniquePost = { ...state.value, ...action.payload };
         const { updatedComment } = action.payload;
-        // console.log("updatedComment:", updatedComment);
         const commentIndex = state.uniquePost.comments.findIndex(
           (comment) => comment._id === updatedComment._id
         );
-        // console.log("commentIndex:", commentIndex);
         if (commentIndex !== -1) {
           state.uniquePost.comments[commentIndex] = updatedComment;
         }
-        // console.log(JSON.parse(JSON.stringify(state.uniquePost)));
         state.loading = false;
         state.error = null;
       })
