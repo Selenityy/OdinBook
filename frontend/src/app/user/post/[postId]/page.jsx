@@ -40,7 +40,7 @@ const UniquePostPage = () => {
     if (window.history.length > 1) {
       router.back();
       await dispatch(resetUniquePost());
-      // await dispatch(resetUniqueComment());
+      await dispatch(resetUniqueComment());
     } else {
       router.push("/defaultPage");
     }
