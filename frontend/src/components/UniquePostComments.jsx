@@ -6,7 +6,6 @@ import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
 import {
-  fetchUniquePost,
   deleteOwnComment,
   editOwnComment,
 } from "@/redux/features/user-slice";
