@@ -1,13 +1,20 @@
 "use client";
 
 import { useSelector, useDispatch } from "react-redux";
-import { likeComment, fetchUniqueComment } from "@/redux/features/user-slice";
+import {
+  likeComment,
+  fetchUniqueComment,
+  deleteOwnComment,
+  editOwnComment,
+  resetUniqueComment,
+} from "@/redux/features/user-slice";
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import { usePathname, useSearchParams, useRouter } from "next/navigation";
 
 const UniqueComment = () => {
   const dispatch = useDispatch();
+  const router = useRouter();
   const pathname = usePathname();
   const segments = pathname.split("/");
   // Assuming the structure is /user/[userId]/post/[postId]/comment/[commentId]
@@ -15,14 +22,19 @@ const UniqueComment = () => {
   const commentId = segments[5];
 
   const newPost = useSelector((state) => state.user.uniqueComment);
+  console.log("commentId:", commentId);
   const userState = useSelector((state) => state.user.value);
   const userId = userState._id;
 
   const [refreshDataTrigger, setRefreshDataTrigger] = useState(false);
+  const [activeCommentIdForDropdown, setActiveCommentIdForDropdown] =
+    useState(null);
+  const [editMode, setEditMode] = useState({ commentId: null, content: "" });
 
   useEffect(() => {
     const updateNewPostComments = async () => {
       try {
+        console.log(userId, postId, commentId);
         await dispatch(
           fetchUniqueComment({ userId, postId, commentId })
         ).unwrap();
@@ -38,10 +50,61 @@ const UniqueComment = () => {
     setRefreshDataTrigger((prev) => !prev);
   };
 
+  const onEllipsisClick = (commentId) => {
+    setActiveCommentIdForDropdown((current) =>
+      current === commentId ? null : commentId
+    );
+  };
+
+  const onDeleteClick = async (userId, commentId) => {
+    try {
+      await dispatch(deleteOwnComment({ userId, postId, commentId })).unwrap();
+      setRefreshDataTrigger((prev) => !prev);
+      setActiveCommentIdForDropdown((current) =>
+        current === commentId ? null : commentId
+      );
+      router.back();
+      dispatch(resetUniqueComment());
+    } catch (error) {
+      console.error("Error deleting comment:", error);
+    }
+  };
+
+  const updatingEditedComment = async (userId, commentId, updatedComment) => {
+    try {
+      await dispatch(
+        editOwnComment({ userId, postId, commentId, updatedComment })
+      ).unwrap();
+      setRefreshDataTrigger((prev) => !prev);
+      setActiveCommentIdForDropdown((current) =>
+        current === commentId ? null : commentId
+      );
+    } catch (error) {
+      console.error("Error updating comment:", error);
+    }
+  };
+
+  const onEditClick = (comment) => {
+    setEditMode({ commentId: comment._id, content: comment.body });
+    setActiveCommentIdForDropdown(null);
+  };
+
+  const onEditChange = (e) => {
+    setEditMode((prevState) => ({ ...prevState, content: e.target.value }));
+  };
+
+  const onEditSave = async (commentId) => {
+    if (editMode.commentId === commentId) {
+      await updatingEditedComment(userId, commentId, editMode.content);
+      setEditMode({ commentId: null, content: "" });
+      setActiveCommentIdForDropdown(null);
+    }
+  };
+
   return (
     <div className="w-full">
-      <div className="bg-slate-700 border border-slate-500 px-3 pb-3 grid grid-cols-[min-content_min-content_min-content_1fr_min-content_min-content_min-content] grid-rows-[auto_auto_1fr_min-content]">
-        <div className="border border-slate-500 bg-slate-500 h-4 w-1 row-start-1 col-start-1 col-span-1 mb-0.5 ml-4 mt-0"></div>
+      <div className="bg-slate-700 border border-slate-500 px-3 pb-3 grid grid-cols-[min-content_min-content_min-content_1fr_min-content_min-content_40px] grid-rows-[auto_auto_auto_1fr_min-content]">
+        <div className="border border-slate-500 bg-slate-500 h-5.5 w-1 row-start-1 col-start-1 col-span-1 mb-0.5 ml-4 mt-0"></div>
         <div className="w-10 h-10 relative col-start-1 row-start-2 row-span-2 mr-3">
           <Image
             src={`http://localhost:3000/${newPost.user.profilePic}`}
@@ -55,11 +118,55 @@ const UniqueComment = () => {
         <div className="col-start-2 col-span-5 row-start-2 flex items-center font-semibold text-white">
           {newPost.user.username}
         </div>
-        <button className="row-start-2 col-start-7 flex items-start ml-7 text-white">
-          ...
-        </button>
-        <div className="col-start-2 col-span-5 row-start-3 mb-5 text-white">
-          {newPost.body}
+        {/* if you own the comment, you can see the ... */}
+        {userId === newPost.user._id && editMode.commentId === null && (
+          <button
+            className="row-start-1 col-start-7 flex items-start ml-7 text-white cursor-pointer"
+            onClick={() => onEllipsisClick(newPost._id)}
+          >
+            ...
+          </button>
+        )}
+        {/* if you click on the ... you'll see these options */}
+        {activeCommentIdForDropdown === newPost._id && (
+          <div className="bg-slate-800 border-2 border-slate-500 rounded-2xl px-3 py-2 flex flex-col gap-1 col-start-5 col-span-3 row-start-2 row-span-2 drop-shadow-glow">
+            <div
+              className="hover:font-bold text-sm text-white cursor-pointer w-min"
+              onClick={() => onEditClick(newPost)}
+            >
+              Edit
+            </div>
+            <div
+              className="hover:font-bold text-sm text-white cursor-pointer w-min"
+              onClick={() => onDeleteClick(userId, newPost._id)}
+            >
+              Delete
+            </div>
+          </div>
+        )}
+        {/* if you click edit on your comment, you'll see the save button */}
+        {editMode.commentId === newPost._id && (
+          <div className="col-start-5 col-span-3 row-start-2 row-span-2 flex items-center justify-end">
+            <button
+              className="cursor-pointer sm-btn3"
+              onClick={() => onEditSave(newPost._id)}
+            >
+              Save
+            </button>
+          </div>
+        )}
+        <div className="col-start-2 col-span-3 row-start-3 mb-5 text-white">
+          {/* if you click edit on your comment, you'll be able to click into the body field, otherwise it's just the comment's body */}
+          {editMode.commentId === newPost._id ? (
+            <input
+              type="text"
+              value={editMode.content}
+              onChange={onEditChange}
+              className="bg-slate-700 text-white w-full border-2 border-yellow-500 border-dashed p-px"
+            />
+          ) : (
+            newPost.body
+          )}
         </div>
         {/* <div className="w-full border border-gray-500"></div> */}
         <div
