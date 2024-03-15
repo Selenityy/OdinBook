@@ -9,10 +9,11 @@ import {
 } from "@/redux/features/user-slice";
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 const UniquePost = () => {
   const dispatch = useDispatch();
+  const router = useRouter();
   const pathname = usePathname();
   const segments = pathname.split("/");
   const postId = segments.pop();
@@ -55,6 +56,7 @@ const UniquePost = () => {
       setActivePostIdForDropdown((current) =>
         current === postId ? null : postId
       );
+      router.back();
     } catch (error) {
       console.error("Error deleting post:", error);
     }
