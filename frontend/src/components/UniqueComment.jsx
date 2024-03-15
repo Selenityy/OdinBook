@@ -19,10 +19,9 @@ const UniqueComment = () => {
   const segments = pathname.split("/");
   // Assuming the structure is /user/[userId]/post/[postId]/comment/[commentId]
   const postId = segments[3];
-  const commentId = segments[5];
+  let commentId = segments[5];
 
   const newPost = useSelector((state) => state.user.uniqueComment);
-  console.log("commentId:", commentId);
   const userState = useSelector((state) => state.user.value);
   const userId = userState._id;
 
@@ -34,7 +33,6 @@ const UniqueComment = () => {
   useEffect(() => {
     const updateNewPostComments = async () => {
       try {
-        console.log(userId, postId, commentId);
         await dispatch(
           fetchUniqueComment({ userId, postId, commentId })
         ).unwrap();
@@ -59,12 +57,12 @@ const UniqueComment = () => {
   const onDeleteClick = async (userId, commentId) => {
     try {
       await dispatch(deleteOwnComment({ userId, postId, commentId })).unwrap();
-      setRefreshDataTrigger((prev) => !prev);
       setActiveCommentIdForDropdown((current) =>
         current === commentId ? null : commentId
       );
+    //   setRefreshDataTrigger((prev) => !prev);
       router.back();
-      dispatch(resetUniqueComment());
+      //   dispatch(resetUniqueComment());
     } catch (error) {
       console.error("Error deleting comment:", error);
     }
