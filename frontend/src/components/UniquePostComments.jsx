@@ -5,10 +5,7 @@ import { likeComment } from "@/redux/features/user-slice";
 import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
-import {
-  deleteOwnComment,
-  editOwnComment,
-} from "@/redux/features/user-slice";
+import { deleteOwnComment, editOwnComment } from "@/redux/features/user-slice";
 
 const UniquePostComments = ({
   userId,
