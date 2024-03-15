@@ -2,7 +2,11 @@
 
 import { useSelector, useDispatch } from "react-redux";
 import { useRouter } from "next/navigation";
-import { logout } from "@/redux/features/user-slice";
+import {
+  logout,
+  resetUniqueComment,
+  resetUniquePost,
+} from "@/redux/features/user-slice";
 
 const NavSideBar = () => {
   const dispatch = useDispatch();
@@ -14,6 +18,8 @@ const NavSideBar = () => {
     const token = localStorage.getItem("token");
     if (token) {
       router.push("/user");
+      dispatch(resetUniqueComment());
+      dispatch(resetUniquePost());
     } else {
       router.push("/");
     }
