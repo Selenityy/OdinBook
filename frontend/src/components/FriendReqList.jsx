@@ -103,7 +103,7 @@ const FriendReqList = () => {
                 >
                   <div className="w-10 h-10 relative">
                     <Image
-                      src={`http://localhost:3000${friendReq.profilePic}`}
+                      src={`http://localhost:3000/${friendReq.profilePic}`}
                       alt={`${friendReq.username}'s profile picture`}
                       fill
                       className="rounded-full object-cover"
@@ -172,7 +172,7 @@ const FriendReqList = () => {
                 >
                   <div className="w-10 h-10 relative">
                     <Image
-                      src={`http://localhost:3000${friend.profilePic}`}
+                      src={`http://localhost:3000/${friend.profilePic}`}
                       alt={`${friend.username}'s profile picture`}
                       fill
                       className="rounded-full object-cover"

@@ -71,7 +71,7 @@ const UserProfile = () => {
           <Image
             className="header"
             id="profile-pic"
-            src={`http://localhost:3000${profilePic}`}
+            src={`http://localhost:3000/${profilePic}`}
             alt="profile-pic"
             priority
             width={50}

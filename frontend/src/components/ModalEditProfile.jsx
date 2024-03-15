@@ -60,7 +60,7 @@ const ModalEditProfile = ({
               className="header"
               priority
               id="profile-pic"
-              src={`http://localhost:3000${profilePic}`}
+              src={`http://localhost:3000/${profilePic}`}
               alt="profile-pic"
               width={100}
               height={100}

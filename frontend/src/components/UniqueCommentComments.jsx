@@ -42,7 +42,7 @@ const UniqueCommentComments = ({
             >
               <div className="w-10 h-10 relative col-start-1 row-start-1 row-span-2 mr-3">
                 <Image
-                  src={`http://localhost:3000${comment.user.profilePic}`}
+                  src={`http://localhost:3000/${comment.user.profilePic}`}
                   alt={`${comment.user.username}'s profile picture`}
                   className="rounded-full object-cover"
                   width={50}
