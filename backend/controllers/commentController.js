@@ -182,7 +182,6 @@ exports.updateComment = [
       return res.status(404).json({ message: "Comment not found" });
     }
 
-    console.log("backend:", updatedComment);
     res.json({
       message: "Comment updated successfully",
       updatedComment: updatedComment,
