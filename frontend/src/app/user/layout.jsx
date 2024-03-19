@@ -19,6 +19,12 @@ const UserLayout = ({ children }) => {
     xs:grid-rows-XSuserLayout 
     xs:gap-[16px] xs:mx-[15px] 
 
+    // SM SCREEN SIZE 640+
+    sm:grid-areas-SMuserLayout 
+    sm: grid-cols-SMuserLayout 
+    sm:grid-rows-SMuserLayout 
+    sm:gap-[16px] sm:mx-[15px] 
+
     // MD SCREEN SIZE 768+
     md:grid-areas-MDuserLayout 
     md:grid-cols-MDuserLayout 
