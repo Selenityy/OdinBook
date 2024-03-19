@@ -52,7 +52,7 @@ const NavSideBar = () => {
   };
 
   return (
-    <div className="flex flex-col gap-y-3 mt-2">
+    <div className="flex flex-col gap-y-3">
       <div
         className="flex items-center gap-2 w-fit hover:border hover:border-hidden hover:rounded-lg hover:text-white hover:bg-slate-400/[0.2] hover:py-1 hover:pl-2 hover:pr-3 cursor-pointer"
         onClick={handleHomeClick}
