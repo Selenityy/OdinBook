@@ -3,7 +3,9 @@ import UserProfile from "./UserProfile";
 const Header = () => {
   return (
     <header
-      className="header flex justify-between items-center"
+      className="header 
+      xxs:flex xxs:justify-center xxs:items-center xxs:gap-10
+      md:flex md:justify-between md:items-center"
       id="header-bar"
     >
       <h1
