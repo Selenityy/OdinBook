@@ -6,6 +6,8 @@ import {
   fetchUserFeedPosts,
   likePost,
   fetchUserData,
+  deleteOwnPost,
+  editOwnPost,
 } from "@/redux/features/user-slice";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
@@ -27,6 +29,8 @@ const UserProfilePage = () => {
   );
   const [refreshDataTrigger, setRefreshDataTrigger] = useState(false);
   const [showProfileDropDown, setShowProfileDropDown] = useState(false);
+  const [activePostIdForDropdown, setActivePostIdForDropdown] = useState(null);
+  const [editMode, setEditMode] = useState({ postId: null, content: "" });
 
   // update the user feed when the refresh trigger has been changed
   useEffect(() => {
@@ -69,8 +73,51 @@ const UserProfilePage = () => {
     }
   };
 
-  const onEllipsisClick = async () => {
-    setShowProfileDropDown(!showProfileDropDown);
+  const onEllipsisClick = (postId) => {
+    setActivePostIdForDropdown((current) =>
+      current === postId ? null : postId
+    );
+  };
+
+  const onDeleteClick = async (userId, postId) => {
+    try {
+      await dispatch(deleteOwnPost({ userId, postId })).unwrap();
+      setRefreshDataTrigger((prev) => !prev);
+      setActivePostIdForDropdown((current) =>
+        current === postId ? null : postId
+      );
+    } catch (error) {
+      console.error("Error deleting post:", error);
+    }
+  };
+
+  const updatingEditedPost = async (userId, postId, updatedPost) => {
+    try {
+      await dispatch(editOwnPost({ userId, postId, updatedPost })).unwrap();
+      setRefreshDataTrigger((prev) => !prev);
+      setActivePostIdForDropdown((current) =>
+        current === postId ? null : postId
+      );
+    } catch (error) {
+      console.error("Error updating post:", error);
+    }
+  };
+
+  const onEditClick = (post) => {
+    setEditMode({ postId: post._id, content: post.body });
+    setActivePostIdForDropdown(null);
+  };
+
+  const onEditChange = (e) => {
+    setEditMode((prevState) => ({ ...prevState, content: e.target.value }));
+  };
+
+  const onEditSave = async (postId) => {
+    if (editMode.postId === postId) {
+      await updatingEditedPost(userId, postId, editMode.content);
+      setEditMode({ postId: null, content: "" });
+      setActivePostIdForDropdown(null);
+    }
   };
 
   return (
@@ -145,12 +192,56 @@ const UserProfilePage = () => {
                 <div className="col-start-2 col-span-5 row-start-1 flex items-center font-semibold text-white">
                   {post.user.username}
                 </div>
-                <button className="row-start-1 col-start-7 flex items-start ml-7 text-white">
+              {/* if you own the post, you can see the ... */}
+              {userId === post.user._id && editMode.postId === null && (
+                <button
+                  className="row-start-1 col-start-7 flex items-start ml-7 text-white cursor-pointer"
+                  onClick={() => onEllipsisClick(post._id)}
+                >
                   ...
                 </button>
-                <div className="col-start-2 col-span-5 row-start-2 mb-5 text-white">
-                  {post.body}
+              )}
+              {/* if you click on the ... you'll see these options */}
+              {activePostIdForDropdown === post._id && (
+                <div className="bg-slate-800 border-2 border-slate-500 rounded-2xl px-3 py-2 flex flex-col gap-1 col-start-5 col-span-3 row-start-2 row-span-2 drop-shadow-glow h-[min-content]">
+                  <div
+                    className="hover:font-bold text-sm text-white cursor-pointer w-min"
+                    onClick={() => onEditClick(post)}
+                  >
+                    Edit
+                  </div>
+                  <div
+                    className="hover:font-bold text-sm text-white cursor-pointer w-min"
+                    onClick={() => onDeleteClick(userId, post._id)}
+                  >
+                    Delete
+                  </div>
                 </div>
+              )}
+              {/* if you click edit on your post, you'll see the save button */}
+              {editMode.postId === post._id && (
+                <div className="col-start-5 col-span-3 row-start-1 row-span-2 flex items-center justify-end">
+                  <button
+                    className="cursor-pointer sm-btn3"
+                    onClick={() => onEditSave(post._id)}
+                  >
+                    Save
+                  </button>
+                </div>
+              )}
+              <div className="col-start-2 col-span-3 row-start-2 mb-5 text-white">
+                {/* if you click edit on your post, you'll be able to click into the body field, otherwise it's just the post's body */}
+                {editMode.postId === post._id ? (
+                  <input
+                    type="text"
+                    value={editMode.content}
+                    onChange={onEditChange}
+                    className="bg-slate-700 text-white w-full border-2 border-yellow-500 border-dashed p-px"
+                  />
+                ) : (
+                  post.body
+                )}
+              </div>
                 <div
                   onClick={() => onLikeClick(userId, post._id)}
                   className="col-start-2 row-start-3 cursor-pointer"
