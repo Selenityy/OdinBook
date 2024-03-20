@@ -25,7 +25,7 @@ const UserProfile = () => {
             height={50}
           />
         </div>
-        <div className="flex items-center font-semibold text-white">{username}</div>
+        <div className="hidden xs:inline xs:flex xs:items-center xs:font-semibold xs:text-white">{username}</div>
       </section>
     </Suspense>
   );
