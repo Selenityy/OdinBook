@@ -85,16 +85,25 @@ const UserProfilePage = () => {
           setRefreshDataTrigger={setRefreshDataTrigger}
         />
       )}
-      <div className="bg-slate-700 border border-slate-500 grid grid-rows-[auto_1fr_1fr] grid-cols-[min-content_1fr_min-content] gap-y-3 gap-x-6 p-3">
-        <div className="col-start-3 row-start-1 flex items-start ml-7 text-xl text-white flex flex-col">
+      <div className="sm:w-full sticky top-0 z-10 bg-slate-700 border border-slate-500 
+      xxs:grid 
+      xxs:grid-rows-[auto_1fr_1fr] 
+      xxs:grid-cols-[max-content_minmax(min-content, 1fr)_auto] 
+      xxs:gap-y-2 xxs:gap-x-2 xxs:p-2
+      xxs:w-fit
+      sm:grid 
+      sm:grid-rows-[auto_1fr_1fr] 
+      sm:grid-cols-[min-content_1fr_min-content] 
+      sm:gap-y-3 sm:gap-x-6 sm:p-3">
+        <div className="col-start-3 row-start-1 items-start ml-7 text-xl text-white flex flex-col flex-wrap shrink">
           <div
-            className="btn3"
+            className="btn3 xxs:w-fit sm:w-max"
             onClick={() => onEllipsisClick()}
           >
             Edit Profile
           </div>
         </div>
-        <div className="w-24 h-24 relative mr-3 col-start-1 row-start-1 row-span-2">
+        <div className="xxs:w-12 xxs:h-12 xs:w-20 xs:h-20 sm:w-24 sm:h-24 relative mr-3 col-start-1 row-start-1 row-span-2">
           <Image
             className="header"
             priority
