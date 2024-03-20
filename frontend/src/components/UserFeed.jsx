@@ -136,7 +136,7 @@ const UserFeed = () => {
               )}
               {/* if you click on the ... you'll see these options */}
               {activePostIdForDropdown === post._id && (
-                <div className="bg-slate-800 border-2 border-slate-500 rounded-2xl px-3 py-2 flex flex-col gap-1 col-start-5 col-span-3 row-start-2 row-span-2 drop-shadow-glow">
+                <div className="bg-slate-800 border-2 border-slate-500 rounded-2xl px-3 py-2 flex flex-col gap-1 col-start-5 col-span-3 row-start-2 row-span-2 drop-shadow-glow h-[min-content]">
                   <div
                     className="hover:font-bold text-sm text-white cursor-pointer w-min"
                     onClick={() => onEditClick(post)}
