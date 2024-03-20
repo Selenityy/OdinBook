@@ -47,7 +47,7 @@ const UserLayout = ({ children }) => {
     2xl:grid-areas-XXLuserLayout 
     2xl:grid-cols-XXLuserLayout 
     2xl:grid-rows-XXLuserLayout 
-    2xl:gap-[20px] 2xl:mx-[138px]"
+    2xl:gap-[30px] 2xl:mx-[138px]"
     >
       <section className="py-3 grid-in-header border-b-2 border-slate-50/[0.2] sticky top-0 backdrop-blur-lg z-10 bg-gradient-to-b from-slate-800">
         <Header />
