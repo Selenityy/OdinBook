@@ -5,6 +5,13 @@ module.exports = {
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
+    screens: {
+      'sm': '640px',
+      'md': '768px',
+      'lg': '1024px',
+      'xl': '1440px',
+      '2xl': '1920px',
+    },
     gridTemplateAreas: {
       homeLayout: [
         "header header header",
@@ -13,8 +20,8 @@ module.exports = {
       ],
       userLayout: ["header header header", "nav main friends"],
       XXLuserLayout: [
-        ". header header header header header header header header header header .",
-        ". . nav main main main main main friends friends . .",
+        "header header header header header header header header header header header header",
+        ". nav nav main main main main main main friends friends .",
         "footer footer footer footer footer footer footer footer footer footer footer footer"
       ],
       XLuserLayout: [
@@ -54,7 +61,7 @@ module.exports = {
     gridTemplateColumns: {
       homeLayout: "1fr auto 1fr",
       userLayout: "0.4fr 1fr 0.5fr",
-      XXLuserLayout: "1fr 1fr minmax(auto, 0.75fr) repeat(5, 1fr) repeat(2, minmax(auto, 0.6fr)) 1fr 1fr",
+      XXLuserLayout: "1fr repeat(2, minmax(auto, 0.15fr)) repeat(6, minmax(auto, 0.25fr)) repeat(2, minmax(auto, 0.3fr)) 1fr",
       XLuserLayout: "1fr repeat(2, minmax(auto, 0.5fr)) repeat(9, 1fr)",
       LuserLayout: "repeat(12, 1fr)",
       MDuserLayout: "repeat(2, minmax(auto, 0.5fr)) repeat(6, 1fr)",
