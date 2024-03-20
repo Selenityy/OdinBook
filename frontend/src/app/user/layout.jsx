@@ -56,7 +56,7 @@ const UserLayout = ({ children }) => {
         <NavSideBar />
       </section>
       <main className="grid-in-main overflow-auto">{children}</main>
-      <section className="overflow-hidden grid-in-friends">
+      <section className="xxs:overflow-auto md:overflow-hidden grid-in-friends">
         <FriendReqList />
       </section>
     </div>
