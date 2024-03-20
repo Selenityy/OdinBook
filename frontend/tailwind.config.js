@@ -13,7 +13,7 @@ module.exports = {
       ],
       userLayout: ["header header header", "nav main friends"],
       XXLuserLayout: [
-        "header header header header header header header header header header header .",
+        ". header header header header header header header header header header .",
         ". . nav main main main main main friends friends . .",
         "footer footer footer footer footer footer footer footer footer footer footer footer"
       ],
@@ -29,7 +29,7 @@ module.exports = {
       ],
       MDuserLayout: [
         "header header header header header header header header",
-        "nav main main main main main friends friends",
+        "nav nav main main main main friends friends",
         "footer footer footer footer footer footer footer footer"
       ],
       SMuserLayout: [
@@ -54,10 +54,10 @@ module.exports = {
     gridTemplateColumns: {
       homeLayout: "1fr auto 1fr",
       userLayout: "0.4fr 1fr 0.5fr",
-      XXLuserLayout: "repeat(12, 1fr)",
+      XXLuserLayout: "1fr 1fr minmax(auto, 0.75fr) repeat(5, 1fr) repeat(2, minmax(auto, 0.6fr)) 1fr 1fr",
       XLuserLayout: "1fr repeat(2, minmax(auto, 0.5fr)) repeat(9, 1fr)",
       LuserLayout: "repeat(12, 1fr)",
-      MDuserLayout: "repeat(8, 1fr)",
+      MDuserLayout: "repeat(2, minmax(auto, 0.5fr)) repeat(6, 1fr)",
       SMuserLayout: "repeat(4, 1fr)",
       XSuserLayout: "repeat(4, 1fr)",
       XXSuserLayout: "repeat(4, 1fr)",
