@@ -76,9 +76,9 @@ module.exports = {
       XLuserLayout: "auto 2fr auto",
       XLuserLayout: "auto 2fr auto",
       MDuserLayout: "auto minmax(auto, 2fr) auto",
-      SMuserLayout: "repeat(2, minmax(min-content, max-content)) 1fr 0.4fr",
-      XSuserLayout: "repeat(2, minmax(min-content, max-content)) 1fr 0.3fr",
-      XXSuserLayout: "repeat(2, minmax(min-content, max-content)) 1fr 0.4fr",
+      SMuserLayout: "repeat(2, min-content) auto min-content",
+      XSuserLayout: "repeat(2, min-content) auto min-content",
+      XXSuserLayout: "repeat(2, min-content) auto min-content",
     },
     extend: {
       screens: {
