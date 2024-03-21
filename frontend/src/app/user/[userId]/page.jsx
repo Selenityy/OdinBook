@@ -136,7 +136,9 @@ const UserProfilePage = () => {
           setRefreshDataTrigger={setRefreshDataTrigger}
         />
       )}
-      <div className="sticky top-0 z-10 bg-slate-700 border border-slate-500 
+      <div className="
+      sticky top-0 z-10 
+      bg-slate-700 border border-slate-500 
       xxs:grid 
       xxs:grid-rows-[auto_1fr_1fr] 
       xxs:grid-cols-[max-content_minmax(min-content, 1fr)_auto] 
