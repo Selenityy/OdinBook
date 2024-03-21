@@ -66,8 +66,8 @@ module.exports = {
       LuserLayout: "repeat(2, minmax(min-content, max-content)) repeat(7, 1fr) repeat(3, minmax(min-content, max-content))",
       MDuserLayout: "repeat(2, minmax(min-content, max-content)) repeat(4, 1fr) repeat(2, 1.5fr)",
       SMuserLayout: "repeat(4, 1fr)",
-      XSuserLayout: "repeat(4, 1fr)",
-      XXSuserLayout: "repeat(4, 1fr)",
+      XSuserLayout: "repeat(4, 0.75fr)",
+      XXSuserLayout: "repeat(4, 0.5fr)",
     },
     gridTemplateRows: {
       homeLayout: "1fr 2fr 1fr",
