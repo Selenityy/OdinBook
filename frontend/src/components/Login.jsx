@@ -38,7 +38,7 @@ const Login = () => {
   };
 
   return (
-    <div className="w-96">
+    <div className="md:w-80 lg:w-96 2xl:w-6/12">
       <form className="w-full grid" onSubmit={onClickLogIn}>
         <div className="pb-3 flex gap-2">
           <label htmlFor="username" className="text-gray-700 text-lg">
