@@ -80,10 +80,12 @@ const NonFriendUsers = () => {
   };
 
   return (
-    <div className="flex flex-col rounded-lg p-2 gap-3 bg-slate-700">
+    <div className="w-fit flex flex-col rounded-lg p-2 gap-3 bg-slate-700">
       <div className="mx-3 my-3">
         {unfriendedUsers && unfriendedUsers.length > 0 ? (
-          <ul className="grid grid-cols-[1fr_1fr] grid-rows-[1fr_1fr] auto-rows-auto gap-y-7 gap-x-10">
+          <ul className="
+          flex flex-wrap  
+          gap-y-7 gap-x-10">
             {unfriendedUsers.map((user) => (
               <li key={user._id} className="flex items-center space-x-3">
                 <div className="w-16 h-16 relative">

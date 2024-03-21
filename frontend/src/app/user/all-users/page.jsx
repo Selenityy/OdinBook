@@ -4,7 +4,10 @@ import "../../../styles/globals.css";
 
 const AllUsers = () => {
   return (
-    <div className="grid grid-cols-[1fr] grid-rows-[auto_auto_1fr] gap-x-8 auto-row-auto h-fit w-full bg-slate-700 border-2 border-slate-500">
+    <div className="
+
+    flex flex-col flex-wrap
+    h-fit bg-slate-700 border-2 border-slate-500">
       <section className="col-start-1 row-start-1 p-3">
         <h1 className="text-white text-xl font-semibold">
           People You May Know:
