@@ -73,6 +73,10 @@ const UserProfilePage = () => {
     }
   };
 
+  const onEditProfileClick = async () => {
+    setShowProfileDropDown(!showProfileDropDown);
+  }
+
   const onEllipsisClick = (postId) => {
     setActivePostIdForDropdown((current) =>
       current === postId ? null : postId
@@ -138,6 +142,11 @@ const UserProfilePage = () => {
       xxs:grid-cols-[max-content_minmax(min-content, 1fr)_auto] 
       xxs:gap-y-2 xxs:gap-x-2 xxs:p-2
       xxs:w-fit
+      md:grid 
+      md:grid-rows-[auto_1fr_1fr] 
+      md:grid-cols-[0.5fr_1fr_auto] 
+      md:gap-y-2 md:gap-x-2 md:p-2
+      md:w-fit
       sm:grid 
       sm:grid-rows-[auto_1fr_1fr] 
       sm:grid-cols-[min-content_1fr_min-content] 
@@ -145,12 +154,17 @@ const UserProfilePage = () => {
         <div className="col-start-3 row-start-1 items-start ml-7 text-xl text-white flex flex-col flex-wrap shrink">
           <div
             className="btn3 xxs:w-fit sm:w-max"
-            onClick={() => onEllipsisClick()}
+            onClick={() => onEditProfileClick()}
           >
             Edit Profile
           </div>
         </div>
-        <div className="xxs:w-12 xxs:h-12 xs:w-20 xs:h-20 sm:w-24 sm:h-24 relative mr-3 col-start-1 row-start-1 row-span-2">
+        <div className="
+        xxs:w-12 xxs:h-12 xs:w-20 xs:h-20 
+        sm:w-24 sm:h-24 
+        md:w-14 md:h-14 
+        lg:w-24 lg:h-24 
+        relative mr-3 col-start-1 row-start-1 row-span-2">
           <Image
             className="header"
             priority
@@ -170,7 +184,7 @@ const UserProfilePage = () => {
       </div>
       {/* <div className="w-full border-b-2 border-slate-500"></div> */}
       <br></br>
-      <div className="w-full flex flex-col gap-6 auto-row-auto">
+      <div className="w-full flex flex-col gap-6 auto-row-auto overflow-auto">
         <div className="flex flex-col">
           {sortedPosts &&
             sortedPosts.length > 0 &&
