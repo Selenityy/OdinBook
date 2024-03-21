@@ -13,12 +13,16 @@ module.exports = {
       '2xl': '1920px',
     },
     gridTemplateAreas: {
+      MDhomeLayout: [
+        "header header header",
+        "odin line login ",
+        "footer footer footer",
+      ],
       homeLayout: [
         "header header header",
         "odin line login ",
         "footer footer footer",
       ],
-      userLayout: ["header header header", "nav main friends"],
       XXLuserLayout: [
         "header header header header header header header header header header header header",
         ". nav nav main main main main main main friends friends .",
@@ -59,6 +63,7 @@ module.exports = {
       ],
     },
     gridTemplateColumns: {
+      MDhomeLayout: "min-content min-content auto",
       homeLayout: "1fr auto 1fr",
       userLayout: "0.4fr 1fr 0.5fr",
       XXLuserLayout: "1fr repeat(2, minmax(min-content, max-content)) repeat(6, minmax(auto, 0.25fr)) repeat(2, minmax(min-content, max-content)) 1fr",
@@ -70,8 +75,8 @@ module.exports = {
       XXSuserLayout: "repeat(4, 0.5fr)",
     },
     gridTemplateRows: {
+      MDhomeLayout: "1fr 2fr 1fr",
       homeLayout: "1fr 2fr 1fr",
-      userLayout: "auto 1fr",
       XXLuserLayout: "auto 2fr auto",
       XLuserLayout: "auto 2fr auto",
       XLuserLayout: "auto 2fr auto",
