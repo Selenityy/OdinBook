@@ -49,13 +49,13 @@ const UserLayout = ({ children }) => {
     2xl:grid-rows-XXLuserLayout 
     2xl:gap-[30px] 2xl:mx-[138px]"
     >
-      <section className="py-3 grid-in-header border-b-2 border-slate-50/[0.2] sticky top-0 backdrop-blur-lg z-10 bg-gradient-to-b from-slate-800">
+      <section className="py-3 grid-in-header border-b-2 border-slate-50/[0.2] sticky top-0 backdrop-blur-lg z-30 bg-gradient-to-b from-slate-800">
         <Header />
       </section>
-      <section className="grid-in-nav overflow-hidden">
+      <section className="grid-in-nav">
         <NavSideBar />
       </section>
-      <main className="grid-in-main overflow-auto">{children}</main>
+      <main className="grid-in-main h-full overflow-auto">{children}</main>
       <section className="xxs:overflow-auto md:overflow-hidden grid-in-friends">
         <FriendReqList />
       </section>
