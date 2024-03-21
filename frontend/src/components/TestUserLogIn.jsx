@@ -38,7 +38,7 @@ const TestUserLogIn = () => {
       {errorMessage.length > 1 && (
         <div className="text-red-500 text-sm italic">{errorMessage}</div>
       )}
-      <button type="button" className="btn md:w-80 lg:w-96 2xl:w-6/12 mb-2" onClick={testUserOnclick}>
+      <button type="button" className="btn xxs:w-full sm:w-full md:w-80 lg:w-96 2xl:w-6/12 mb-2" onClick={testUserOnclick}>
         Log in as test user
       </button>
     </>

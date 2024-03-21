@@ -38,8 +38,8 @@ const Login = () => {
   };
 
   return (
-    <div className="md:w-80 lg:w-96 2xl:w-6/12">
-      <form className="w-full grid" onSubmit={onClickLogIn}>
+    <div className="xxs:w-full sm:w-full md:w-80 lg:w-96 2xl:w-6/12">
+      <form className="md:w-full grid" onSubmit={onClickLogIn}>
         <div className="pb-3 flex gap-2">
           <label htmlFor="username" className="text-gray-700 text-lg">
             Username:
@@ -75,7 +75,7 @@ const Login = () => {
         {errorMessage.length > 1 && (
           <div className="text-red-500 text-sm italic">{errorMessage}</div>
         )}
-        <button id="login-btn" type="submit" className="btn">
+        <button id="login-btn" type="submit" className="btn md:w-full">
           Log In
         </button>
       </form>
