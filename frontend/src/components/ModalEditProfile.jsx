@@ -41,7 +41,7 @@ const ModalEditProfile = ({
   };
 
   return (
-    <div className="absolute top-1/4 left-24 w-96 h-96 bg-slate-700 border border-slate-500 rounded-2xl drop-shadow-glow">
+    <div className="absolute top-1/4 left-24 w-96 h-96 bg-slate-700 border border-slate-500 rounded-2xl drop-shadow-glow z-30">
       <div className="flex justify-between items-start my-3 mx-4">
         <div className="flex gap-3">
           <div className="text-white cursor-pointer" onClick={() => closeModal()}>
