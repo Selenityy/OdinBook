@@ -13,7 +13,7 @@ const CheckAuth = () => {
     const token = localStorage.getItem("token");
     if (token) {
       dispatch(fetchUserData());
-      router.push("/user");
+      // router.push("/user");
     } else {
       router.push("/");
     }
