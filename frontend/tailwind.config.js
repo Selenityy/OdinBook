@@ -13,6 +13,11 @@ module.exports = {
       '2xl': '1920px',
     },
     gridTemplateAreas: {
+      SMhomeLayout:[
+        "header header header",
+        "odin line login ",
+        "footer footer footer",
+      ],
       MDhomeLayout: [
         "header header header",
         "odin line login ",
@@ -63,6 +68,7 @@ module.exports = {
       ],
     },
     gridTemplateColumns: {
+      SMhomeLayout: "1fr min-content 1fr",
       MDhomeLayout: "min-content min-content auto",
       homeLayout: "1fr auto 1fr",
       userLayout: "0.4fr 1fr 0.5fr",
