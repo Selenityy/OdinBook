@@ -141,9 +141,9 @@ const UserProfilePage = () => {
       bg-slate-700 border border-slate-500 
       xxs:grid 
       xxs:grid-rows-[auto_1fr_1fr] 
-      xxs:grid-cols-[max-content_minmax(min-content, 1fr)_auto] 
+      xxs:grid-cols-[max-content_0.5fr_auto] 
       xxs:gap-y-2 xxs:gap-x-2 xxs:p-2
-      xxs:w-fit
+      xxs:w-full
       sm:grid 
       sm:grid-rows-[auto_1fr_1fr] 
       sm:grid-cols-[min-content_1fr_min-content] 
