@@ -10,10 +10,6 @@ const Home = () => {
     xxs:grid-cols-SMhomeLayout 
     xxs:grid-rows-SMhomeLayout 
     xxs:p-6 
-    sm:grid-areas-SMhomeLayout 
-    sm:grid-cols-SMhomeLayout 
-    sm:grid-rows-SMhomeLayout 
-    sm:p-6 
     md:grid-areas-MDhomeLayout 
     md:grid-cols-MDhomeLayout 
     md:grid-rows-MDhomeLayout 
