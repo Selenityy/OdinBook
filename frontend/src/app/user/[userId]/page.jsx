@@ -136,21 +136,27 @@ const UserProfilePage = () => {
           setRefreshDataTrigger={setRefreshDataTrigger}
         />
       )}
-      <div className="sm:w-full sticky top-0 z-10 bg-slate-700 border border-slate-500 
+      <div className="sticky top-0 z-10 bg-slate-700 border border-slate-500 
       xxs:grid 
       xxs:grid-rows-[auto_1fr_1fr] 
       xxs:grid-cols-[max-content_minmax(min-content, 1fr)_auto] 
       xxs:gap-y-2 xxs:gap-x-2 xxs:p-2
       xxs:w-fit
+      sm:grid 
+      sm:grid-rows-[auto_1fr_1fr] 
+      sm:grid-cols-[min-content_1fr_min-content] 
+      sm:gap-y-3 sm:gap-x-6 sm:p-3
+      sm:w-full
       md:grid 
       md:grid-rows-[auto_1fr_1fr] 
       md:grid-cols-[0.5fr_1fr_auto] 
       md:gap-y-2 md:gap-x-2 md:p-2
       md:w-fit
-      sm:grid 
-      sm:grid-rows-[auto_1fr_1fr] 
-      sm:grid-cols-[min-content_1fr_min-content] 
-      sm:gap-y-3 sm:gap-x-6 sm:p-3">
+      lg:grid 
+      lg:grid-rows-[auto_1fr_1fr] 
+      lg:grid-cols-[min-content_auto_min-content] 
+      lg:gap-y-2 lg:gap-x-4 lg:p-2
+      lg:w-full">
         <div className="col-start-3 row-start-1 items-start ml-7 text-xl text-white flex flex-col flex-wrap shrink">
           <div
             className="btn3 xxs:w-fit sm:w-max"
