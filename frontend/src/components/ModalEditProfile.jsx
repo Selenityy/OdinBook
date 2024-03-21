@@ -42,12 +42,15 @@ const ModalEditProfile = ({
 
   return (
     <div className="
-    xxs:w-full xxs:h-[45%]
+    xxs:w-full xxs:h-fit xxs:pb-4
+    md:w-1/2
     lg:w-96 lg:h-96
-    absolute 
-    top-0 left-0 
-    xl:left-[15%] 
-    2xl:left-1/4 
+    xxs:fixed xxs:z-20 
+    top-25 
+    xxs:left-0
+    md:left-[15%]
+    lg:left-[25%]
+    2xl:left-[40%] 
     bg-slate-700 border border-slate-500 rounded-2xl drop-shadow-glow z-30">
       <div className="flex justify-between items-start my-3 mx-4">
         <div className="flex gap-3">
