@@ -14,9 +14,9 @@ module.exports = {
     },
     gridTemplateAreas: {
       SMhomeLayout:[
-        "header header header",
-        "odin line login ",
-        "footer footer footer",
+        "odin",
+        "line",
+        "login",
       ],
       MDhomeLayout: [
         "header header header",
@@ -68,7 +68,7 @@ module.exports = {
       ],
     },
     gridTemplateColumns: {
-      SMhomeLayout: "1fr min-content 1fr",
+      SMhomeLayout: "1fr",
       MDhomeLayout: "min-content min-content auto",
       homeLayout: "1fr auto 1fr",
       userLayout: "0.4fr 1fr 0.5fr",
@@ -81,6 +81,7 @@ module.exports = {
       XXSuserLayout: "repeat(4, 0.5fr)",
     },
     gridTemplateRows: {
+      SMhomeLayout: "0.5fr auto 1fr",
       MDhomeLayout: "1fr 2fr 1fr",
       homeLayout: "1fr 2fr 1fr",
       XXLuserLayout: "auto 2fr auto",
