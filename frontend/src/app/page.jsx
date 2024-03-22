@@ -25,7 +25,7 @@ const Home = () => {
           Connect with others
         </h2>
       </section>
-      <div className="grid-in-line border border-gray-500 h-full w-full"></div>
+      <div className="grid-in-line border border-gray-500 xxs:h-auto sm:h-full w-full"></div>
       <section className="grid-in-login flex flex-col items-center sm:h-full sm:w-full sm:pt-[20%] sm:px-[10%] md:px-0 md:pt-0 md:justify-center md:w-full md:h-full">
         <Login />
         <br></br>
