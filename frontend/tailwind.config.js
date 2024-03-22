@@ -13,6 +13,11 @@ module.exports = {
       '2xl': '1920px',
     },
     gridTemplateAreas: {
+      XXShomeLayout:[
+        "odin",
+        "line",
+        "login",
+      ],
       SMhomeLayout:[
         "odin",
         "line",
@@ -68,6 +73,7 @@ module.exports = {
       ],
     },
     gridTemplateColumns: {
+      XXShomeLayout: "auto",
       SMhomeLayout: "1fr",
       MDhomeLayout: "min-content min-content auto",
       homeLayout: "1fr auto 1fr",
@@ -81,6 +87,7 @@ module.exports = {
       XXSuserLayout: "repeat(4, 0.5fr)",
     },
     gridTemplateRows: {
+      XXShomeLayout: "0.5fr auto 1fr",
       SMhomeLayout: "0.5fr auto 1fr",
       MDhomeLayout: "1fr 2fr 1fr",
       homeLayout: "1fr 2fr 1fr",
