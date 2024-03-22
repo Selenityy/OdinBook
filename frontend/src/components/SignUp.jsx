@@ -50,9 +50,9 @@ const SignUp = () => {
   };
 
   return (
-    <div className="w-96">
-      <form className="w-96 grid" onSubmit={onClickSignUp}>
-        <div className="pb-3 w-96 flex gap-2">
+    <div className="xxs:w-full xxs:pt-5 md:pt-0 sm:w-full md:w-80 lg:w-96 2xl:w-6/12">
+      <form className="xxs:w-full xxs:items-center  md:w-full md:px-2 xxs:flex xxs:flex-col md:grid" onSubmit={onClickSignUp}>
+        <div className="xxs:w-full pb-3 md:w-96 flex xxs:flex-col md:flex-row gap-2">
           <div className="flex-1">
             <label
               htmlFor="firstName"
@@ -89,7 +89,7 @@ const SignUp = () => {
             />
           </div>
         </div>
-        <div className="pb-3 w-96 flex">
+        <div className="xxs:w-full pb-3 md:w-96 flex">
           <label htmlFor="email" className="text-gray-700 text-lg"></label>
           <input
             type="email"
@@ -105,7 +105,7 @@ const SignUp = () => {
             required
           />
         </div>
-        <div className="pb-3 w-96 flex">
+        <div className="xxs:w-full pb-3 md:w-96 flex">
           <label htmlFor="username" className="text-gray-700 text-lg"></label>
           <input
             type="username"
@@ -121,7 +121,7 @@ const SignUp = () => {
             required
           />
         </div>
-        <div className="pb-3 w-96 flex">
+        <div className="xxs:w-full pb-3 md:w-96 flex">
           <label htmlFor="password" className="text-gray-700 text-lg"></label>
           <input
             type="password"
@@ -140,7 +140,7 @@ const SignUp = () => {
             required
           />
         </div>
-        <div className="pb-6 w-96 flex">
+        <div className="xxs:w-full xxs:pb-8 md:pb-3 md:w-96 flex">
           <label
             htmlFor="confirmPassword"
             className="text-gray-700 text-lg"
@@ -170,7 +170,7 @@ const SignUp = () => {
         {errorMessage.length > 1 && (
           <div className="text-red-500 text-sm italic">{errorMessage}</div>
         )}
-        <button id="sign-up-btn" type="submit" className="btn w-96">
+        <button id="sign-up-btn" type="submit" className="btn xxs:w-full md:w-96">
           Sign Up
         </button>
       </form>
