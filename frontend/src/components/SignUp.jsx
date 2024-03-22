@@ -51,8 +51,8 @@ const SignUp = () => {
 
   return (
     <div className="xxs:w-full xxs:pt-5 md:pt-0 sm:w-full md:w-80 lg:w-96 2xl:w-6/12">
-      <form className="xxs:w-full xxs:items-center  md:w-full md:px-2 xxs:flex xxs:flex-col md:grid" onSubmit={onClickSignUp}>
-        <div className="xxs:w-full pb-3 md:w-96 flex xxs:flex-col md:flex-row gap-2">
+      <form className="xxs:w-full xxs:items-center  md:w-full md:px-2 xxs:flex xxs:flex-col lg:grid" onSubmit={onClickSignUp}>
+        <div className="xxs:w-full pb-3 md:w-full flex xxs:flex-col md:flex-row gap-2">
           <div className="flex-1">
             <label
               htmlFor="firstName"
@@ -89,7 +89,7 @@ const SignUp = () => {
             />
           </div>
         </div>
-        <div className="xxs:w-full pb-3 md:w-96 flex">
+        <div className="xxs:w-full pb-3 md:w-full flex">
           <label htmlFor="email" className="text-gray-700 text-lg"></label>
           <input
             type="email"
@@ -105,7 +105,7 @@ const SignUp = () => {
             required
           />
         </div>
-        <div className="xxs:w-full pb-3 md:w-96 flex">
+        <div className="xxs:w-full pb-3 md:w-full flex">
           <label htmlFor="username" className="text-gray-700 text-lg"></label>
           <input
             type="username"
@@ -121,7 +121,7 @@ const SignUp = () => {
             required
           />
         </div>
-        <div className="xxs:w-full pb-3 md:w-96 flex">
+        <div className="xxs:w-full pb-3 md:w-full flex">
           <label htmlFor="password" className="text-gray-700 text-lg"></label>
           <input
             type="password"
@@ -140,7 +140,7 @@ const SignUp = () => {
             required
           />
         </div>
-        <div className="xxs:w-full xxs:pb-8 md:pb-3 md:w-96 flex">
+        <div className="xxs:w-full xxs:pb-8 md:pb-3 md:w-full flex">
           <label
             htmlFor="confirmPassword"
             className="text-gray-700 text-lg"
@@ -170,7 +170,7 @@ const SignUp = () => {
         {errorMessage.length > 1 && (
           <div className="text-red-500 text-sm italic">{errorMessage}</div>
         )}
-        <button id="sign-up-btn" type="submit" className="btn xxs:w-full md:w-96">
+        <button id="sign-up-btn" type="submit" className="btn xxs:w-full lg:w-full">
           Sign Up
         </button>
       </form>
