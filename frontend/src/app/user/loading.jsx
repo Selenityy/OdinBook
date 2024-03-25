@@ -1,7 +1,9 @@
+import "../../styles/globals.css";
+
 const Loading = () => {
     return (
-        <div>
-            <h2>Loading...</h2>
+        <div className="bg-slate-800">
+            <h2 className="text-white text-md">Loading...</h2>
         </div>
     )
 };
