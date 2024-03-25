@@ -159,7 +159,7 @@ const UserProfilePage = () => {
       lg:grid-cols-[min-content_auto_min-content] 
       lg:gap-y-2 lg:gap-x-4 lg:p-2
       lg:w-full">
-        <div className="col-start-3 row-start-1 items-start ml-7 text-xl text-white flex flex-col flex-wrap shrink">
+        <div className="col-start-3 row-start-1 items-end ml-7 text-xl text-white flex flex-col flex-wrap shrink">
           <div
             className="btn3 xxs:w-fit sm:w-max"
             onClick={() => onEditProfileClick()}
