@@ -42,7 +42,7 @@ const ModalEditProfile = ({
 
   return (
     <div className="
-    xxs:w-full xxs:h-fit xxs:pb-4
+    xxs:w-11/12 xxs:h-fit xxs:pb-4 xxs:left-[4%]
     md:w-1/2
     lg:w-96 lg:h-96
     xxs:fixed xxs:z-20 
