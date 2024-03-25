@@ -73,7 +73,7 @@ module.exports = {
       ],
     },
     gridTemplateColumns: {
-      XXShomeLayout: "auto",
+      XXShomeLayout: "1fr",
       SMhomeLayout: "1fr",
       MDhomeLayout: "min-content min-content auto",
       homeLayout: "1fr auto 1fr",
