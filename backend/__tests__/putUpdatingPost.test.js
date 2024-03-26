@@ -74,11 +74,11 @@ afterAll(async () => {
 
 test("should update a post", async () => {
   const res = await request(app)
-    .put(`/user/${actualUserId}/posts/${postId}`)
+    .put(`/user/${actualUserId}/posts/${postId}/`)
     .set("Authorization", `Bearer ${token}`)
     .send({
       body: "Updated testuser1's first post",
     });
   expect(res.statusCode).toEqual(200);
-  expect(res.body.body).toEqual("Updated testuser1's first post");
+  expect(res.body.updatedPost.body).toEqual("Updated testuser1's first post");
 });
