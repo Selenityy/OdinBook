@@ -74,10 +74,11 @@ beforeEach(async () => {
     user: actualUserId,
     post: actualPostId,
   });
-  actualCommentId = actualComment._id;
+  actualCommentId = actualComment.id;
   await actualComment.save();
 
   actualPost = await Post.findById(actualPostId).populate("comments");
+  console.log(actualPost);
 });
 
 // Disconnect and stop server after tests
@@ -90,7 +91,11 @@ test("should like a comment on a post", async () => {
     .put(
       `/user/${actualUserId}/posts/${actualPostId}/comments/${actualCommentId}/like`
     )
-    .set("Authorization", `Bearer ${token}`);
+    .set("Authorization", `Bearer ${token}`)
+    .send({
+      commentId: actualCommentId,
+      userId: actualUserId,
+    });
   expect(res.statusCode).toEqual(200);
   expect(res.body.message).toEqual("Comment liked successfully");
 });
@@ -100,12 +105,20 @@ test("should unlike a comment on a post", async () => {
     .put(
       `/user/${actualUserId}/posts/${actualPostId}/comments/${actualCommentId}/like`
     )
-    .set("Authorization", `Bearer ${token}`);
+    .set("Authorization", `Bearer ${token}`)
+    .send({
+      commentId: actualCommentId,
+      userId: actualUserId,
+    });
   const res = await request(app)
     .put(
       `/user/${actualUserId}/posts/${actualPostId}/comments/${actualCommentId}/like`
     )
-    .set("Authorization", `Bearer ${token}`);
+    .set("Authorization", `Bearer ${token}`)
+    .send({
+      commentId: actualCommentId,
+      userId: actualUserId,
+    });
   expect(res.statusCode).toEqual(200);
   expect(res.body.message).toEqual("Comment unliked successfully");
 });
