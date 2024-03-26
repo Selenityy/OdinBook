@@ -93,5 +93,5 @@ test("should update a comment on a post", async () => {
     .set("Authorization", `Bearer ${token}`)
     .send({ body: "updated testuser1's first comment" });
   expect(res.statusCode).toEqual(200);
-  expect(res.body.body).toEqual("updated testuser1's first comment");
+  expect(res.body.updatedComment.body).toEqual("updated testuser1's first comment");
 });
