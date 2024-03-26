@@ -112,7 +112,7 @@ export const fetchAcceptFriendRequest = createAsyncThunk(
       );
       const data = await response.json();
       if (!response.ok) {
-        throw new Error(data.message || "Could not send friend request");
+        throw new Error(data.message || "Could not accept friend request");
       }
       return {
         userId,
@@ -146,7 +146,7 @@ export const fetchRejectFriendRequest = createAsyncThunk(
       );
       const data = await response.json();
       if (!response.ok) {
-        throw new Error(data.message || "Could not send friend request");
+        throw new Error(data.message || "Could not reject friend request");
       }
       return {
         userId,
@@ -180,7 +180,7 @@ export const fetchCancelRequest = createAsyncThunk(
       );
       const data = await response.json();
       if (!response.ok) {
-        throw new Error(data.message || "Could not send friend request");
+        throw new Error(data.message || "Could not cancel friend request");
       }
       return {
         userId,
@@ -214,7 +214,7 @@ export const fetchUnfriend = createAsyncThunk(
       );
       const data = await response.json();
       if (!response.ok) {
-        throw new Error(data.message || "Could not send friend request");
+        throw new Error(data.message || "Could not unfriend");
       }
       return {
         userId,
@@ -248,7 +248,7 @@ export const updateUsername = createAsyncThunk(
         }
       );
       if (!response.ok) {
-        throw new Error("Failed to create post");
+        throw new Error("Failed to update username");
       }
       const updatedUsername = await response.json();
       return updatedUsername.username;
@@ -279,7 +279,7 @@ export const updateAbout = createAsyncThunk(
         }
       );
       if (!response.ok) {
-        throw new Error("Failed to create post");
+        throw new Error("Failed to update about");
       }
       const updatedAbout = await response.json();
       return updatedAbout.about;
@@ -404,7 +404,7 @@ export const editOwnPost = createAsyncThunk(
       );
       const data = await response.json();
       if (!response.ok) {
-        throw new Error(data.message || "Could not delete a post");
+        throw new Error(data.message || "Could not edit a post");
       }
       return { message: data.message, updatedPost: data.updatedPost };
     } catch (error) {
@@ -505,7 +505,7 @@ export const commentCreationOnComment = createAsyncThunk(
       );
       const commentResponse = await response.json();
       if (!response.ok) {
-        throw new Error("Failed to create comment");
+        throw new Error("Failed to create a comment thread");
       }
       return commentResponse.comment;
     } catch (error) {
@@ -654,7 +654,7 @@ export const signUpUser = createAsyncThunk(
         body: JSON.stringify(formData),
       });
       if (!response.ok) {
-        throw new Error("Failed to fetch user data");
+        throw new Error("Failed to fetch user data on sign up");
       }
       const user = await response.json();
       return user;
@@ -677,7 +677,7 @@ export const loginUser = createAsyncThunk(
         body: JSON.stringify(formData),
       });
       if (!response.ok) {
-        throw new Error("Failed to fetch user data");
+        throw new Error("Failed to fetch user data on log in");
       }
       const { user, token } = await response.json();
       localStorage.setItem("token", token);
@@ -912,7 +912,7 @@ export const userSlice = createSlice({
       })
       .addCase(updateUsername.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.payload || "Failed to fetch post creation";
+        state.error = action.payload || "Failed to update username";
       })
 
       // UPDATE ABOUT
@@ -927,7 +927,7 @@ export const userSlice = createSlice({
       })
       .addCase(updateAbout.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.payload || "Failed to fetch post creation";
+        state.error = action.payload || "Failed to update about";
       })
 
       // CREATE POST
@@ -990,7 +990,7 @@ export const userSlice = createSlice({
       })
       .addCase(commentCreation.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.payload || "Failed to fetch post creation";
+        state.error = action.payload || "Failed to comment on a post";
       })
 
       // CREATE COMMENT ON A COMMENT
@@ -1008,7 +1008,7 @@ export const userSlice = createSlice({
       })
       .addCase(commentCreationOnComment.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.payload || "Failed to fetch post creation";
+        state.error = action.payload || "Failed to comment on a comment";
       })
 
       // GET UNIQUE COMMENT
