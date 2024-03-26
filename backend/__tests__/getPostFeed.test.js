@@ -110,11 +110,15 @@ afterAll(async () => {
 
 test("should get the user's post feed of own and friend's posts", async () => {
   const res = await request(app)
-    .get(`/user/${actualUserId}/posts`)
+    .get(`/user/${actualUserId}/posts/`)
     .set("Authorization", `Bearer ${token}`);
+  console.log(res.body);
   expect(res.statusCode).toEqual(200);
-  expect(Array.isArray(res.body)).toBe(true);
-  const postBodies = res.body.map((post) => post.body);
+  expect(Array.isArray(res.body.userPosts)).toBe(true);
+  expect(Array.isArray(res.body.friendPosts)).toBe(true);
+  const userPosts = res.body.userPosts.map((post) => post.body);
+  const friendPosts = res.body.friendPosts.map((post) => post.body);
+  const postBodies = userPosts.concat(friendPosts);
   expect(postBodies).toContain("testuser1's post");
   expect(postBodies).toContain("testuser1's second post");
   expect(postBodies).toContain("testuser2's first post");
