@@ -130,6 +130,5 @@ describe('login spec', () => {
 
     });
   });
-
-  // check log in for different screen sizes
-})
+  
+});
