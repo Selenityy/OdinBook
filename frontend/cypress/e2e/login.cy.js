@@ -1,4 +1,13 @@
 describe('login spec', () => {
+  const viewports = [
+    { label: '2xs', width: 320, height: 480 },
+    { label: 'xs', width: 375, height: 812 },
+    { label: 'sm', width: 640, height: 800 },
+    { label: 'md', width: 768, height: 1024 },
+    { label: 'lg', width: 1024, height: 768 },
+    { label: 'xl', width: 1440, height: 900 },
+    { label: '2xl', width: 1920, height: 1080 },
+  ];
 
   beforeEach(() => {
     cy.intercept('/user/login').as('login');
@@ -16,20 +25,43 @@ describe('login spec', () => {
     cy.visit('/');
   })
 
-  // login as test user
-  it('logs in as test user', () => {
-    cy.findByRole('button', {name: /Log in as test user/i}).click();
-    
-    cy.wait('@login').then(() => {
+  viewports.forEach((viewport) => {
+    context(`Logging in on ${viewport.label}`, () => {
+      beforeEach(() => {
+        cy.viewport(viewport.width, viewport.height);
+        cy.visit('/');
+      });
 
-    // check if the local storage has a key
-    cy.window().then((window) => {
-      const token = window.localStorage.getItem('token');
-      expect(token).to.exist
-      expect(token).to.be.a('string').and.not.be.empty
-    })
-    })
-  })
+      it('logs in as test user', () => {
+        cy.findByRole('button', {name: /Log in as test user/i}).click();
+        
+        cy.wait('@login').then(() => {
+    
+        // check if the local storage has a key
+        cy.window().then((window) => {
+          const token = window.localStorage.getItem('token');
+          expect(token).to.exist
+          expect(token).to.be.a('string').and.not.be.empty
+        });
+        });
+      });
+    });
+  });
+
+  // login as test user
+  // it('logs in as test user', () => {
+  //   cy.findByRole('button', {name: /Log in as test user/i}).click();
+    
+  //   cy.wait('@login').then(() => {
+
+  //   // check if the local storage has a key
+  //   cy.window().then((window) => {
+  //     const token = window.localStorage.getItem('token');
+  //     expect(token).to.exist
+  //     expect(token).to.be.a('string').and.not.be.empty
+  //   })
+  //   })
+  // })
 
   // logs in with testuser1 and navigates to the /user page
   it('logs in as testuser1 with password123', () => {
