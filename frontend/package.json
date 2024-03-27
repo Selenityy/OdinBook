@@ -18,7 +18,9 @@
   },
   "devDependencies": {
     "@savvywombat/tailwindcss-grid-areas": "^4.0.0",
+    "@testing-library/cypress": "^10.0.1",
     "autoprefixer": "^10.4.17",
+    "cypress": "^13.7.1",
     "eslint": "^8",
     "eslint-config-next": "14.0.4",
     "postcss": "^8.4.35",
