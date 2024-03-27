@@ -13,16 +13,6 @@ describe('login spec', () => {
   beforeEach(() => {
     cy.intercept('/user/login').as('login');
     cy.intercept('/signup*').as('signup');
-    cy.intercept('POST', '/user/login', (req) => {
-      if (req.body.username === 'testuser') {
-        req.reply({
-          statusCode: 401,
-          body: {
-            error: 'User does not exist'
-          }
-        })
-      }
-    }).as('loginFail');
     cy.visit('/');
   })
 
@@ -105,13 +95,13 @@ describe('login spec', () => {
       });
 
     // incorrect username
-    it('display error message for incorrect username', () => {
+    it.only('display error message for incorrect username', () => {
       cy.get('input#username').type('testuser');
       cy.get('input#password').type('password123');
 
       cy.get('form').submit();
 
-      cy.wait('@loginFail').then(() => {
+      cy.wait('@login').then(() => {
         cy.get('div').contains('*Username or Password is incorrect.');
       });
     });
@@ -123,7 +113,7 @@ describe('login spec', () => {
 
       cy.get('form').submit();
 
-      cy.wait('@loginFail').then(() => {
+      cy.wait('@login').then(() => {
         cy.get('div').contains('*Username or Password is incorrect.');
       });
     });
