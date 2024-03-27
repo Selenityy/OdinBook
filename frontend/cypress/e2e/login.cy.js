@@ -105,7 +105,7 @@ describe('login spec', () => {
       });
 
     // incorrect username
-    it.only('display error message for incorrect username', () => {
+    it('display error message for incorrect username', () => {
       cy.get('input#username').type('testuser');
       cy.get('input#password').type('password123');
 
@@ -117,7 +117,7 @@ describe('login spec', () => {
     });
 
     // incorrect password
-    it.only('display error message for incorrect password', () => {
+    it('display error message for incorrect password', () => {
       cy.get('input#username').type('testuser1');
       cy.get('input#password').type('password1234');
 
@@ -130,5 +130,5 @@ describe('login spec', () => {
 
     });
   });
-  
+
 });
