@@ -8,6 +8,7 @@ describe('login spec', () => {
     { label: 'xl', width: 1440, height: 900 },
     { label: '2xl', width: 1920, height: 1080 },
   ];
+  const skipDivCheckSizes = ['2xs', 'xs', 'sm'];
 
   beforeEach(() => {
     cy.intercept('/user/login').as('login');
@@ -25,8 +26,9 @@ describe('login spec', () => {
     cy.visit('/');
   })
 
+  // test logging in as 'testuser' on all viewports
   viewports.forEach((viewport) => {
-    context(`Logging in on ${viewport.label}`, () => {
+    context(`Logging in as testuser on ${viewport.label} screen size`, () => {
       beforeEach(() => {
         cy.viewport(viewport.width, viewport.height);
         cy.visit('/');
@@ -45,36 +47,35 @@ describe('login spec', () => {
         });
         });
       });
+
     });
   });
 
-  // login as test user
-  // it('logs in as test user', () => {
-  //   cy.findByRole('button', {name: /Log in as test user/i}).click();
-    
-  //   cy.wait('@login').then(() => {
+    // test logging in as 'testuser1' on all viewports
+    viewports.forEach((viewport) => {
+      context(`Logging in as testuser1 on ${viewport.label} screen size`, () => {
+        beforeEach(() => {
+          cy.viewport(viewport.width, viewport.height);
+          cy.visit('/');
+        });
+  
+        it('logs in as testuser1 with password123', () => {
+          cy.get('input#username').type('testuser1');
+          cy.get('input#password').type('password123');
 
-  //   // check if the local storage has a key
-  //   cy.window().then((window) => {
-  //     const token = window.localStorage.getItem('token');
-  //     expect(token).to.exist
-  //     expect(token).to.be.a('string').and.not.be.empty
-  //   })
-  //   })
-  // })
+          cy.get('form').submit();
 
-  // logs in with testuser1 and navigates to the /user page
-  it('logs in as testuser1 with password123', () => {
-    cy.get('input#username').type('testuser1');
-    cy.get('input#password').type('password123');
+          cy.wait('@login').then(() => {
+            cy.url().should('include', '/user');
+            if (!skipDivCheckSizes.includes(viewport.label)) {
+              cy.get('div').contains('testuser1').should('be.visible');
+            }
+          });
+        });
+  
+      });
+    });
 
-    cy.get('form').submit();
-
-    cy.wait('@login').then(() => {
-      cy.url().should('include', '/user');
-      cy.get('div').contains('testuser1').should('be.visible');
-    })
-  })
   
   // go to sign up page when create account button is clicked
   it('navigates to the signup page', () => {
