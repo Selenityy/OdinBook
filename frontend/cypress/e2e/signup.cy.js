@@ -12,7 +12,7 @@ describe("sign up spec", () => {
       () => {
         beforeEach(() => {
           cy.viewport(viewport.width, viewport.height);
-          cy.deleteOne({ username: "cypressTestAccount" });
+          cy.deleteOne({ username: "cypressTestAccount2" });
           cy.intercept("/signup*").as("signup");
           cy.visit("/signup");
         });
@@ -20,9 +20,9 @@ describe("sign up spec", () => {
         it("signs up as cypressTestAccount", () => {
           cy.fillSignUpForm({
             firstName: "cypress",
-            lastName: "TestAccount",
-            email: "cypressTestAccount@example.com",
-            username: "cypressTestAccount",
+            lastName: "TestAccount2",
+            email: "cypressTestAccount2@example.com",
+            username: "cypressTestAccount2",
             password: "cypress",
             confirmPassword: "cypress",
           });
@@ -74,8 +74,8 @@ describe("sign up spec", () => {
         it("error when passwords do not match", () => {
           cy.fillSignUpForm({
             firstName: "cypress",
-            lastName: "TestAccount",
-            email: "cypressTestAccount@example.com",
+            lastName: "TestAccount2",
+            email: "cypressTestAccount2@example.com",
             username: "cypressTestAccount",
             password: "cypress",
             confirmPassword: "cypresstestaccount",
@@ -92,8 +92,8 @@ describe("sign up spec", () => {
         it.only("error when email is not valid", () => {
           cy.fillSignUpForm({
             firstName: "cypress",
-            lastName: "TestAccount",
-            email: "cypressTestAccount.com",
+            lastName: "TestAccount2",
+            email: "cypressTestAccount2.com",
             username: "cypressTestAccount",
             password: "cypress",
             confirmPassword: "cypress",
@@ -104,7 +104,9 @@ describe("sign up spec", () => {
           cy.wait("@signup").then(() => {
             cy.get("input:invalid").should("have.length", 1);
             cy.get('[type="email"]').then(($input) => {
-              expect($input[0].validationMessage).to.eq("Please include an '@' in the email address. 'cypressTestAccount.com' is missing an '@'.");
+              expect($input[0].validationMessage).to.eq(
+                "Please include an '@' in the email address. 'cypressTestAccount.com' is missing an '@'."
+              );
             });
           });
         });
