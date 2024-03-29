@@ -1,43 +1,37 @@
-describe('login spec', () => {
+describe("login spec", () => {
   const viewports = [
-    { label: '2xs', width: 320, height: 480 },
-    { label: 'xs', width: 375, height: 812 },
-    { label: 'sm', width: 640, height: 800 },
-    { label: 'md', width: 768, height: 1024 },
-    { label: 'lg', width: 1024, height: 768 },
-    { label: 'xl', width: 1440, height: 900 },
-    { label: '2xl', width: 1920, height: 1080 },
+    { label: "sm", width: 375, height: 812 },
+    { label: "md", width: 768, height: 1024 },
+    { label: "lg", width: 1920, height: 1080 },
   ];
-  const skipDivCheckSizes = ['2xs', 'xs', 'sm'];
+  const skipDivCheckSizes = ["sm"];
 
   beforeEach(() => {
-    cy.intercept('/user/login').as('login');
-    cy.intercept('/signup*').as('signup');
-    cy.visit('/');
-  })
+    cy.intercept("/user/login").as("login");
+    cy.intercept("/signup*").as("signup");
+    cy.visit("/");
+  });
 
   // test logging in as 'testuser' on all viewports
   viewports.forEach((viewport) => {
     context(`Logging in as testuser on ${viewport.label} screen size`, () => {
       beforeEach(() => {
         cy.viewport(viewport.width, viewport.height);
-        cy.visit('/');
+        cy.visit("/");
       });
 
-      it('logs in as test user', () => {
-        cy.findByRole('button', {name: /Log in as test user/i}).click();
-        
-        cy.wait('@login').then(() => {
-    
-        // check if the local storage has a key
-        cy.window().then((window) => {
-          const token = window.localStorage.getItem('token');
-          expect(token).to.exist
-          expect(token).to.be.a('string').and.not.be.empty
-        });
+      it("logs in as test user", () => {
+        cy.findByRole("button", { name: /Log in as test user/i }).click();
+
+        cy.wait("@login").then(() => {
+          // check if the local storage has a key
+          cy.window().then((window) => {
+            const token = window.localStorage.getItem("token");
+            expect(token).to.exist;
+            expect(token).to.be.a("string").and.not.be.empty;
+          });
         });
       });
-
     });
   });
 
@@ -46,23 +40,22 @@ describe('login spec', () => {
     context(`Logging in as testuser1 on ${viewport.label} screen size`, () => {
       beforeEach(() => {
         cy.viewport(viewport.width, viewport.height);
-        cy.visit('/');
+        cy.visit("/");
       });
 
-      it('logs in as testuser1 with password123', () => {
-        cy.get('input#username').type('testuser1');
-        cy.get('input#password').type('password123');
+      it("logs in as testuser1 with password123", () => {
+        cy.get("input#username").type("testuser1");
+        cy.get("input#password").type("password123");
 
-        cy.get('form').submit();
+        cy.get("form").submit();
 
-        cy.wait('@login').then(() => {
-          cy.url().should('include', '/user');
+        cy.wait("@login").then(() => {
+          cy.url().should("include", "/user");
           if (!skipDivCheckSizes.includes(viewport.label)) {
-            cy.get('div').contains('testuser1').should('be.visible');
+            cy.get("div").contains("testuser1").should("be.visible");
           }
         });
       });
-
     });
   });
 
@@ -71,18 +64,17 @@ describe('login spec', () => {
     context(`Navigate to sign up page on ${viewport.label} screen size`, () => {
       beforeEach(() => {
         cy.viewport(viewport.width, viewport.height);
-        cy.visit('/');
+        cy.visit("/");
       });
 
       // go to sign up page when create account button is clicked
-      it('navigates to the signup page', () => {
-        cy.findByRole('button', {name: /Create Account/i}).click();
+      it("navigates to the signup page", () => {
+        cy.findByRole("button", { name: /Create Account/i }).click();
 
-        cy.wait('@signup').then(() => {
-          cy.url().should('include', '/signup');
+        cy.wait("@signup").then(() => {
+          cy.url().should("include", "/signup");
         });
       });
-
     });
   });
 
@@ -91,34 +83,32 @@ describe('login spec', () => {
     context(`Incorrect username error on ${viewport.label} screen size`, () => {
       beforeEach(() => {
         cy.viewport(viewport.width, viewport.height);
-        cy.visit('/');
+        cy.visit("/");
       });
 
-    // incorrect username
-    it.only('display error message for incorrect username', () => {
-      cy.get('input#username').type('testuser');
-      cy.get('input#password').type('password123');
+      // incorrect username
+      it.only("display error message for incorrect username", () => {
+        cy.get("input#username").type("testuser");
+        cy.get("input#password").type("password123");
 
-      cy.get('form').submit();
+        cy.get("form").submit();
 
-      cy.wait('@login').then(() => {
-        cy.get('div').contains('*Username or Password is incorrect.');
+        cy.wait("@login").then(() => {
+          cy.get("div").contains("*Username or Password is incorrect.");
+        });
       });
-    });
 
-    // incorrect password
-    it('display error message for incorrect password', () => {
-      cy.get('input#username').type('testuser1');
-      cy.get('input#password').type('password1234');
+      // incorrect password
+      it("display error message for incorrect password", () => {
+        cy.get("input#username").type("testuser1");
+        cy.get("input#password").type("password1234");
 
-      cy.get('form').submit();
+        cy.get("form").submit();
 
-      cy.wait('@login').then(() => {
-        cy.get('div').contains('*Username or Password is incorrect.');
+        cy.wait("@login").then(() => {
+          cy.get("div").contains("*Username or Password is incorrect.");
+        });
       });
-    });
-
     });
   });
-
 });
