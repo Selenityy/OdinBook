@@ -12,12 +12,21 @@ describe("post spec", () => {
       () => {
         beforeEach(() => {
           cy.viewport(viewport.width, viewport.height);
+          cy.intercept("http://localhost:3000/user/*/posts").as("postCreation");
           cy.login();
           cy.visit("/user");
         });
 
+        afterEach(() => {
+          cy.postCleanUp();
+        });
+
         it("creates a post", () => {
-          cy.wait(10000);
+          cy.get("input#post-creation-content").type("test post");
+          cy.get("form").submit();
+          cy.wait("@postCreation").then(() => {
+            cy.get("div").contains("test post");
+          });
         });
       }
     );
