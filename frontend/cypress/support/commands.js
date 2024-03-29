@@ -73,3 +73,28 @@ Cypress.Commands.add("postCleanUp", () => {
       });
     });
 });
+
+Cypress.Commands.add("commentCleanUp", () => {
+  let userId;
+  let commentId;
+  let token;
+  const postId = "66072e0849083fcfeb5092a1"; // retreived from database, this post should never be deleted so the Id should remain constant
+  cy.wait("@commentCreation")
+    .then((response) => {
+      userId = response.response.body.comment.user.id;
+      commentId = response.response.body.comment.id;
+      cy.window().then((win) => {
+        token = win.localStorage.getItem("token");
+      });
+    })
+    .then(() => {
+      cy.request({
+        method: "DELETE",
+        url: `http://localhost:3000/user/${userId}/posts/${postId}/comments/${commentId}`,
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+    });
+});
