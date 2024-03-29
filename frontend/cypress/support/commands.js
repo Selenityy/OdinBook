@@ -36,3 +36,16 @@ Cypress.Commands.add(
     cy.get("input#confirmPassword").type(confirmPassword);
   }
 );
+
+Cypress.Commands.add("login", () => {
+  cy.request({
+    method: "POST",
+    url: "http://localhost:3000/user/login",
+    body: {
+      username: "cypressTestAccount",
+      password: "cypress",
+    },
+  }).then((response) => {
+    window.localStorage.setItem("token", response.body.token);
+  });
+});
