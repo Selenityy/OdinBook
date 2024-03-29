@@ -49,3 +49,27 @@ Cypress.Commands.add("login", () => {
     window.localStorage.setItem("token", response.body.token);
   });
 });
+
+Cypress.Commands.add("postCleanUp", () => {
+  let postId;
+  let userId;
+  let token;
+  cy.wait("@postCreation")
+    .then((response) => {
+      postId = response.response.body.post.id;
+      userId = response.response.body.post.user;
+      cy.window().then((win) => {
+        token = win.localStorage.getItem("token");
+      });
+    })
+    .then(() => {
+      cy.request({
+        method: "DELETE",
+        url: `http://localhost:3000/user/${userId}/posts/${postId}/`,
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+    });
+});
