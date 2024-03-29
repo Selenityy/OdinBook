@@ -3,6 +3,7 @@
 
 # Environment variables file (if you have one)
 .env
+cypress.env.json
 
 # Build output (if applicable)
 /.next
