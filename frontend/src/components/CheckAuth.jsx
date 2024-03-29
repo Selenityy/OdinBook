@@ -3,11 +3,12 @@
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { fetchUserData } from "@/redux/features/user-slice";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 
 const CheckAuth = () => {
   const dispatch = useDispatch();
   const router = useRouter();
+  const pathname = usePathname();
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -15,8 +16,10 @@ const CheckAuth = () => {
       dispatch(fetchUserData());
       // router.push("/user");
     } else {
-      router.push("/");
+      if (pathname !== "/" && pathname !== "/signup") {
+        router.push("/");
+      }
     }
-  }, [dispatch, router]);
+  }, [dispatch, router, pathname]);
 };
 export default CheckAuth;
