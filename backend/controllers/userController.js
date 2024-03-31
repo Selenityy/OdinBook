@@ -48,9 +48,11 @@ exports.login = asyncHandler(async (req, res, next) => {
     "local",
     { session: false },
     async (err, user, info) => {
-      if (err || !user) {
+      if (!user) {
         const error = new Error("User does not exist");
         return next(error);
+      } else if (err) {
+        return next(err);
       }
 
       // req.login(user, { session: false }, (err) => {
