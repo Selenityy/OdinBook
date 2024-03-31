@@ -96,7 +96,7 @@ const UniquePost = () => {
       <div className="bg-slate-700 border border-slate-500 p-3 grid grid-cols-[min-content_min-content_min-content_1fr_min-content_min-content_40px] grid-rows-[auto_1fr_min-content]">
         <div className="w-10 h-10 relative col-start-1 row-start-1 row-span-2 mr-3">
           <Image
-            src={`http://localhost:3000/${post.user.profilePic}`}
+            src={`${process.env.API_URL}/${post.user.profilePic}`}
             alt={`${post.user.username}'s profile picture`}
             className="rounded-full object-cover"
             width={50}

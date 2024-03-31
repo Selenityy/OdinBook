@@ -41,7 +41,8 @@ const ModalEditProfile = ({
   };
 
   return (
-    <div className="
+    <div
+      className="
     xxs:w-11/12 xxs:h-fit xxs:pb-4 xxs:left-[4%]
     md:w-1/2
     lg:w-96 lg:h-96
@@ -51,10 +52,14 @@ const ModalEditProfile = ({
     md:left-[15%]
     lg:left-[25%]
     2xl:left-[40%] 
-    bg-slate-700 border border-slate-500 rounded-2xl drop-shadow-glow z-30">
+    bg-slate-700 border border-slate-500 rounded-2xl drop-shadow-glow z-30"
+    >
       <div className="flex justify-between items-start my-3 mx-4">
         <div className="flex gap-3">
-          <div className="text-white cursor-pointer" onClick={() => closeModal()}>
+          <div
+            className="text-white cursor-pointer"
+            onClick={() => closeModal()}
+          >
             X
           </div>
           <div className="text-white">Edit Profile</div>
@@ -70,7 +75,7 @@ const ModalEditProfile = ({
               className="header"
               priority
               id="profile-pic"
-              src={`http://localhost:3000/${profilePic}`}
+              src={`${process.env.API_URL}/${profilePic}`}
               alt="profile-pic"
               width={100}
               height={100}

@@ -114,7 +114,7 @@ const UserFeed = () => {
             >
               <div className="w-10 h-10 relative col-start-1 row-start-1 row-span-2 mr-3">
                 <Image
-                  src={`http://localhost:3000/${post.user.profilePic}`}
+                  src={`${process.env.API_URL}/${post.user.profilePic}`}
                   alt={`${post.user.username}'s profile picture`}
                   fill
                   className="rounded-full object-cover"

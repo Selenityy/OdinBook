@@ -20,7 +20,7 @@ const NavUser = () => {
         <Image
           className="header"
           id="profile-pic"
-          src={`http://localhost:3000/${profilePic}`}
+          src={`${process.env.API_URL}/${profilePic}`}
           alt="profile-pic"
           priority
           width={70}

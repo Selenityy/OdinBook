@@ -75,7 +75,7 @@ const UserProfilePage = () => {
 
   const onEditProfileClick = async () => {
     setShowProfileDropDown(!showProfileDropDown);
-  }
+  };
 
   const onEllipsisClick = (postId) => {
     setActivePostIdForDropdown((current) =>
@@ -136,7 +136,8 @@ const UserProfilePage = () => {
           setRefreshDataTrigger={setRefreshDataTrigger}
         />
       )}
-      <div className="
+      <div
+        className="
       sticky top-0 z-10 
       bg-slate-700 border border-slate-500 
       xxs:grid 
@@ -158,7 +159,8 @@ const UserProfilePage = () => {
       lg:grid-rows-[auto_1fr_1fr] 
       lg:grid-cols-[min-content_auto_min-content] 
       lg:gap-y-2 lg:gap-x-4 lg:p-2
-      lg:w-full">
+      lg:w-full"
+      >
         <div className="col-start-3 row-start-1 items-end ml-7 text-xl text-white flex flex-col flex-wrap shrink">
           <div
             className="btn3 xxs:w-fit sm:w-max"
@@ -167,17 +169,19 @@ const UserProfilePage = () => {
             Edit Profile
           </div>
         </div>
-        <div className="
+        <div
+          className="
         xxs:w-12 xxs:h-12 xs:w-20 xs:h-20 
         sm:w-24 sm:h-24 
         md:w-14 md:h-14 
         lg:w-24 lg:h-24 
-        relative mr-3 col-start-1 row-start-1 row-span-2">
+        relative mr-3 col-start-1 row-start-1 row-span-2"
+        >
           <Image
             className="header"
             priority
             id="profile-pic"
-            src={`http://localhost:3000/${profilePic}`}
+            src={`${process.env.API_URL}/${profilePic}`}
             alt="profile-pic"
             width={200}
             height={200}
@@ -203,7 +207,7 @@ const UserProfilePage = () => {
               >
                 <div className="w-10 h-10 relative col-start-1 row-start-1 row-span-2 mr-3">
                   <Image
-                    src={`http://localhost:3000/${post.user.profilePic}`}
+                    src={`${process.env.API_URL}/${post.user.profilePic}`}
                     alt={`${post.user.username}'s profile picture`}
                     fill
                     className="rounded-full object-cover"
@@ -214,56 +218,56 @@ const UserProfilePage = () => {
                 <div className="col-start-2 col-span-5 row-start-1 flex items-center font-semibold text-white">
                   {post.user.username}
                 </div>
-              {/* if you own the post, you can see the ... */}
-              {userId === post.user._id && editMode.postId === null && (
-                <button
-                  className="row-start-1 col-start-7 flex items-start ml-7 text-white cursor-pointer"
-                  onClick={() => onEllipsisClick(post._id)}
-                >
-                  ...
-                </button>
-              )}
-              {/* if you click on the ... you'll see these options */}
-              {activePostIdForDropdown === post._id && (
-                <div className="bg-slate-800 border-2 border-slate-500 rounded-2xl px-3 py-2 flex flex-col gap-1 col-start-5 col-span-3 row-start-2 row-span-2 drop-shadow-glow h-[min-content]">
-                  <div
-                    className="hover:font-bold text-sm text-white cursor-pointer w-min"
-                    onClick={() => onEditClick(post)}
-                  >
-                    Edit
-                  </div>
-                  <div
-                    className="hover:font-bold text-sm text-white cursor-pointer w-min"
-                    onClick={() => onDeleteClick(userId, post._id)}
-                  >
-                    Delete
-                  </div>
-                </div>
-              )}
-              {/* if you click edit on your post, you'll see the save button */}
-              {editMode.postId === post._id && (
-                <div className="col-start-5 col-span-3 row-start-1 row-span-2 flex items-center justify-end">
+                {/* if you own the post, you can see the ... */}
+                {userId === post.user._id && editMode.postId === null && (
                   <button
-                    className="cursor-pointer sm-btn3"
-                    onClick={() => onEditSave(post._id)}
+                    className="row-start-1 col-start-7 flex items-start ml-7 text-white cursor-pointer"
+                    onClick={() => onEllipsisClick(post._id)}
                   >
-                    Save
+                    ...
                   </button>
-                </div>
-              )}
-              <div className="col-start-2 col-span-3 row-start-2 mb-5 text-white">
-                {/* if you click edit on your post, you'll be able to click into the body field, otherwise it's just the post's body */}
-                {editMode.postId === post._id ? (
-                  <input
-                    type="text"
-                    value={editMode.content}
-                    onChange={onEditChange}
-                    className="bg-slate-700 text-white w-full border-2 border-yellow-500 border-dashed p-px"
-                  />
-                ) : (
-                  post.body
                 )}
-              </div>
+                {/* if you click on the ... you'll see these options */}
+                {activePostIdForDropdown === post._id && (
+                  <div className="bg-slate-800 border-2 border-slate-500 rounded-2xl px-3 py-2 flex flex-col gap-1 col-start-5 col-span-3 row-start-2 row-span-2 drop-shadow-glow h-[min-content]">
+                    <div
+                      className="hover:font-bold text-sm text-white cursor-pointer w-min"
+                      onClick={() => onEditClick(post)}
+                    >
+                      Edit
+                    </div>
+                    <div
+                      className="hover:font-bold text-sm text-white cursor-pointer w-min"
+                      onClick={() => onDeleteClick(userId, post._id)}
+                    >
+                      Delete
+                    </div>
+                  </div>
+                )}
+                {/* if you click edit on your post, you'll see the save button */}
+                {editMode.postId === post._id && (
+                  <div className="col-start-5 col-span-3 row-start-1 row-span-2 flex items-center justify-end">
+                    <button
+                      className="cursor-pointer sm-btn3"
+                      onClick={() => onEditSave(post._id)}
+                    >
+                      Save
+                    </button>
+                  </div>
+                )}
+                <div className="col-start-2 col-span-3 row-start-2 mb-5 text-white">
+                  {/* if you click edit on your post, you'll be able to click into the body field, otherwise it's just the post's body */}
+                  {editMode.postId === post._id ? (
+                    <input
+                      type="text"
+                      value={editMode.content}
+                      onChange={onEditChange}
+                      className="bg-slate-700 text-white w-full border-2 border-yellow-500 border-dashed p-px"
+                    />
+                  ) : (
+                    post.body
+                  )}
+                </div>
                 <div
                   onClick={() => onLikeClick(userId, post._id)}
                   className="col-start-2 row-start-3 cursor-pointer"

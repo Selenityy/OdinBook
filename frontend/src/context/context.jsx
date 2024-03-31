@@ -29,7 +29,7 @@ export const UserProvider = ({ children }) => {
   useEffect(() => {
     const fetchUserData = async (token) => {
       try {
-        const response = await fetch(`http://localhost:3000/user/data`, {
+        const response = await fetch(`${process.env.API_URL}/user/data`, {
           method: "GET",
           headers: {
             Authorization: `Bearer ${token}`,

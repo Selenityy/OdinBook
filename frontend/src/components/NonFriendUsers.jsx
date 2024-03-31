@@ -39,7 +39,7 @@ const NonFriendUsers = () => {
   // Fetch all users in database
   useEffect(() => {
     async function fetchData() {
-      const res = await fetch(`http://localhost:3000/user/all`, {
+      const res = await fetch(`${process.env.API_URL}/user/all`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -83,14 +83,16 @@ const NonFriendUsers = () => {
     <div className="w-fit flex flex-col rounded-lg p-2 gap-3 bg-slate-700">
       <div className="mx-3 my-3">
         {unfriendedUsers && unfriendedUsers.length > 0 ? (
-          <ul className="
+          <ul
+            className="
           flex flex-wrap  
-          gap-y-7 gap-x-10">
+          gap-y-7 gap-x-10"
+          >
             {unfriendedUsers.map((user) => (
               <li key={user._id} className="flex items-center space-x-3">
                 <div className="w-16 h-16 relative">
                   <Image
-                    src={`http://localhost:3000/${user.profilePic}`}
+                    src={`${process.env.API_URL}/${user.profilePic}`}
                     alt={`${user.username}'s profile picture`}
                     fill
                     className="rounded-full object-cover"
