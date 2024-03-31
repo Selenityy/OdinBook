@@ -30,13 +30,13 @@ const app = express();
 app.use(cors());
 
 // Set up rate limiter: maximum of twenty requests per minute
-const RateLimit = require("express-rate-limit");
-const limiter = RateLimit({
-  windowMs: 1 * 60 * 1000, // 1 minute
-  max: 100,
-});
-// Apply rate limiter to all requests
-app.use(limiter);
+// const RateLimit = require("express-rate-limit");
+// const limiter = RateLimit({
+//   windowMs: 1 * 60 * 1000, // 1 minute
+//   max: 100,
+// });
+// // Apply rate limiter to all requests
+// app.use(limiter);
 
 app.use(logger("dev"));
 app.use(express.json());
