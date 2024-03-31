@@ -13,6 +13,8 @@ const logger = require("morgan");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
 // const connectDB = require("./helpers/mongoConfig");
+const compression = require("compression");
+const helmet = require("helmet");
 
 const userRouter = require("./routes/userRoutes");
 
@@ -25,11 +27,29 @@ db.on("error", console.error.bind(console, "mongo connection error"));
 // connectDB();
 
 const app = express();
+app.use(cors());
+
+// Set up rate limiter: maximum of twenty requests per minute
+const RateLimit = require("express-rate-limit");
+const limiter = RateLimit({
+  windowMs: 1 * 60 * 1000, // 1 minute
+  max: 100,
+});
+// Apply rate limiter to all requests
+app.use(limiter);
 
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(compression());
+app.use(
+  helmet.contentSecurityPolicy({
+    directives: {
+      "script-src": ["'self'", "code.jquery.com", "cdn.jsdelivr.net"],
+    },
+  })
+);
 // app.use("/", express.static(path.join(__dirname, "public")));
 app.use(express.static((__dirname, "public")));
 
@@ -45,7 +65,6 @@ require("./helpers/passport");
 app.use(passport.initialize());
 app.use(passport.session());
 // require("./helpers/passport");
-app.use(cors());
 
 app.use("/user", userRouter);
 
