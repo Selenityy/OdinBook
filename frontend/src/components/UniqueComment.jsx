@@ -105,7 +105,7 @@ const UniqueComment = () => {
         <div className="border border-slate-500 bg-slate-500 h-5.5 w-1 row-start-1 col-start-1 col-span-1 mb-0.5 ml-4 mt-0"></div>
         <div className="w-10 h-10 relative col-start-1 row-start-2 row-span-2 mr-3">
           <Image
-            src={`${process.env.API_URL}/${newPost.user.profilePic}`}
+            src={`${process.env.NEXT_PUBLIC_API_URL}/${newPost.user.profilePic}`}
             alt={`${newPost.user.username}'s profile picture`}
             className="rounded-full object-cover"
             width={50}

@@ -29,13 +29,16 @@ export const UserProvider = ({ children }) => {
   useEffect(() => {
     const fetchUserData = async (token) => {
       try {
-        const response = await fetch(`${process.env.API_URL}/user/data`, {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-        });
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/user/data`,
+          {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
+          }
+        );
         if (response.ok) {
           const userData = await response.json();
           setUser({

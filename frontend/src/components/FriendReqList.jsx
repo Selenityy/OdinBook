@@ -41,7 +41,7 @@ const FriendReqList = () => {
   // on render and on trigger rerender, fetch all users and update the state
   useEffect(() => {
     async function fetchData() {
-      const res = await fetch(`${process.env.API_URL}/user/all`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/user/all`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -103,7 +103,7 @@ const FriendReqList = () => {
                 >
                   <div className="w-10 h-10 relative">
                     <Image
-                      src={`${process.env.API_URL}/${friendReq.profilePic}`}
+                      src={`${process.env.NEXT_PUBLIC_API_URL}/${friendReq.profilePic}`}
                       alt={`${friendReq.username}'s profile picture`}
                       fill
                       className="rounded-full object-cover"
@@ -172,7 +172,7 @@ const FriendReqList = () => {
                 >
                   <div className="w-10 h-10 relative">
                     <Image
-                      src={`${process.env.API_URL}/${friend.profilePic}`}
+                      src={`${process.env.NEXT_PUBLIC_API_URL}/${friend.profilePic}`}
                       alt={`${friend.username}'s profile picture`}
                       fill
                       className="rounded-full object-cover"

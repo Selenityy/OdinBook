@@ -9,13 +9,16 @@ export const fetchUserData = createAsyncThunk(
       return thunkAPI.rejectWithValue("No token found");
     }
     try {
-      const response = await fetch(`${process.env.API_URL}/user/data`, {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-      });
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/user/data`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
       if (!response.ok) {
         throw new Error("Failed to fetch user data");
       }
@@ -37,7 +40,7 @@ export const fetchUserFeedPosts = createAsyncThunk(
     }
     try {
       const response = await fetch(
-        `${process.env.API_URL}/user/${userId}/posts`,
+        `${process.env.NEXT_PUBLIC_API_URL}/user/${userId}/posts`,
         {
           method: "GET",
           headers: {
@@ -67,7 +70,7 @@ export const fetchSendFriendRequests = createAsyncThunk(
     }
     try {
       const response = await fetch(
-        `${process.env.API_URL}/user/${userId}/sendFriendRequest/${friendUsername}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/user/${userId}/sendFriendRequest/${friendUsername}`,
         {
           method: "POST",
           headers: {
@@ -101,7 +104,7 @@ export const fetchAcceptFriendRequest = createAsyncThunk(
     }
     try {
       const response = await fetch(
-        `${process.env.API_URL}/user/${userId}/acceptFriendRequest/${friendUsername}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/user/${userId}/acceptFriendRequest/${friendUsername}`,
         {
           method: "POST",
           headers: {
@@ -135,7 +138,7 @@ export const fetchRejectFriendRequest = createAsyncThunk(
     }
     try {
       const response = await fetch(
-        `${process.env.API_URL}/user/${userId}/rejectFriendRequest/${friendUsername}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/user/${userId}/rejectFriendRequest/${friendUsername}`,
         {
           method: "POST",
           headers: {
@@ -169,7 +172,7 @@ export const fetchCancelRequest = createAsyncThunk(
     }
     try {
       const response = await fetch(
-        `${process.env.API_URL}/user/${userId}/deleteFriendRequest/${friendUsername}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/user/${userId}/deleteFriendRequest/${friendUsername}`,
         {
           method: "POST",
           headers: {
@@ -203,7 +206,7 @@ export const fetchUnfriend = createAsyncThunk(
     }
     try {
       const response = await fetch(
-        `${process.env.API_URL}/user/${userId}/unFriend/${friendUsername}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/user/${userId}/unFriend/${friendUsername}`,
         {
           method: "POST",
           headers: {
@@ -237,7 +240,7 @@ export const updateUsername = createAsyncThunk(
     }
     try {
       const response = await fetch(
-        `${process.env.API_URL}/user/${userId}/${username}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/user/${userId}/${username}`,
         {
           method: "PUT",
           headers: {
@@ -268,7 +271,7 @@ export const updateAbout = createAsyncThunk(
     }
     try {
       const response = await fetch(
-        `${process.env.API_URL}/user/${userId}/${username}/about`,
+        `${process.env.NEXT_PUBLIC_API_URL}/user/${userId}/${username}/about`,
         {
           method: "PUT",
           headers: {
@@ -299,7 +302,7 @@ export const postCreation = createAsyncThunk(
     }
     try {
       const response = await fetch(
-        `${process.env.API_URL}/user/${userId}/posts`,
+        `${process.env.NEXT_PUBLIC_API_URL}/user/${userId}/posts`,
         {
           method: "POST",
           headers: {
@@ -330,7 +333,7 @@ export const fetchUniquePost = createAsyncThunk(
     }
     try {
       const response = await fetch(
-        `${process.env.API_URL}/user/${userId}/posts/${postId}/`,
+        `${process.env.NEXT_PUBLIC_API_URL}/user/${userId}/posts/${postId}/`,
         {
           method: "GET",
           headers: {
@@ -362,7 +365,7 @@ export const deleteOwnPost = createAsyncThunk(
     }
     try {
       const response = await fetch(
-        `${process.env.API_URL}/user/${userId}/posts/${postId}/`,
+        `${process.env.NEXT_PUBLIC_API_URL}/user/${userId}/posts/${postId}/`,
         {
           method: "DELETE",
           headers: {
@@ -392,7 +395,7 @@ export const editOwnPost = createAsyncThunk(
     }
     try {
       const response = await fetch(
-        `${process.env.API_URL}/user/${userId}/posts/${postId}/`,
+        `${process.env.NEXT_PUBLIC_API_URL}/user/${userId}/posts/${postId}/`,
         {
           method: "PUT",
           headers: {
@@ -423,7 +426,7 @@ export const likePost = createAsyncThunk(
     }
     try {
       const response = await fetch(
-        `${process.env.API_URL}/user/${userId}/posts/${postId}/like`,
+        `${process.env.NEXT_PUBLIC_API_URL}/user/${userId}/posts/${postId}/like`,
         {
           method: "PUT",
           headers: {
@@ -456,7 +459,7 @@ export const commentCreation = createAsyncThunk(
     }
     try {
       const response = await fetch(
-        `${process.env.API_URL}/user/${userId}/posts/${postId}/comments/`,
+        `${process.env.NEXT_PUBLIC_API_URL}/user/${userId}/posts/${postId}/comments/`,
         {
           method: "POST",
           headers: {
@@ -488,7 +491,7 @@ export const commentCreationOnComment = createAsyncThunk(
     }
     try {
       const response = await fetch(
-        `${process.env.API_URL}/user/${userId}/posts/${postId}/comments/${commentId}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/user/${userId}/posts/${postId}/comments/${commentId}`,
         {
           method: "POST",
           headers: {
@@ -524,7 +527,7 @@ export const fetchUniqueComment = createAsyncThunk(
     }
     try {
       const response = await fetch(
-        `${process.env.API_URL}/user/${userId}/posts/${postId}/comments/${commentId}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/user/${userId}/posts/${postId}/comments/${commentId}`,
         {
           method: "GET",
           headers: {
@@ -556,7 +559,7 @@ export const likeComment = createAsyncThunk(
     }
     try {
       const response = await fetch(
-        `${process.env.API_URL}/user/${userId}/posts/${postId}/comments/${commentId}/like`,
+        `${process.env.NEXT_PUBLIC_API_URL}/user/${userId}/posts/${postId}/comments/${commentId}/like`,
         {
           method: "PUT",
           headers: {
@@ -590,7 +593,7 @@ export const editOwnComment = createAsyncThunk(
     }
     try {
       const response = await fetch(
-        `${process.env.API_URL}/user/${userId}/posts/${postId}/comments/${commentId}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/user/${userId}/posts/${postId}/comments/${commentId}`,
         {
           method: "PUT",
           headers: {
@@ -621,7 +624,7 @@ export const deleteOwnComment = createAsyncThunk(
     }
     try {
       const response = await fetch(
-        `${process.env.API_URL}/user/${userId}/posts/${postId}/comments/${commentId}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/user/${userId}/posts/${postId}/comments/${commentId}`,
         {
           method: "DELETE",
           headers: {
@@ -646,13 +649,16 @@ export const signUpUser = createAsyncThunk(
   "/user/signUp",
   async (formData, thunkAPI) => {
     try {
-      const response = await fetch(`${process.env.API_URL}/user/signup`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/user/signup`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        }
+      );
       if (!response.ok) {
         throw new Error("Failed to fetch user data on sign up");
       }
@@ -669,13 +675,16 @@ export const loginUser = createAsyncThunk(
   "/user/login",
   async (formData, thunkAPI) => {
     try {
-      const response = await fetch(`${process.env.API_URL}/user/login`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/user/login`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        }
+      );
       if (!response.ok) {
         throw new Error("Failed to fetch user data on log in");
       }
