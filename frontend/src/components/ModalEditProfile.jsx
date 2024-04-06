@@ -75,7 +75,7 @@ const ModalEditProfile = ({
               className="header"
               priority
               id="profile-pic"
-              src={`${process.env.NEXT_PUBLIC_API_URL}/${profilePic}`}
+              src={`${process.env.IMAGE_URL}/${profilePic}`}
               alt="profile-pic"
               width={100}
               height={100}

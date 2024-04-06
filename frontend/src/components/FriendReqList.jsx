@@ -103,7 +103,7 @@ const FriendReqList = () => {
                 >
                   <div className="w-10 h-10 relative">
                     <Image
-                      src={`${process.env.NEXT_PUBLIC_API_URL}/${friendReq.profilePic}`}
+                      src={`${process.env.IMAGE_URL}/${friendReq.profilePic}`}
                       alt={`${friendReq.username}'s profile picture`}
                       fill
                       className="rounded-full object-cover"
@@ -172,7 +172,7 @@ const FriendReqList = () => {
                 >
                   <div className="w-10 h-10 relative">
                     <Image
-                      src={`${process.env.NEXT_PUBLIC_API_URL}/${friend.profilePic}`}
+                      src={`${process.env.IMAGE_URL}/${friend.profilePic}`}
                       alt={`${friend.username}'s profile picture`}
                       fill
                       className="rounded-full object-cover"
