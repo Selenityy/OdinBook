@@ -10,9 +10,11 @@
 const nextConfig = {
   images: {
     remotePatterns: [
+      { protocol: "http", hostname: "localhost" },
       {
-        protocol: 'http',
-        hostname: 'localhost',
+        protocol: "https",
+        hostname: "github.com",
+        pathname: "/Selenityy/OdinBook/tree/main/backend/**",
       },
     ],
   },
