@@ -17,7 +17,7 @@ const UserProfile = () => {
           <Image
             className="header"
             id="profile-pic"
-            src={`${process.env.IMAGE_URL}/${profilePic}`}
+            src={`/${profilePic}`}
             alt="profile-pic"
             priority
             width={50}

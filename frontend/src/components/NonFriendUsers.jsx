@@ -92,7 +92,7 @@ const NonFriendUsers = () => {
               <li key={user._id} className="flex items-center space-x-3">
                 <div className="w-16 h-16 relative">
                   <Image
-                    src={`${process.env.IMAGE_URL}/${user.profilePic}`}
+                    src={`/${user.profilePic}`}
                     alt={`${user.username}'s profile picture`}
                     fill
                     className="rounded-full object-cover"
