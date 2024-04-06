@@ -24,7 +24,7 @@ const mongoDb = process.env.MONGODB_URI_ODINBOOK || dev_db_url;
 mongoose
   .connect(mongoDb)
   .then(() => {
-    console.log("Connected to MongoDB");
+    console.log(`Connected to MongoDB at: ${mongoDb}`);
   })
   .catch(() => {
     console.log("Couldn't connect to MongoDB");
