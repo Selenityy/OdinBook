@@ -21,7 +21,14 @@ const userRouter = require("./routes/userRoutes");
 const dev_db_url = "";
 mongoose.set("strictQuery", false);
 const mongoDb = process.env.MONGODB_URI_ODINBOOK || dev_db_url;
-mongoose.connect(mongoDb);
+mongoose
+  .connect(mongoDb)
+  .then(() => {
+    console.log("Connected to MongoDB");
+  })
+  .catch(() => {
+    console.log("Couldn't connect to MongoDB");
+  });
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "mongo connection error"));
 // connectDB();
