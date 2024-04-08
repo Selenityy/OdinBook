@@ -650,7 +650,7 @@ export const signUpUser = createAsyncThunk(
   async (formData, thunkAPI) => {
     try {
       console.log("inside the try");
-      const response = await fetch(`http://localhost:3000/user/signup`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/user/signup`, {
         method: "POST",
         headers: {
           Accept: "application/json",
