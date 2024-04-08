@@ -649,7 +649,6 @@ export const signUpUser = createAsyncThunk(
   "/user/signUp",
   async (formData, thunkAPI) => {
     try {
-      console.log("inside the try");
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/user/signup`,
         {
