@@ -650,14 +650,17 @@ export const signUpUser = createAsyncThunk(
   async (formData, thunkAPI) => {
     try {
       console.log("inside the try");
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/user/signup`, {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/user/signup`,
+        {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        }
+      );
       if (!response.ok) {
         throw new Error("Failed to fetch user data on sign up");
       }
