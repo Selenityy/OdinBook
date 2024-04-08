@@ -24,7 +24,8 @@ Welcome to the OdinBook repository, a mock social media platform built as part o
 - [Cypress](https://www.cypress.io/) - End-to-end testing framework
 - [TailwindCSS](https://tailwindcss.com/) - Utility-first CSS framework
 - [Passport](https://www.passportjs.org/) - Authentication middleware for Node.js
-- [Netlify](https://www.netlify.com/) - Hosting and serverless backend service
+- [Railway](https://railway.app/) - Deployment platform designed to streamline the software development life-cycle
+- [Vercel](https://vercel.com/) - Serverless platform for static and hybrid applications
 
 ## Learning and Challenges
 
@@ -41,8 +42,6 @@ This project reflects my journey in tackling complex web development challenges.
 - **Authentication and Security**: Implementing secure authentication mechanisms using JSON Web Tokens (JWT) and bcrypt for password hashing was crucial. It not only ensured the security of user data but also taught me best practices in handling user authentication and authorization.
 
 - **Frontend and Backend Integration**: The project provided a comprehensive experience in integrating frontend and backend technologies. From setting up RESTful APIs with Express to fetching data with React hooks, it was a valuable practice in full-stack development.
-
-- **Deployement**: 
 
 ## Future Plans
 
